@@ -270,9 +270,6 @@ class PlacoWalkEngine:
             self.robot.update_kinematics()
             _ = self.solver.solve(True)
         
-        for joint_name in self.default_angles:
-            self.robot.set_joint(joint_name, self.default_angles[joint_name])
-        
         if self.head_bob:
             self.robot.set_joint("head_pitch", self.default_angles["head_pitch"] - self.head_bob_amplitude*np.sin(2*2*np.pi*self.t / self.period))
             self.robot.set_joint("neck_pitch", self.default_angles["neck_pitch"] + self.head_bob_amplitude*np.sin(2*2*np.pi*self.t / self.period))
