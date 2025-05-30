@@ -87,6 +87,7 @@ class PlacoWalkEngine:
             self.parameters.walk_com_height,
             self.parameters.walk_trunk_pitch,
         )
+        self.robot.update_kinematics()
         print("Initial position reached")
 
         print(self.get_angles())
@@ -122,7 +123,7 @@ class PlacoWalkEngine:
         self.time_since_last_right_contact = 0.0
         self.time_since_last_left_contact = 0.0
         self.start = None
-        self.initial_delay = -1.0
+        self.initial_delay = 0
         # self.initial_delay = 0
         self.t = self.initial_delay
         self.last_replan = 0

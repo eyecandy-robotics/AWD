@@ -66,7 +66,7 @@ for i, frame in enumerate(frames):
     fv.pushFrame(fv_utils.make_pose(left_toe_pos, [0, 0, 0]), "left_toe")
     fv.pushFrame(fv_utils.make_pose(right_toe_pos, [0, 0, 0]), "right_toe")
 
-    time.sleep(frame_duration)
+    #time.sleep(frame_duration)
 
 
 # plot vels
@@ -78,6 +78,18 @@ joints_vel = [vels["joint_vels"][i] for i in range(len(frames))]
 angular_vel_x = [vels["angular_vel"][i][0] for i in range(len(frames))]
 angular_vel_y = [vels["angular_vel"][i][1] for i in range(len(frames))]
 angular_vel_z = [vels["angular_vel"][i][2] for i in range(len(frames))]
+
+# print means
+print("Linear Velocity Mean:")
+print(f"x: {np.mean(x_lin_vel):.2f}, y: {np.mean(y_lin_vel):.2f}, z: {np.mean(angular_vel_z):.2f}")
+
+plt.plot(x_lin_vel, label="x_lin_vel")
+plt.plot(y_lin_vel, label="y_lin_vel")
+plt.plot(angular_vel_z, label="angular_vel_z")
+
+plt.legend()
+plt.show()
+
 
 plt.plot(angular_vel_x, label="angular_vel_x")
 plt.plot(angular_vel_y, label="angular_vel_y")

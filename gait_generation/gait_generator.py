@@ -165,22 +165,34 @@ added_frame_info = False
 center_y_pos = -(pwe.parameters.feet_spacing/2)
 print(f"center_y_pos: {center_y_pos}")
 
-def compute_angular_velocity(quat, prev_quat, dt):
-    # Convert quaternions to scipy Rotation objects
+def compute_angular_velocity(current_quat, prev_quat, dt):
+    """
+    Compute angular velocity (rad/s) in world coordinates between two quaternions.
+
+    Args:
+        current_quat (list or np.ndarray): [x, y, z, w] quaternion at current time.
+        prev_quat (list or np.ndarray): [x, y, z, w] quaternion at previous time.
+        dt (float): time difference between the two quaternions (seconds).
+
+    Returns:
+        np.ndarray: Angular velocity vector [wx, wy, wz] in rad/s.
+    """
     if prev_quat is None:
-        prev_quat = quat
-    r1 = R.from_quat(quat)  # Current quaternion
-    r0 = R.from_quat(prev_quat)  # Previous quaternion
-    
-    # Compute relative rotation: r_rel = r0^(-1) * r1
-    r_rel = r0.inv() * r1
-    
-    # Convert relative rotation to axis-angle
-    axis, angle = r_rel.as_rotvec(), np.linalg.norm(r_rel.as_rotvec())
-    
-    # Angular velocity (in radians per second)
-    angular_velocity = axis * (angle / dt)
-    
+        # First timestep: no previous data → return zero angular velocity
+        return list(np.zeros(3))
+    # Convert to scipy Rotation objects
+    R_current = R.from_quat(current_quat)
+    R_prev = R.from_quat(prev_quat)
+
+    # Compute relative rotation
+    R_relative = R_current * R_prev.inv()
+
+    # Get rotation vector (axis * angle in radians)
+    rotvec = R_relative.as_rotvec()
+
+    # Angular velocity = rotation vector / dt
+    angular_velocity = rotvec / dt
+
     return list(angular_velocity)
 
 while True:
@@ -233,11 +245,11 @@ while True:
         world_linear_vel = list(
             (np.array(root_position) - np.array(prev_root_position)) / (1 / FPS)
         )
-        avg_x_lin_vel.append(world_linear_vel[0])
-        avg_y_lin_vel.append(world_linear_vel[1])
+
         body_rot_mat = T_world_fbase[:3, :3]
         body_linear_vel = list(body_rot_mat.T @ world_linear_vel)
-        # print("world linear vel", world_linear_vel)
+        avg_x_lin_vel.append(body_linear_vel[0])
+        avg_y_lin_vel.append(body_linear_vel[1])
         # print("body linear vel", body_linear_vel)
 
         world_angular_vel = compute_angular_velocity(root_orientation_quat, prev_root_orientation_quat, (1 / FPS))
@@ -249,8 +261,8 @@ while True:
         #     )
         #     / (1 / FPS)
         # )
-        avg_yaw_vel.append(world_angular_vel[2])
         body_angular_vel = list(body_rot_mat.T @ world_angular_vel)
+        avg_yaw_vel.append(body_angular_vel[2])
         # print("world angular vel", world_angular_vel)
         # print("body angular vel", body_angular_vel)
 
@@ -392,6 +404,7 @@ episode["Vel_x"] = mean_avg_x_lin_vel
 episode["Vel_y"] = mean_avg_y_lin_vel
 episode["Yaw"] = mean_yaw_vel
 episode["Placo"] =  {
+    "period": pwe.period,
     "dx": args.dx,
     "dy": args.dy,
     "dtheta": args.dtheta,
@@ -422,7 +435,7 @@ episode["Placo"] =  {
     "preset_name": args.preset.split("/")[-1].split(".")[0],
 }
 
-file_name = args.name + str(".json")
+file_name = f"{args.name}_{mean_avg_x_lin_vel}_{mean_avg_y_lin_vel}_{mean_yaw_vel}" + str(".json")
 file_path = os.path.join(args.output_dir, file_name)
 os.makedirs(args.output_dir, exist_ok=True)
 print("DONE, saving", file_name)
