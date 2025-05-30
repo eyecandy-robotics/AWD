@@ -73,7 +73,7 @@ parser.add_argument(
 args = parser.parse_args()
 args.hardware = True
 
-FPS = 30
+FPS = 50
 MESHCAT_FPS = 20
 DISPLAY_MESHCAT = args.meshcat_viz
 
@@ -392,9 +392,9 @@ while True:
     i += 1
 
 # skip first 2 seconds to get better average speed
-mean_avg_x_lin_vel = np.around(np.mean(avg_x_lin_vel[240:]), 4)
-mean_avg_y_lin_vel = np.around(np.mean(avg_y_lin_vel[240:]), 4)
-mean_yaw_vel = np.around(np.mean(avg_yaw_vel[240:]), 4)
+mean_avg_x_lin_vel = np.around(np.mean(avg_x_lin_vel[240:]), 3)
+mean_avg_y_lin_vel = np.around(np.mean(avg_y_lin_vel[240:]), 3)
+mean_yaw_vel = np.around(np.mean(avg_yaw_vel[240:]), 3)
 
 print("recorded", len(episode["Frames"]), "frames")
 print(f"avg lin_vel_x {mean_avg_x_lin_vel}")
@@ -435,7 +435,15 @@ episode["Placo"] =  {
     "preset_name": args.preset.split("/")[-1].split(".")[0],
 }
 
-file_name = f"{args.name}_{mean_avg_x_lin_vel}_{mean_avg_y_lin_vel}_{mean_yaw_vel}" + str(".json")
+# # convert to linear and angular velocity
+def steps_to_vel(step_size, period):
+    return (step_size * 2) / period
+
+x_vel = np.around(steps_to_vel(args.dx, pwe.period), 3)
+y_vel = np.around(steps_to_vel(args.dy, pwe.period), 3)
+theta_vel = np.around(steps_to_vel(args.dtheta, pwe.period), 3)
+
+file_name = f"{args.name}_{x_vel}_{y_vel}_{theta_vel}" + str(".json")
 file_path = os.path.join(args.output_dir, file_name)
 os.makedirs(args.output_dir, exist_ok=True)
 print("DONE, saving", file_name)
