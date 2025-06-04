@@ -26,6 +26,15 @@ frame_duration = episode["FrameDuration"]
 
 frames = episode["Frames"]
 frame_offsets = episode["Frame_offset"][0]
+period = episode["Placo"]["period"]
+
+# Add slice for foot contacts if present in frame_offsets
+if "foot_contacts" in frame_offsets:
+    foot_contacts_slice = slice(frame_offsets["foot_contacts"], frame_offsets["foot_contacts"] + 2)
+else:
+    # Fallback if not explicitly defined
+    print("Warning: foot_contacts not found in frame_offsets")
+    foot_contacts_slice = None
 
 root_pos_slice = slice(frame_offsets["root_pos"], frame_offsets["root_quat"])
 root_quat_slice = slice(frame_offsets["root_quat"], frame_offsets["joints_pos"])
@@ -46,6 +55,9 @@ vels = {}
 vels["linear_vel"] = []
 vels["angular_vel"] = []
 vels["joint_vels"] = []
+left_foot_contacts = []
+right_foot_contacts = []
+
 for i, frame in enumerate(frames):
     root_position = frame[root_pos_slice]
     root_orientation_quat = frame[root_quat_slice]
@@ -65,9 +77,13 @@ for i, frame in enumerate(frames):
     
     fv.pushFrame(fv_utils.make_pose(left_toe_pos, [0, 0, 0]), "left_toe")
     fv.pushFrame(fv_utils.make_pose(right_toe_pos, [0, 0, 0]), "right_toe")
-
+    
+    # Extract foot contacts if available
+    if foot_contacts_slice:
+        contacts = frame[foot_contacts_slice]
+        left_foot_contacts.append(float(contacts[0]))
+        right_foot_contacts.append(float(contacts[1]))
     #time.sleep(frame_duration)
-
 
 # plot vels
 x_lin_vel = [vels["linear_vel"][i][0] for i in range(len(frames))]
@@ -83,17 +99,28 @@ angular_vel_z = [vels["angular_vel"][i][2] for i in range(len(frames))]
 print("Linear Velocity Mean:")
 print(f"x: {np.mean(x_lin_vel):.2f}, y: {np.mean(y_lin_vel):.2f}, z: {np.mean(angular_vel_z):.2f}")
 
+# Calculate fps from frame duration
+fps = 1.0 / frame_duration
+nb_steps_in_period = int(period * fps)
+
+# Create cyclical period array using the number of steps in period
+frame_indices = np.arange(len(frames))
+period_array = (frame_indices % nb_steps_in_period) / nb_steps_in_period  # This will cycle from 0 to 1
+
+plt.figure(figsize=(12, 6))
+
+# Plot everything on the same graph
 plt.plot(x_lin_vel, label="x_lin_vel")
 plt.plot(y_lin_vel, label="y_lin_vel")
 plt.plot(angular_vel_z, label="angular_vel_z")
+plt.plot(period_array, label="period")
+
+# Plot foot contacts if available
+if foot_contacts_slice:
+    plt.plot(left_foot_contacts, label="Left Foot Contact")
+    plt.plot(right_foot_contacts, label="Right Foot Contact")
 
 plt.legend()
-plt.show()
-
-
-plt.plot(angular_vel_x, label="angular_vel_x")
-plt.plot(angular_vel_y, label="angular_vel_y")
-plt.plot(angular_vel_z, label="angular_vel_z")
-
-plt.legend()
+plt.title("Motion Analysis")
+plt.grid(True, alpha=0.3)
 plt.show()

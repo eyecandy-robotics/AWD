@@ -61,7 +61,7 @@ parser.add_argument(
     "-s",
     "--skip_warmup",
     action="store_true",
-    default=False,
+    default=True,
     help="don't record warmup motion",
 )
 parser.add_argument(
@@ -248,8 +248,8 @@ while True:
 
         body_rot_mat = T_world_fbase[:3, :3]
         body_linear_vel = list(body_rot_mat.T @ world_linear_vel)
-        avg_x_lin_vel.append(body_linear_vel[0])
-        avg_y_lin_vel.append(body_linear_vel[1])
+        avg_x_lin_vel.append(world_linear_vel[0])
+        avg_y_lin_vel.append(world_linear_vel[1])
         # print("body linear vel", body_linear_vel)
 
         world_angular_vel = compute_angular_velocity(root_orientation_quat, prev_root_orientation_quat, (1 / FPS))
@@ -262,7 +262,7 @@ while True:
         #     / (1 / FPS)
         # )
         body_angular_vel = list(body_rot_mat.T @ world_angular_vel)
-        avg_yaw_vel.append(body_angular_vel[2])
+        avg_yaw_vel.append(world_angular_vel[2])
         # print("world angular vel", world_angular_vel)
         # print("body angular vel", body_angular_vel)
 
