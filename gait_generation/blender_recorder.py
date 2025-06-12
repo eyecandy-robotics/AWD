@@ -50,11 +50,11 @@ joint_names = [
 ]
 actual_joint_names = [joint_name.split('.')[0] for joint_name in joint_names]
 object_names = {
-    "pelvis": "pelvis",
-    "left_toe": "left_foot_link",
-    "right_toe": "right_foot_link"
+    "pelvis": "trunk_assembly",
+    "left_toe": "foot_assembly",
+    "right_toe": "foot_assembly_2"
 }
-default_angles = [-0.0, 1.5708, -0.0, 0.0, 0.0, -0.0, -0.0, -0.0, -1.5708, 0.0, 0.0, -0.0, 1.5708, 0.0, -0.0, -0.0]
+default_angles = [-0.0, 1.5708, -0.0, 0.0, 0.0, -0.0, -0.0, -0.0, 1.5708, 0.0, 0.0, -0.0, 1.5708, 0.0, -0.0, -0.0]
 
 # Initialize storage arrays
 prev_joint_angles = None
@@ -138,6 +138,8 @@ for frame in range(start_frame, end_frame + 1):
         (np.array([right_toe_pos.x, right_toe_pos.y, right_toe_pos.z]) - np.array(prev_right_toe_pos)) * FPS
     )
 
+    foot_contacts = [0, 0]
+
     # Append frame data to episode["Frames"]
     frame_data["root_pos"] = [pelvis_position.x, pelvis_position.y, pelvis_position.z+0.01]
     frame_data["root_quat"] = [pelvis_quat.x, pelvis_quat.y, pelvis_quat.z, pelvis_quat.w]
@@ -149,6 +151,7 @@ for frame in range(start_frame, end_frame + 1):
     frame_data["joints_vel"] = joints_vel
     frame_data["left_toe_vel"] = left_toe_vel
     frame_data["right_toe_vel"] = right_toe_vel
+    frame_data["foot_contacts"] = foot_contacts
 
     frames_data.append(frame_data)
 
