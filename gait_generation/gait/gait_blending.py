@@ -138,28 +138,86 @@ def blend_gait_parameters(samples, x, y, theta, x_max, y_max, theta_max, eta=0.5
     G_final = blend_dicts(G_fwd, G_turn, alpha_ts)
     return G_final
 
-# --- Example Usage with Dummy Sample Data ---
+def compute_phase_period(single_support_duration, double_support_ratio):
+    """
+    Computes the phase period based on gait parameters.
+    single_support_duration: Duration of single support phase in seconds.
+    double_support_ratio: Ratio of double support phase to total step duration.
+    Returns the total step duration.
+    """
+    double_support_duration = single_support_duration * double_support_ratio
+    period = 2*single_support_duration + 2*double_support_duration
+    return period
+
+def steps_to_vel(step_size, period):
+    return (step_size * 2) / period
+
+def vel_to_step(x_vel, y_vel, theta_vel, G):
+    """
+    Computes the step size based on velocities and gait parameters.
+    x_vel: Forward velocity.
+    y_vel: Strafe velocity.
+    theta_vel: Turn rate.
+    G: Dictionary of gait parameters.
+    
+    Returns the step size as a tuple (x_step, y_step).
+    """
+    single_support_duration = G['single_support_duration']
+    double_support_ratio = G['double_support_ratio']
+    
+    period = compute_phase_period(single_support_duration, double_support_ratio)
+    
+    # Calculate the step size based on velocities
+    x_step = period * x_vel / 2
+    y_step = period * y_vel / 2
+    theta_step = period * theta_vel / 2
+
+    return x_step, y_step, theta_step, period
+    
 
 # Create nine dummy samples with (x, y, theta) and a parameter dict G
 sample_data = [
-    {'x':  0.0, 'y':  0.0, 'theta':  0.0, 'G': {'double_stand': 0.30, 'trunk_pitch': 5.0}}, # in-place
-    {'x':  0.5, 'y':  0.0, 'theta':  0.0, 'G': {'double_stand': 0.28, 'trunk_pitch': 4.5}}, # forward slow
-    {'x':  1.0, 'y':  0.0, 'theta':  0.0, 'G': {'double_stand': 0.25, 'trunk_pitch': 4.0}}, # forward med
-    {'x':  1.5, 'y':  0.0, 'theta':  0.0, 'G': {'double_stand': 0.22, 'trunk_pitch': 3.5}}, # forward fast
-    {'x':  0.0, 'y':  1.0, 'theta':  0.0, 'G': {'double_stand': 0.29, 'trunk_pitch': 4.2}}, # strafe right
-    {'x':  0.0, 'y': -1.0, 'theta':  0.0, 'G': {'double_stand': 0.29, 'trunk_pitch': 4.2}}, # strafe left
-    {'x':  0.0, 'y':  0.0, 'theta':  1.0, 'G': {'double_stand': 0.32, 'trunk_pitch': 5.5}}, # turn right
-    {'x':  0.0, 'y':  0.0, 'theta': -1.0, 'G': {'double_stand': 0.32, 'trunk_pitch': 5.5}}, # turn left
-    {'x': -0.5, 'y':  0.0, 'theta':  0.0, 'G': {'double_stand': 0.35, 'trunk_pitch': 6.0}}, # backward med
+    {'x':  0.0, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.24,
+                                                'head_bob_amplitude':0.15, 'neck_pitch':0.5, 'head_pitch':-0.4,
+                                                'double_support_ratio':0.5}}, # in-place
+    {'x':  0.05, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.23,
+                                                'head_bob_amplitude':0.15, 'neck_pitch':0.5, 'head_pitch':-0.4,
+                                                'double_support_ratio':0.5}}, # forward slow
+    {'x':  0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -3.0, 'single_support_duration': 0.22,
+                                                'head_bob_amplitude':0.125, 'neck_pitch':0.25, 'head_pitch':-0.25,
+                                                'double_support_ratio':0.5}}, # forward med
+    {'x':  0.15, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
+                                                'double_support_ratio':0.5}}, # forward fast
+    {'x':  0.0, 'y':  0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
+                                                'double_support_ratio':0.5}}, # strafe right
+    {'x':  0.0, 'y': -0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
+                                                'double_support_ratio':0.5}}, # strafe left
+    {'x':  0.0, 'y':  0.0, 'theta':  0.5, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
+                                                'double_support_ratio':0.5}}, # turn right
+    {'x':  0.0, 'y':  0.0, 'theta': -0.5, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
+                                                'double_support_ratio':0.5}}, # turn left
+    {'x': -0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 0.0, 'single_support_duration': 0.20,
+                                                'head_bob_amplitude':0.1, 'neck_pitch':0.15, 'head_pitch':-0.15,
+                                                'double_support_ratio':0.5}}, # backward med
 ]
 
-x_max = 1.5
-y_max = 1.0
-theta_max = 1.0
+x_max = 0.15
+y_max = 0.15
+theta_max = 0.5
 
-x_in, y_in, theta_in = 0.75, 0.3, 0.2
+x_in, y_in, theta_in = 0.1, 0.1, 0.4
 
 G_output = blend_gait_parameters(sample_data, x_in, y_in, theta_in, x_max, y_max, theta_max)
 print("Final blended G:")
 for param, value in G_output.items():
     print(f"  {param}: {value:.4f}")
+
+
+x_step, y_step, theta_step, period = vel_to_step(x_in, y_in, theta_in, G_output)
+print(f"\nComputed step sizes from velocities:")
+print(f"  x_step: {x_step:.4f}, y_step: {y_step:.4f}, theta_step: {theta_step:.4f}, period: {period:.4f}")
