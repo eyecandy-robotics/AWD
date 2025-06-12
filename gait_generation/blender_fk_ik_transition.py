@@ -16,7 +16,28 @@ def move_effector_to_bone_tail(armature, source_bone_name, target_bone_name):
 
     bpy.context.view_layer.update()
 
+def bake_ik_to_fk_at_current_frame(armature):
+    """
+    Bakes the IK-solved transforms into pose bones at the current frame.
+    Only applies to the current frame and inserts keyframes.
+    """
+    scene = bpy.context.scene
+    current_frame = scene.frame_current
 
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+    arm_eval = armature.evaluated_get(depsgraph)
+
+    for pb in armature.pose.bones:
+        bone_eval = arm_eval.pose.bones[pb.name]
+        pb.matrix = bone_eval.matrix
+
+        # Insert keyframes for transform at current frame
+        pb.keyframe_insert(data_path="location", frame=current_frame)
+        pb.keyframe_insert(data_path="rotation_quaternion", frame=current_frame)
+        pb.keyframe_insert(data_path="scale", frame=current_frame)
+
+    bpy.context.view_layer.update()
+    
 def set_fk_ik_mode(armature, enable_ik: bool):
     """
     Enables IK or FK for both legs.
@@ -26,21 +47,14 @@ def set_fk_ik_mode(armature, enable_ik: bool):
     ik_constraint_name = "IK"
 
     if not enable_ik:
-        # Bake IK result before disabling IK
-        depsgraph = bpy.context.evaluated_depsgraph_get()
-        arm_eval = armature.evaluated_get(depsgraph)
-
-        for pb in armature.pose.bones:
-            bone_eval = arm_eval.pose.bones[pb.name]
-            pb.matrix = bone_eval.matrix
-
-        bpy.context.view_layer.update()
-
+        # Bake only at current frame
+        bake_ik_to_fk_at_current_frame(armature)
+        
         for side in sides:
             ankle = f"{side}_ankle.revolute.bone"
             pb = armature.pose.bones.get(ankle)
             if pb:
-                ik_con = pb.constraints.get(ik_constraint_name)
+                ik_con = pb.constraints.get("IK")
                 if ik_con and ik_con.type == 'IK':
                     ik_con.use_location = False
 
@@ -101,7 +115,7 @@ class VIEW3D_PT_fk_ik_toggle(bpy.types.Panel):
     bl_idname = "VIEW3D_PT_fk_ik_toggle"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = 'Rig Tools'
+    bl_category = 'Rig Tools 1'
 
     def draw(self, context):
         layout = self.layout
