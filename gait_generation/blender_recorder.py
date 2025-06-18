@@ -54,7 +54,7 @@ object_names = {
     "left_toe": "foot_assembly",
     "right_toe": "foot_assembly_2"
 }
-default_angles = [-0.0, 1.5708, -0.0, 0.0, 0.0, -0.0, -0.0, -0.0, 1.5708, 0.0, 0.0, -0.0, 1.5708, 0.0, -0.0, -0.0]
+default_angles = [-0.0, 1.5708, -0.0, 0.0, 0.0, -0.0, -0.0, 3.1415, 1.5708, 0.0, 0.0, -0.0, 1.5708, 0.0, -0.0, -0.0]
 
 # Initialize storage arrays
 prev_joint_angles = None
@@ -98,10 +98,16 @@ for frame in range(start_frame, end_frame + 1):
             if parent_bone:
                 relative_matrix =  parent_bone.matrix.inverted() @ relative_matrix
             euler_angles = relative_matrix.to_euler()
-            frame_joint_angles[joint_names.index(bone.name)] = round(euler_angles.y - default_angles[joint_names.index(bone.name)], 4)
+            print(bone.name, euler_angles)
+            if "head_yaw" in bone.name:
+                joint_angle = euler_angles.z
+            else:
+                joint_angle = euler_angles.y
+            frame_joint_angles[joint_names.index(bone.name)] = round(joint_angle - default_angles[joint_names.index(bone.name)], 4)
             idx += 1
+    print("====")
     
-    print(frame_joint_angles)
+    #print(frame_joint_angles)
 
     # Get object positions and quaternion for pelvis
     pelvis_obj = bpy.data.objects[object_names["pelvis"]]

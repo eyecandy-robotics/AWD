@@ -95,8 +95,8 @@ def main(args):
         max_sweep_y_vel = 0.15
         min_sweep_theta_vel = -0.5
         max_sweep_theta_vel = 0.5
-        sweep_xy_vel_granularity = 0.04
-        sweep_theta_vel_granularity = 0.08
+        sweep_xy_vel_granularity = 0.05
+        sweep_theta_vel_granularity = 0.2
     else:
         raise ValueError("Invalid bdx_type. Choose either 'go_bdx', 'mini_bdx', or 'mini2_bdx'.")
 

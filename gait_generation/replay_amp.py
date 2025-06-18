@@ -84,6 +84,7 @@ for i, frame in enumerate(frames):
         left_foot_contacts.append(float(contacts[0]))
         right_foot_contacts.append(float(contacts[1]))
     #time.sleep(frame_duration)
+    input()
 
 # plot vels
 x_lin_vel = [vels["linear_vel"][i][0] for i in range(len(frames))]
