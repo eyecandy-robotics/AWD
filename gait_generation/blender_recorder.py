@@ -11,6 +11,7 @@ units = bpy.context.scene.unit_settings
 # Get the current unit system
 unit_system = units.system  # Options: 'NONE', 'METRIC', 'IMPERIAL'
 unit_scale = units.scale_length  # Default is 1.0 for meters
+foot_contact_height_thresh = 0.6
 
 print(unit_scale)
 episode = {
@@ -98,14 +99,16 @@ for frame in range(start_frame, end_frame + 1):
             if parent_bone:
                 relative_matrix =  parent_bone.matrix.inverted() @ relative_matrix
             euler_angles = relative_matrix.to_euler()
-            print(bone.name, euler_angles)
+            #print(bone.name, euler_angles)
             if "head_yaw" in bone.name:
                 joint_angle = euler_angles.z
             else:
                 joint_angle = euler_angles.y
             frame_joint_angles[joint_names.index(bone.name)] = round(joint_angle - default_angles[joint_names.index(bone.name)], 4)
             idx += 1
-    print("====")
+    #print("====")
+    
+    frame_joint_angles = np.unwrap(frame_joint_angles).tolist()
     
     #print(frame_joint_angles)
 
@@ -116,7 +119,9 @@ for frame in range(start_frame, end_frame + 1):
 
     left_toe_pos = bpy.data.objects[object_names["left_toe"]].matrix_world.translation * unit_scale  # Scale the position
     right_toe_pos = bpy.data.objects[object_names["right_toe"]].matrix_world.translation * unit_scale  # Scale the position
-
+    
+    #print(left_toe_pos, right_toe_pos, pelvis_position)
+    
     # Store pelvis position for average velocity and yaw calculation
     pelvis_positions.append([pelvis_position.x, pelvis_position.y, pelvis_position.z])
 
@@ -143,9 +148,9 @@ for frame in range(start_frame, end_frame + 1):
     right_toe_vel = [0.0, 0.0, 0.0] if prev_right_toe_pos is None else list(
         (np.array([right_toe_pos.x, right_toe_pos.y, right_toe_pos.z]) - np.array(prev_right_toe_pos)) * FPS
     )
-
-    foot_contacts = [0, 0]
-
+    
+    foot_contacts = [left_toe_pos.z < foot_contact_height_thresh, right_toe_pos.z < foot_contact_height_thresh]
+    print(foot_contacts)
     # Append frame data to episode["Frames"]
     frame_data["root_pos"] = [pelvis_position.x, pelvis_position.y, pelvis_position.z+0.01]
     frame_data["root_quat"] = [pelvis_quat.x, pelvis_quat.y, pelvis_quat.z, pelvis_quat.w]
@@ -190,7 +195,7 @@ for frame in frames_data:
         frame["root_pos"] + frame["root_quat"] + frame["joints_pos"] +
         frame["left_toe_pos"] + frame["right_toe_pos"] +
         frame["world_linear_vel"] + frame["world_angular_vel"] + frame["joints_vel"] +
-        frame["left_toe_vel"] + frame["right_toe_vel"]
+        frame["left_toe_vel"] + frame["right_toe_vel"] + frame["foot_contacts"]
     )
 
 print("Episode data filled.")

@@ -176,7 +176,7 @@ def vel_to_step(x_vel, y_vel, theta_vel, G):
     
 
 # Create nine dummy samples with (x, y, theta) and a parameter dict G
-sample_data = [
+gait_sample_data = [
     {'x':  0.0, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.24,
                                                 'head_bob_amplitude':0.15, 'neck_pitch':0.5, 'head_pitch':-0.4,
                                                 'double_support_ratio':0.5}}, # in-place
@@ -206,18 +206,20 @@ sample_data = [
                                                 'double_support_ratio':0.5}}, # backward med
 ]
 
-x_max = 0.15
-y_max = 0.15
-theta_max = 0.5
 
-x_in, y_in, theta_in = 0.1, 0.1, 0.4
+if __name__ == "__main__":
+    x_max = 0.15
+    y_max = 0.15
+    theta_max = 0.5
 
-G_output = blend_gait_parameters(sample_data, x_in, y_in, theta_in, x_max, y_max, theta_max)
-print("Final blended G:")
-for param, value in G_output.items():
-    print(f"  {param}: {value:.4f}")
+    x_in, y_in, theta_in = 0.1, 0.1, 0.4
+
+    G_output = blend_gait_parameters(gait_sample_data, x_in, y_in, theta_in, x_max, y_max, theta_max)
+    print("Final blended G:")
+    for param, value in G_output.items():
+        print(f"  {param}: {value:.4f}")
 
 
-x_step, y_step, theta_step, period = vel_to_step(x_in, y_in, theta_in, G_output)
-print(f"\nComputed step sizes from velocities:")
-print(f"  x_step: {x_step:.4f}, y_step: {y_step:.4f}, theta_step: {theta_step:.4f}, period: {period:.4f}")
+    x_step, y_step, theta_step, period = vel_to_step(x_in, y_in, theta_in, G_output)
+    print(f"\nComputed step sizes from velocities:")
+    print(f"  x_step: {x_step:.4f}, y_step: {y_step:.4f}, theta_step: {theta_step:.4f}, period: {period:.4f}")
