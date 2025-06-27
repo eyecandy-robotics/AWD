@@ -1,0 +1,13 @@
+{
+    "configuration": "default",
+    "documentId": "524bc8ebe3877c13438f83c1",
+    "documentMicroversion": "27859bf75a460e3a49fe5d66",
+    "elementId": "6dba101851422b5417e556d3",
+    "fullConfiguration": "default",
+    "id": "MNXSZXvb1BPhTiNYa",
+    "isStandardContent": false,
+    "name": "Motor driver <1>",
+    "partId": "Z2DBD",
+    "suppressed": false,
+    "type": "Part"
+}

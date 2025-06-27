@@ -1,0 +1,13 @@
+{
+    "configuration": "default",
+    "documentId": "524bc8ebe3877c13438f83c1",
+    "documentMicroversion": "27859bf75a460e3a49fe5d66",
+    "elementId": "9ae66e6c250db7515cb7f9b7",
+    "fullConfiguration": "default",
+    "id": "MR+OF4lyT6UZDMUNS",
+    "isStandardContent": false,
+    "name": "hip_actuator <1>",
+    "partId": "JFX",
+    "suppressed": false,
+    "type": "Part"
+}

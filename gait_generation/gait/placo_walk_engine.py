@@ -45,6 +45,12 @@ class PlacoWalkEngine:
         self.head_bob = init_params.get('head_bob', False)
         self.head_bob_amplitude = init_params.get('head_bob_amplitude', 0.15)
 
+        self.invert_neck_pitch = init_params.get('invert_neck_pitch', False)
+        self.neck_pitch_sign = -1 if self.invert_neck_pitch else 1 
+        
+        self.tail_wiggle = init_params.get('tail_wiggle', False)
+        self.tail_wiggle_amplitude = init_params.get('tail_wiggle_amplitude', 0.15)
+        
         # Creating the kinematics solver
         self.solver = placo.KinematicsSolver(self.robot)
         self.solver.enable_velocity_limits(True)
@@ -52,8 +58,8 @@ class PlacoWalkEngine:
         self.solver.enable_joint_limits(False)
         self.solver.dt = DT / REFINE
 
-        self.robot.set_joint_limits("left_knee", *knee_limits)
-        self.robot.set_joint_limits("right_knee", *knee_limits)
+        # self.robot.set_joint_limits("left_knee", *knee_limits)
+        # self.robot.set_joint_limits("right_knee", *knee_limits)
         
         self.default_angles = init_params.get('joint_angles', {})
         for joint_name in self.default_angles:
@@ -63,7 +69,7 @@ class PlacoWalkEngine:
         self.tasks = placo.WalkTasks()
         if hasattr(self.parameters, 'trunk_mode'):
             self.tasks.trunk_mode = self.parameters.trunk_mode
-        self.tasks.com_x = 0.0
+        self.tasks.com_x = init_params.get('com_x', 0)
         self.tasks.initialize_tasks(self.solver, self.robot)
         self.tasks.left_foot_task.orientation().mask.set_axises("yz", "local")
         self.tasks.right_foot_task.orientation().mask.set_axises("yz", "local")
@@ -89,8 +95,6 @@ class PlacoWalkEngine:
         )
         self.robot.update_kinematics()
         print("Initial position reached")
-
-        print(self.get_angles())
         # exit()
 
         # Creating the FootstepsPlanner
@@ -272,8 +276,11 @@ class PlacoWalkEngine:
             _ = self.solver.solve(True)
         
         if self.head_bob:
-            self.robot.set_joint("head_pitch", self.default_angles["head_pitch"] - self.head_bob_amplitude*np.sin(2*2*np.pi*self.t / self.period))
-            self.robot.set_joint("neck_pitch", self.default_angles["neck_pitch"] + self.head_bob_amplitude*np.sin(2*2*np.pi*self.t / self.period))
+            self.robot.set_joint("head_pitch", self.default_angles["head_pitch"] + self.head_bob_amplitude*np.sin(2*2*np.pi*self.t / self.period))
+            self.robot.set_joint("neck_pitch", self.default_angles["neck_pitch"] + self.neck_pitch_sign*self.head_bob_amplitude*np.sin(2*2*np.pi*self.t / self.period))
+        
+        if self.tail_wiggle:
+            self.robot.set_joint("tail", self.default_angles["tail"] + self.tail_wiggle_amplitude*np.sin(2*np.pi*self.t / self.period))
 
         # If enough time elapsed and we can replan, do the replanning
         if (

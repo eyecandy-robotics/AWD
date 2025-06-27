@@ -43,6 +43,7 @@ parser.add_argument("--walk_max_dx_backward", type=float, default=None)
 parser.add_argument("-l", "--length", type=int, default=10)
 parser.add_argument("--mini", action="store_true", default=False)
 parser.add_argument("--mini2", action="store_true", default=False)
+parser.add_argument("--dino", action="store_true", default=False)
 parser.add_argument("--preset", type=str, help="Path to the preset file")
 args = parser.parse_args()
 
@@ -84,6 +85,10 @@ class GaitParameters:
             self.robot = 'mini2_bdx'
             self.robot_urdf = "mini2_bdx.urdf"
             self.asset_path = os.path.join(script_path, "../awd/data/assets/mini2_bdx")
+        elif args.dino:
+            self.robot = 'dino'
+            self.robot_urdf = "dino.urdf"
+            self.asset_path = os.path.join(script_path, "../awd/data/assets/dino")
         else:
             self.robot = 'go_bdx'
             self.robot_urdf = "go_bdx.urdf"

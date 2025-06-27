@@ -1,0 +1,13 @@
+{
+    "configuration": "default",
+    "documentId": "524bc8ebe3877c13438f83c1",
+    "documentMicroversion": "27859bf75a460e3a49fe5d66",
+    "elementId": "690ff7959f0e9ec6795ab605",
+    "fullConfiguration": "default",
+    "id": "MPSQa6HwiprQ0x0Xo",
+    "isStandardContent": false,
+    "name": "MPU6050 v2 <1>",
+    "partId": "JFD",
+    "suppressed": false,
+    "type": "Part"
+}
