@@ -154,17 +154,17 @@ original_joint_limits = {
     "head_pitch": (-60.0, 60.0),
     "neck_pitch": (-60.0, 90.0),
     "hind_tail": (-40.0, 40.0),
-    "tail": (-15.0, 15.0),
+    "tail": (-20.0, 20.0),           # Updated from (-15.0, 15.0)
     "right_ankle": (-60.0, 60.0),
-    "right_knee": (-60.0, 30.0),
+    "right_knee": (-40.0, 70.0),     # Updated from (-60.0, 30.0)
     "right_hip_pitch": (-90.0, 45.0),
-    "right_hip_roll": (-30.0, 10.0),
+    "right_hip_roll": (-25.0, 15.0), # Updated from (-30.0, 10.0)
     "right_hip_yaw": (-15.0, 20.0),
     "left_ankle": (-60.0, 60.0),
-    "left_knee": (-60.0, 30.0),
+    "left_knee": (-70.0, 40.0),
     "left_hip_pitch": (-45.0, 90.0),
-    "left_hip_roll": (-10.0, 25.0),
-    "left_hip_yaw": (-20.0, 13.0)
+    "left_hip_roll": (-15.0, 25.0),  # Updated from (-10.0, 25.0)
+    "left_hip_yaw": (-20.0, 15.0)    # Updated from (-20.0, 13.0)
 }
 
 print("\nJoint Limit Verification:")

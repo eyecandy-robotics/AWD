@@ -1,13 +1,13 @@
 {
     "configuration": "default",
     "documentId": "524bc8ebe3877c13438f83c1",
-    "documentMicroversion": "6e5eb9505247a7a1b9c20dbe",
+    "documentMicroversion": "1533832abb0374992d65a38f",
     "elementId": "45aab737a4d43c8d6432b284",
     "fullConfiguration": "default",
     "id": "M8c6qQjl6InuvWOB5",
     "isStandardContent": false,
     "name": "Tail_connector <1>",
-    "partId": "RgkD",
+    "partId": "RhkD",
     "suppressed": false,
     "type": "Part"
 }

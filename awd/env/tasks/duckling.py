@@ -73,7 +73,7 @@ class Duckling(BaseTask):
         self._root_height_obs = self.cfg["env"].get("rootHeightObs", True)
         self._randomize_mask_joints = self.cfg["env"].get("randomizeMaskJoints", False)
         self._enable_early_termination = self.cfg["env"]["enableEarlyTermination"]
-        self.override_dof_limits = self.cfg["env"].get("overrideDofLimits", True)
+        self.override_dof_limits = self.cfg["env"].get("overrideDofLimits", False)
         
         key_bodies = self.cfg["env"]["keyBodies"]
         contact_bodies = self.cfg["env"]["contactBodies"]
