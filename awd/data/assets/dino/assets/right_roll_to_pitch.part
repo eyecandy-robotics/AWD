@@ -1,13 +1,13 @@
 {
     "configuration": "default",
     "documentId": "524bc8ebe3877c13438f83c1",
-    "documentMicroversion": "27859bf75a460e3a49fe5d66",
+    "documentMicroversion": "6e5eb9505247a7a1b9c20dbe",
     "elementId": "ca552b2ccd4ec753f3d6020b",
     "fullConfiguration": "default",
     "id": "MB//e3QCeiQu1Pj4k",
     "isStandardContent": false,
     "name": "right_roll_to_pitch <1>",
-    "partId": "RkbD",
+    "partId": "RAcD",
     "suppressed": false,
     "type": "Part"
 }

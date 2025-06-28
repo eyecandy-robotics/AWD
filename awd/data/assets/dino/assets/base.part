@@ -1,13 +1,13 @@
 {
     "configuration": "default",
     "documentId": "524bc8ebe3877c13438f83c1",
-    "documentMicroversion": "27859bf75a460e3a49fe5d66",
-    "elementId": "690ff7959f0e9ec6795ab605",
+    "documentMicroversion": "6e5eb9505247a7a1b9c20dbe",
+    "elementId": "ca552b2ccd4ec753f3d6020b",
     "fullConfiguration": "default",
-    "id": "MPSQa6HwiprQ0x0Xo",
+    "id": "MxbwmCHiF4J+WfR6U",
     "isStandardContent": false,
-    "name": "MPU6050 v2 <1>",
-    "partId": "JFD",
+    "name": "base <1>",
+    "partId": "RGaH",
     "suppressed": false,
     "type": "Part"
 }

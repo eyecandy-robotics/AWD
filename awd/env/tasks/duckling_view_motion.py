@@ -75,7 +75,7 @@ class DucklingViewMotion(DucklingAMP):
         return
     
     def _get_duckling_collision_filter(self):
-        return 1 # disable self collisions
+        return 0 # disable self collisions
 
     def _motion_sync(self):
         num_motions = self._motion_lib.num_motions()

@@ -284,7 +284,7 @@ class DucklingAMP(Duckling):
         self._duckling_root_states[env_ids, 10:13] = root_ang_vel
         
         self._dof_pos[env_ids] = dof_pos
-        self._dof_vel[env_ids] = dof_vel
+        #self._dof_vel[env_ids] = dof_vel
         return
 
     def _update_hist_amp_obs(self, env_ids=None):

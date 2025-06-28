@@ -73,7 +73,7 @@ class Duckling(BaseTask):
         self._root_height_obs = self.cfg["env"].get("rootHeightObs", True)
         self._randomize_mask_joints = self.cfg["env"].get("randomizeMaskJoints", False)
         self._enable_early_termination = self.cfg["env"]["enableEarlyTermination"]
-        self.override_dof_limits = self.cfg["env"].get("overrideDofLimits", False)
+        self.override_dof_limits = self.cfg["env"].get("overrideDofLimits", True)
         
         key_bodies = self.cfg["env"]["keyBodies"]
         contact_bodies = self.cfg["env"]["contactBodies"]
@@ -271,6 +271,8 @@ class Duckling(BaseTask):
             self._init_camera()
 
         self.init_done = True
+
+        print("joints:", self.dof_names)
         return
 
     def get_obs_size(self):
@@ -1384,16 +1386,14 @@ def compute_duckling_reset(reset_buf, progress_buf, contact_buf, contact_body_id
 
     if (enable_early_termination):
         masked_contact_buf = contact_buf.clone()
-        masked_contact_buf[:, contact_body_ids, :] = 0
+        masked_contact_buf[:, contact_body_ids] = 0.0
         fall_contact = torch.any(torch.abs(masked_contact_buf) > 0.1, dim=-1)
         fall_contact = torch.any(fall_contact, dim=-1)
+        
+        body_height = rigid_body_pos[:, 0, 2]
+        fall_height = body_height < termination_heights[0]
 
-        body_height = rigid_body_pos[..., 2]
-        fall_height = body_height < termination_heights
-        fall_height[:, contact_body_ids] = False
-        fall_height = torch.any(fall_height, dim=-1)
-
-        has_fallen = fall_contact #fall_contact # torch.logical_or(fall_contact, fall_height)
+        has_fallen = fall_height #fall_contact # torch.logical_or(fall_contact, fall_height)
 
         # first timestep can sometimes still have nonzero contact forces
         # so only check after first couple of steps

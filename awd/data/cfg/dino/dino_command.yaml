@@ -1,0 +1,222 @@
+# if given, will override the device setting in gym. 
+env: 
+  numEnvs: 4096
+  envSpacing: 1
+  episodeLength: 10 #s
+  isFlagrun: False
+  enableDebugVis: False
+  
+  pdControl: False
+  powerScale: 1.0
+  controlFrequencyInv: 5 # 50 Hz
+  stateInit: "Hybrid"
+  hybridInitProb: 0.5
+  numAMPObsSteps: 10
+
+  pushRobots: True
+  pushStep: 3 #s
+  pushStepRandomRange: 1 #s | push works at pushStep +- pushStepRandomRange
+  continousPushSteps: 10
+  maxPushVelXy: 0.3 # m/s
+
+  randomJointOffsets: True
+  jointOffsetRange: [-1.0, 1.0] # deg
+
+  # COM is randomized only once for each actor, but not at each reset
+  randomizeCom: True
+  comRandomizeRange: [-0.015, 0.015]
+  randomizeTorques: False
+  torqueMultiplierRange: [0.85, 1.15]
+
+  customControl: True
+
+  localRootObs: True
+  keyBodies: ["left_foot", "right_foot"]
+  contactBodies: ["left_foot", "right_foot"]
+  maskJoints: []
+  maskJointRandomRange: [-0.2, 0.2]
+  terminationHeight: 0.12
+  initHeight: 0.16
+  enableEarlyTermination: True
+  enableTaskObs: True
+  randomizeMaskJoints: False
+  commandChangeStepsMin: 5 #s
+  commandChangeStepsMax: 6 #s
+  period: 0.66 #s
+
+  actionHistoryInputs: 3
+  actionHistoryInputsDecimation: 1
+  obsHistoryInputs: 3
+  obsHistoryInputsDecimation: 1
+
+  useUANCorrection: False
+  use_pd_correction: False
+  uan_history_steps: 20
+
+  asset:
+    uanModelPath: "output/UAN_data/uan_model_250hz.onnx"
+    assetRoot: "awd/data/assets"
+    assetFileName: "dino/dino.urdf"
+
+  plane:
+    staticFriction: 1.0
+    dynamicFriction: 1.0
+    restitution: 0.0
+
+  learn:
+    # rewards
+    linearVelocityXYRewardScale: [2.0, 2.0]
+    angularVelocityZRewardScale: 1.0
+    torqueRewardScale: -0.001
+    feetAirTimeRewardScale: 0.05
+    actionRateRewardScale: -0.01
+    standStillRewardScale: -0.0
+    footSlideRewardScale: -0.0005
+
+    # normalization
+    linearVelocityScale: [1.0, 1.0]
+    angularVelocityScale: 1.0
+    useAverageVelocities: True
+
+  # randomCommandVelocityRanges:
+  #   linear_x: [0, 0.] # min max [m/s]
+  #   linear_y: [0, 0.]   # min max [m/s]
+  #   yaw: [0., 0.]          # min max [rad/s]
+
+  randomCommandVelocityRanges:
+    linear_x: [-0.3, 0.4] # min max [m/s]
+    linear_y: [-0.3, 0.3]   # min max [m/s]
+    yaw: [-0.7, 0.7]          # min max [rad/s]
+  
+  terrain:
+    terrainType: plane # plane, or trimesh
+    staticFriction: 1.0 # [-]
+    dynamicFriction: 1.0 # [-]
+    restitution: 0. # [-]
+    # rough terrain only:
+    curriculum: true
+    maxInitMapLevel: 2
+    mapLength: 15
+    mapWidth: 15
+    numLevels: 4
+    numTerrains: 10
+    # terrain types: [smooth slope, rough slope, stairs up, stairs down, discrete]
+    terrainProportions: [0.2, 0.2, 0.2, 0.2, 0.2]
+    # tri mesh only:
+    slopeTreshold: 0.8
+    horizontalScale: 0.25
+    verticalScale: 0.005
+    borderSize: 5
+    numPerEnv: 2
+    minHeight: -0.001
+    maxHeight: 0.001
+    step: 0.05
+    platformSize: 0.5 # pyramids
+    stepHeightRange: [-0.05, 0.05] # pyramid stairs
+    stepWidth: 0.1
+
+sim:
+  substeps: 1
+  physx:
+    num_threads: 4
+    solver_type: 1  # 0: pgs, 1: tgs
+    num_position_iterations: 4
+    num_velocity_iterations: 1
+    contact_offset: 0.02
+    rest_offset: 0.0
+    bounce_threshold_velocity: 0.2
+    max_depenetration_velocity: 100.0
+    default_buffer_size_multiplier: 5.0
+    contact_collection: 1
+
+  flex:
+    num_inner_iterations: 10
+    warm_start: 0.25
+
+
+task:
+  # custom randomization code for observations (each step)
+  observation_randomizations:
+    enable: True
+    dof_pos_noise: 0.01
+    dof_vel_noise: 0.5
+    ang_vel_noise: 0.2
+    gravity_noise: 0.05
+  
+  add_motor_obs_latency: True
+  randomize_obs_motor_latency: True
+  range_obs_motor_latency: [0.0, 15.0] # ms
+
+  add_imu_obs_latency: True
+  randomize_obs_imu_latency: True
+  range_obs_imu_latency: [0.0, 15.0] # ms
+  
+  add_action_latency: True
+  randomize_action_latency: True
+  range_action_latency: [0, 10] #ms
+  
+  # standard isaac envs randomizations.
+  randomize: False
+  randomization_params:
+    frequency: 600   # Define how many environment steps between generating new randomizations
+    # observations:
+    #   range: [0, .002] # range for the white noise
+    #   operation: "additive"
+    #   distribution: "gaussian"
+    # actions:
+    #   range: [0., .02]
+    #   operation: "additive"
+    #   distribution: "gaussian"
+    # sim_params: 
+    #   gravity:
+    #     range: [0, 0.0]
+    #     operation: "additive"
+    #     distribution: "gaussian"
+    #     schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+    #     schedule_steps: 100000
+    actor_params:
+      duckling:
+        color: True
+        # rigid_body_properties:
+          # mass: 
+          #   range: [0.95, 1.15]
+          #   operation: "scaling"
+          #   distribution: "uniform"
+          #   setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
+          #   schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+          #   schedule_steps: 100000
+        rigid_shape_properties:
+          friction:
+            num_buckets: 500
+            range: [0.5, 1.5]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear"  # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 1000
+          restitution:
+            range: [0., 0.5]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule_steps: 1000
+        # dof_properties:
+        #   damping: 
+        #     range: [0.8, 1.2]
+        #     operation: "scaling"
+        #     distribution: "uniform"
+        #     schedule_steps: 1000
+        #   stiffness: 
+        #     range: [0.8, 1.2]
+        #     operation: "scaling"
+        #     distribution: "uniform"
+        #     schedule_steps: 1000
+            
+          # lower:
+          #   range: [0, 0.01]
+          #   operation: "additive"
+          #   distribution: "gaussian"
+          #      
+          # upper:
+          #   range: [0, 0.01]
+          #   operation: "additive"
+          #   distribution: "gaussian"
+          #      

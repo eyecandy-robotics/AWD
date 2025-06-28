@@ -8,7 +8,7 @@
   "startend_double_support_ratio": 1.0,
   "planned_timesteps": 48,
   "replan_timesteps": 10,
-  "walk_com_height": 0.165,
+  "walk_com_height": 0.17,
   "walk_foot_height": 0.03,
   "walk_trunk_pitch": -4,
   "walk_foot_rise_ratio": 0.02,
@@ -33,21 +33,21 @@
   "tail_wiggle_amplitude": 0.3,
   
   "joints": [
+    "neck_pitch",
+    "head_pitch",
+    "head_yaw",
     "left_hip_yaw",
     "left_hip_roll",
     "left_hip_pitch",
     "left_knee",
     "left_ankle",
-    "neck_pitch",
-    "head_pitch",
-    "head_yaw",
     "right_hip_yaw",
     "right_hip_roll",
     "right_hip_pitch",
     "right_knee",
     "right_ankle",
-    "hind_tail",
-    "tail"
+    "tail",
+    "hind_tail"
   ],
   "joint_angles": {
     "neck_pitch": 0.0,

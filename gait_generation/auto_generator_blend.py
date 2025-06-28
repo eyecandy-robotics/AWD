@@ -29,35 +29,66 @@ def numeric_prefix_sort_key(item):
 def load_sample_presets(bdx_type):
     
     # Create nine dummy samples with (x, y, theta) and a parameter dict G
-    sample_data = [
-        {'x':  0.0, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.24,
-                                                    'head_bob_amplitude':0.15, 'neck_pitch':0.5, 'head_pitch':-0.4,
-                                                    'double_support_ratio':0.5}}, # in-place
-        {'x':  0.05, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.23,
-                                                    'head_bob_amplitude':0.15, 'neck_pitch':0.5, 'head_pitch':-0.4,
-                                                    'double_support_ratio':0.5}}, # forward slow
-        {'x':  0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -3.0, 'single_support_duration': 0.22,
-                                                    'head_bob_amplitude':0.125, 'neck_pitch':0.25, 'head_pitch':-0.25,
-                                                    'double_support_ratio':0.5}}, # forward med
-        {'x':  0.15, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
-                                                    'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
-                                                    'double_support_ratio':0.5}}, # forward fast
-        {'x':  0.0, 'y':  0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
-                                                    'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
-                                                    'double_support_ratio':0.5}}, # strafe right
-        {'x':  0.0, 'y': -0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
-                                                    'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
-                                                    'double_support_ratio':0.5}}, # strafe left
-        {'x':  0.0, 'y':  0.0, 'theta':  0.5, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
-                                                    'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
-                                                    'double_support_ratio':0.5}}, # turn right
-        {'x':  0.0, 'y':  0.0, 'theta': -0.5, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
-                                                    'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
-                                                    'double_support_ratio':0.5}}, # turn left
-        {'x': -0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 0.0, 'single_support_duration': 0.20,
-                                                    'head_bob_amplitude':0.1, 'neck_pitch':0.15, 'head_pitch':-0.15,
-                                                    'double_support_ratio':0.5}}, # backward med
-                ]
+    if bdx_type == "dino":
+        sample_data = [
+            {'x':  0.0, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.22,
+                                                        'head_bob_amplitude':0.12, 'neck_pitch':0.0, 'head_pitch':-0.0,
+                                                        'double_support_ratio':0.5}}, # in-place
+            {'x':  0.05, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.22,
+                                                        'head_bob_amplitude':0.12, 'neck_pitch':0.0, 'head_pitch':-0.0,
+                                                        'double_support_ratio':0.5}}, # forward slow
+            {'x':  0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -3.0, 'single_support_duration': 0.20,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.0, 'head_pitch':-0.0,
+                                                        'double_support_ratio':0.5}}, # forward med
+            {'x':  0.15, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.0, 'head_pitch':-0.0,
+                                                        'double_support_ratio':0.5}}, # forward fast
+            {'x':  0.0, 'y':  0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.0, 'head_pitch':-0.0,
+                                                        'double_support_ratio':0.5}}, # strafe right
+            {'x':  0.0, 'y': -0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.0, 'head_pitch':-0.0,
+                                                        'double_support_ratio':0.5}}, # strafe left
+            {'x':  0.0, 'y':  0.0, 'theta':  0.5, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.0, 'head_pitch':-0.0,
+                                                        'double_support_ratio':0.5}}, # turn right
+            {'x':  0.0, 'y':  0.0, 'theta': -0.5, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.0, 'head_pitch':-0.0,
+                                                        'double_support_ratio':0.5}}, # turn left
+            {'x': -0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 0.0, 'single_support_duration': 0.20,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.0, 'head_pitch':-0.0,
+                                                        'double_support_ratio':0.5}}, # backward med
+                    ]
+    elif bdx_type in ["go_bdx", "mini_bdx", "mini2_bdx"]:
+        sample_data = [
+            {'x':  0.0, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.24,
+                                                        'head_bob_amplitude':0.15, 'neck_pitch':0.5, 'head_pitch':-0.4,
+                                                        'double_support_ratio':0.5}}, # in-place
+            {'x':  0.05, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.23,
+                                                        'head_bob_amplitude':0.15, 'neck_pitch':0.5, 'head_pitch':-0.4,
+                                                        'double_support_ratio':0.5}}, # forward slow
+            {'x':  0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -3.0, 'single_support_duration': 0.22,
+                                                        'head_bob_amplitude':0.125, 'neck_pitch':0.25, 'head_pitch':-0.25,
+                                                        'double_support_ratio':0.5}}, # forward med
+            {'x':  0.15, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
+                                                        'double_support_ratio':0.5}}, # forward fast
+            {'x':  0.0, 'y':  0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
+                                                        'double_support_ratio':0.5}}, # strafe right
+            {'x':  0.0, 'y': -0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
+                                                        'double_support_ratio':0.5}}, # strafe left
+            {'x':  0.0, 'y':  0.0, 'theta':  0.5, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
+                                                        'double_support_ratio':0.5}}, # turn right
+            {'x':  0.0, 'y':  0.0, 'theta': -0.5, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
+                                                        'double_support_ratio':0.5}}, # turn left
+            {'x': -0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 0.0, 'single_support_duration': 0.20,
+                                                        'head_bob_amplitude':0.1, 'neck_pitch':0.15, 'head_pitch':-0.15,
+                                                        'double_support_ratio':0.5}}, # backward med
+                    ]
     return sample_data
 
 def main(args):
@@ -80,7 +111,7 @@ def main(args):
         max_sweep_theta_vel = 0.3
         sweep_xy_vel_granularity = 0.04
         sweep_theta_vel_granularity = 0.1
-    elif args.bdx_type == "mini_bdx" or args.bdx_type == "mini2_bdx":
+    elif args.bdx_type == "mini_bdx" or args.bdx_type == "mini2_bdx" or args.bdx_type == "dino":
         slow = 0.05
         medium = 0.1
         fast = 0.15
@@ -186,10 +217,13 @@ def main(args):
         if args.bdx_type in ["mini_bdx", "mini2_bdx"]:
             cmd = ['python', "gait_generator.py", "--preset", f"{tmp_preset}", 
                    "--name", f"{i}", f"--{args.bdx_type.split('_')[0]}"]
+        elif args.bdx_type in ["dino"]:
+            cmd = ['python', "gait_generator.py", "--preset", f"{tmp_preset}", 
+                   "--name", f"{i}", "--dino"]
         else:
             cmd = ['python', "gait_generator.py", "--preset", f"{tmp_preset}", 
                    "--name", f"{i}"]
-        
+                           
         log_file = None if args.verbose else os.path.join(log_dir, f"{i}.log")
         commands.append((cmd, log_file))
 
@@ -232,7 +266,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate AMP data with gait blending")
-    parser.add_argument("--bdx_type", choices=["go_bdx", "mini_bdx", "mini2_bdx"], 
+    parser.add_argument("--bdx_type", choices=["go_bdx", "mini_bdx", "mini2_bdx", "dino"], 
                         required=True, help="Type of BDX to generate data for")
     parser.add_argument("--num", type=int, default=100, help="Number of motion files to generate.")
     parser.add_argument("--sweep", action="store_true", 

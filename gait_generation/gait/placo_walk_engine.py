@@ -1,6 +1,8 @@
 import time
 import warnings
 import json
+import xml.etree.ElementTree as ET
+import math
 
 import numpy as np
 import placo
@@ -12,6 +14,43 @@ DT = 0.01
 REFINE = 10
 
 
+def extract_joint_limits_from_urdf(urdf_path):
+    """
+    Extract joint limits from a URDF file.
+    Returns a dictionary mapping joint names to [lower_limit, upper_limit] in radians.
+    """
+    if not os.path.isfile(urdf_path):
+        print(f"Warning: URDF file not found - {urdf_path}")
+        return {}
+
+    try:
+        tree = ET.parse(urdf_path)
+        root = tree.getroot()
+        
+        joint_limits = {}
+        
+        for joint in root.findall('joint'):
+            name = joint.attrib.get('name', 'unknown')
+            joint_type = joint.attrib.get('type', 'unknown')
+            
+            if joint_type not in ['revolute', 'prismatic']:
+                continue
+                
+            limit_elem = joint.find('limit')
+            if limit_elem is not None:
+                lower = limit_elem.attrib.get('lower')
+                upper = limit_elem.attrib.get('upper')
+                
+                if lower is not None and upper is not None:
+                    # Store limits in radians (already in radians in the URDF)
+                    joint_limits[name] = [float(lower), float(upper)]
+        
+        return joint_limits
+    except Exception as e:
+        print(f"Error parsing URDF file: {e}")
+        return {}
+
+
 class PlacoWalkEngine:
     def __init__(
         self,
@@ -19,7 +58,7 @@ class PlacoWalkEngine:
         model_filename: str = "go_bdx.urdf",
         init_params: dict = {},
         ignore_feet_contact: bool = False,
-        knee_limits: list = None,
+        joint_limits: dict = {},
     ) -> None:
         model_filename = os.path.join(asset_path, model_filename)
         self.asset_path = asset_path
@@ -27,10 +66,6 @@ class PlacoWalkEngine:
         self.ignore_feet_contact = ignore_feet_contact
     
         robot_type = asset_path.split("/")[-1]
-        if robot_type in ["mini_bdx", "go_bdx"]:
-            knee_limits = knee_limits or [-0.2, -0.01]
-        else:
-            knee_limits = knee_limits or [0.2, 0.01]
 
         # Loading the robot
         self.robot = placo.HumanoidRobot(model_filename)
@@ -54,13 +89,27 @@ class PlacoWalkEngine:
         # Creating the kinematics solver
         self.solver = placo.KinematicsSolver(self.robot)
         self.solver.enable_velocity_limits(True)
-        self.robot.set_velocity_limits(12.0)
+        self.robot.set_velocity_limits(5.0)
         self.solver.enable_joint_limits(False)
         self.solver.dt = DT / REFINE
 
+        # Extract joint limits from the URDF file
+        urdf_joint_limits = extract_joint_limits_from_urdf(model_filename)
+        
+        # Merge provided joint_limits with those from URDF, with provided limits taking precedence
+        if joint_limits:
+            urdf_joint_limits.update(joint_limits)
+            
+        # Apply joint limits to all joints
+        for joint_name, limits in urdf_joint_limits.items():
+            print(f"limits {joint_name}: {np.rad2deg(limits)}")
+            self.robot.set_joint_limits(joint_name, limits[0], limits[1])
+                        
+        # Apply specific knee limits if not already set from URDF
+        # knee_limits = np.deg2rad([-60, 30])
         # self.robot.set_joint_limits("left_knee", *knee_limits)
         # self.robot.set_joint_limits("right_knee", *knee_limits)
-        
+    
         self.default_angles = init_params.get('joint_angles', {})
         for joint_name in self.default_angles:
             self.robot.set_joint(joint_name, self.default_angles[joint_name])
@@ -73,12 +122,13 @@ class PlacoWalkEngine:
         self.tasks.initialize_tasks(self.solver, self.robot)
         self.tasks.left_foot_task.orientation().mask.set_axises("yz", "local")
         self.tasks.right_foot_task.orientation().mask.set_axises("yz", "local")
-        # tasks.trunk_orientation_task.configure("trunk_orientation", "soft", 1e-4)
-        # tasks.left_foot_task.orientation().configure("left_foot_orientation", "soft", 1e-6)
-        # tasks.right_foot_task.orientation().configure("right_foot_orientation", "soft", 1e-6)
+        # self.tasks.trunk_orientation_task.configure("trunk_orientation", "soft", 1e-4)
+        self.tasks.left_foot_task.orientation().configure("left_foot_orientation", "soft", 1e-6)
+        self.tasks.right_foot_task.orientation().configure("right_foot_orientation", "soft", 1e-6)
 
         # # Creating a joint task to assign DoF values for upper body
         self.joints = self.parameters.joints
+        print(self.joints)
         joint_degrees = self.parameters.joint_angles
         joint_radians = {joint: np.deg2rad(degrees) for joint, degrees in joint_degrees.items()}
         self.joints_task = self.solver.add_joints_task()
