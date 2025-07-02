@@ -5,6 +5,8 @@ env:
   episodeLength: 10 #s
   isFlagrun: False
   enableDebugVis: False
+
+  overrideDofLimits: False
   
   pdControl: False
   powerScale: 1.0

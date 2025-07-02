@@ -30,33 +30,32 @@ episode = {
     "MotionWeight": 1,
 }
 
-# Joint and object names
 actual_joint_names = [
-    'left_hip_yaw',
-    'left_hip_roll',
-    'left_hip_pitch',
-    'left_knee',
-    'left_ankle',
-    'neck_pitch',
-    'head_pitch',
-    'head_yaw',
-    'head_roll',
-    'left_antenna',
-    'right_antenna',
-    'right_hip_yaw',
-    'right_hip_roll',
-    'right_hip_pitch',
-    'right_knee',
-    'right_ankle',
-]
+    "neck_pitch",
+    "head_pitch",
+    "head_yaw",
+    "left_hip_yaw",
+    "left_hip_roll",
+    "left_hip_pitch",
+    "left_knee",
+    "left_ankle",
+    "right_hip_yaw",
+    "right_hip_roll",
+    "right_hip_pitch",
+    "right_knee",
+    "right_ankle",
+    "tail",
+    "hind_tail"
+  ]
+
 joint_names = [joint_name + ".revolute.bone" for joint_name in actual_joint_names]
 
 object_names = {
-    "pelvis": "trunk_assembly",
-    "left_toe": "foot_assembly",
-    "right_toe": "foot_assembly_2"
+    "pelvis": "base",
+    "left_toe": "left_foot_tpu",
+    "right_toe": "right_foot_tpu"
 }
-default_angles = [-0.0, 1.5708, -0.0, 0.0, 0.0, -0.0, -0.0, 3.1415, 1.5708, 0.0, 0.0, -0.0, 1.5708, 0.0, -0.0, -0.0]
+default_angles = [0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 # Initialize storage arrays
 prev_joint_angles = None
@@ -151,7 +150,6 @@ for frame in range(start_frame, end_frame + 1):
     )
     
     foot_contacts = [left_toe_pos.z < foot_contact_height_thresh, right_toe_pos.z < foot_contact_height_thresh]
-    print(foot_contacts)
     # Append frame data to episode["Frames"]
     frame_data["root_pos"] = [pelvis_position.x, pelvis_position.y, pelvis_position.z+0.01]
     frame_data["root_quat"] = [pelvis_quat.x, pelvis_quat.y, pelvis_quat.z, pelvis_quat.w]

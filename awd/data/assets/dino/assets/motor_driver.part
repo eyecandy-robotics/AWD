@@ -1,13 +1,13 @@
 {
     "configuration": "default",
     "documentId": "524bc8ebe3877c13438f83c1",
-    "documentMicroversion": "1533832abb0374992d65a38f",
+    "documentMicroversion": "21be37bfe9983092a0bae5f2",
     "elementId": "6dba101851422b5417e556d3",
     "fullConfiguration": "default",
     "id": "MNXSZXvb1BPhTiNYa",
     "isStandardContent": false,
     "name": "Motor driver <1>",
-    "partId": "Z+DBD",
+    "partId": "ZxEBD",
     "suppressed": false,
     "type": "Part"
 }
