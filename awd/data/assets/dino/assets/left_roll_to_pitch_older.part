@@ -2,12 +2,12 @@
     "configuration": "default",
     "documentId": "524bc8ebe3877c13438f83c1",
     "documentMicroversion": "4e3665caa8f869fa2f3be81a",
-    "elementId": "7288de84adaef0521029d0bb",
+    "elementId": "ca552b2ccd4ec753f3d6020b",
     "fullConfiguration": "default",
-    "id": "MZSItBZEwRXMyN9yW",
+    "id": "M4Naz/G3a5bcjr9UZ",
     "isStandardContent": false,
-    "name": "Right_leg_shin <1>",
-    "partId": "RfeD",
+    "name": "left_roll_to_pitch_older <1>",
+    "partId": "R8bL",
     "suppressed": false,
     "type": "Part"
 }

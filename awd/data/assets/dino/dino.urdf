@@ -1,17 +1,17 @@
 <?xml version="1.0" ?>
 <!-- Generated using onshape-to-robot -->
-<!-- Onshape https://cad.onshape.com/documents/524bc8ebe3877c13438f83c1/w/7ad5e83f79b6877922d77d5e/e/564d970560e56699a6b95e60 -->
+<!-- Onshape https://cad.onshape.com/documents/524bc8ebe3877c13438f83c1/w/7ad5e83f79b6877922d77d5e/e/ac340cd8424ed4d08b2a0607 -->
 <robot name="eyecandy">
   <!-- Link base -->
   <link name="base">
     <inertial>
-      <origin xyz="0.000788344 7.81988e-12 0.0336749" rpy="0 0 0"/>
+      <origin xyz="0.000788344 7.82024e-12 0.0336749" rpy="0 0 0"/>
       <mass value="0.03431"/>
-      <inertia ixx="3.46574e-05" ixy="-3.33898e-14" ixz="-1.72599e-06" iyy="6.58632e-05" iyz="-1.35942e-14" izz="4.44485e-05"/>
+      <inertia ixx="3.46574e-05" ixy="-3.33898e-14" ixz="-1.72599e-06" iyy="6.58632e-05" iyz="-1.35941e-14" izz="4.44485e-05"/>
     </inertial>
     <!-- Part base -->
     <visual>
-      <origin xyz="0.0326498 -1.0065e-16 0.088775" rpy="-5.00235e-15 7.42462e-16 -3.55832e-20"/>
+      <origin xyz="0.0326498 -1.78403e-17 0.088775" rpy="-9.86076e-32 -3.9443e-31 0"/>
       <geometry>
         <mesh filename="./assets/base.stl"/>
       </geometry>
@@ -20,9 +20,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0326498 -1.0065e-16 0.088775" rpy="-5.00235e-15 7.42462e-16 -3.55832e-20"/>
+      <origin xyz="0.0326498 -1.78403e-17 0.088775" rpy="-9.86076e-32 -3.9443e-31 0"/>
       <geometry>
-        <mesh filename="./assets/base.stl"/>
+        <mesh filename="./assets/base_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -36,7 +36,7 @@
     </inertial>
   </link>
   <joint name="trunk_frame" type="fixed">
-    <origin xyz="-0.008 -5.21437e-16 0.0025" rpy="-5.05312e-15 3.33067e-16 2.77302e-16"/>
+    <origin xyz="-0.008 -5.20417e-18 0.0025" rpy="-8.07794e-28 -1.61559e-27 1.88168e-27"/>
     <parent link="base"/>
     <child link="trunk"/>
     <axis xyz="0 0 0"/>
@@ -50,7 +50,7 @@
     </inertial>
     <!-- Part body_front -->
     <visual>
-      <origin xyz="-0.0807279 0.0662248 0.105032" rpy="2.53935e-16 0.0463928 -3.14159"/>
+      <origin xyz="-0.0807279 0.0662248 0.105032" rpy="-1.61983e-17 0.0463928 -3.14159"/>
       <geometry>
         <mesh filename="./assets/body_front.stl"/>
       </geometry>
@@ -59,9 +59,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0807279 0.0662248 0.105032" rpy="2.53935e-16 0.0463928 -3.14159"/>
+      <origin xyz="-0.0807279 0.0662248 0.105032" rpy="-1.61983e-17 0.0463928 -3.14159"/>
       <geometry>
-        <mesh filename="./assets/body_front.stl"/>
+        <mesh filename="./assets/body_front_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -74,7 +74,7 @@
     </inertial>
     <!-- Part body_back -->
     <visual>
-      <origin xyz="-0.115958 0.0562248 -0.0716401" rpy="-3.14159 1.56136 1.04138e-31"/>
+      <origin xyz="-0.115958 0.0562248 -0.0716401" rpy="3.14159 1.56136 -3.74346e-31"/>
       <geometry>
         <mesh filename="./assets/body_back.stl"/>
       </geometry>
@@ -83,39 +83,39 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.115958 0.0562248 -0.0716401" rpy="-3.14159 1.56136 1.04138e-31"/>
+      <origin xyz="-0.115958 0.0562248 -0.0716401" rpy="3.14159 1.56136 -3.74346e-31"/>
       <geometry>
-        <mesh filename="./assets/body_back.stl"/>
+        <mesh filename="./assets/body_back_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Link body_electronix_cover -->
   <link name="body_electronix_cover">
     <inertial>
-      <origin xyz="-3.46945e-18 0.025 0.00019554" rpy="0 0 0"/>
+      <origin xyz="1.38778e-17 0.025 0.00019554" rpy="0 0 0"/>
       <mass value="0.0140961"/>
-      <inertia ixx="4.25238e-06" ixy="1.60616e-37" ixz="-1.31385e-22" iyy="6.60104e-06" iyz="-4.71096e-37" izz="1.0836e-05"/>
+      <inertia ixx="4.25238e-06" ixy="-3.91948e-38" ixz="8.23779e-23" iyy="6.60104e-06" iyz="-1.23026e-37" izz="1.0836e-05"/>
     </inertial>
     <!-- Part body_electronix_cover -->
     <visual>
-      <origin xyz="0.0290385 0.0812248 0.0581504" rpy="-3.14159 -0.104994 3.29088e-32"/>
+      <origin xyz="0.0290385 0.0812248 0.0581504" rpy="-3.14159 -0.104994 -1.13577e-32"/>
       <geometry>
         <mesh filename="./assets/body_electronix_cover.stl"/>
       </geometry>
       <material name="body_electronix_cover_material">
-        <color rgba="0 0 0 1"/>
+        <color rgba="1 1 1 1"/>
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0290385 0.0812248 0.0581504" rpy="-3.14159 -0.104994 3.29088e-32"/>
+      <origin xyz="0.0290385 0.0812248 0.0581504" rpy="-3.14159 -0.104994 -1.13577e-32"/>
       <geometry>
-        <mesh filename="./assets/body_electronix_cover.stl"/>
+        <mesh filename="./assets/body_electronix_cover_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from body_back to body_electronix_cover -->
   <joint name="lid" type="fixed">
-    <origin xyz="-0.16958 0.025 -0.0373289" rpy="-3.14159 -1.47524 -5.30016e-15"/>
+    <origin xyz="-0.16958 0.025 -0.0373289" rpy="3.14159 -1.47524 1.95595e-23"/>
     <parent link="body_back"/>
     <child link="body_electronix_cover"/>
     <axis xyz="0 0 1"/>
@@ -123,7 +123,7 @@
   </joint>
   <!-- Joint from body_front to body_back -->
   <joint name="body_front" type="fixed">
-    <origin xyz="-0.0048521 0.01 -0.0082" rpy="-6.95631e-17 1.53384 6.44043e-16"/>
+    <origin xyz="-0.0048521 0.01 -0.0082" rpy="-2.16068e-17 1.53384 -2.06118e-15"/>
     <parent link="body_front"/>
     <child link="body_back"/>
     <axis xyz="0 0 1"/>
@@ -131,7 +131,7 @@
   </joint>
   <!-- Joint from base to body_front -->
   <joint name="body_back" type="fixed">
-    <origin xyz="0.0176498 -0.01 1.38778e-16" rpy="-5.00235e-15 7.42462e-16 -3.55832e-20"/>
+    <origin xyz="0.0176498 -0.01 -2.77556e-17" rpy="-9.86076e-32 -3.9443e-31 0"/>
     <parent link="base"/>
     <child link="body_front"/>
     <axis xyz="0 0 1"/>
@@ -140,13 +140,13 @@
   <!-- Link roll_bearing -->
   <link name="roll_bearing">
     <inertial>
-      <origin xyz="4.77345e-19 8.56761e-33 -0.0035" rpy="0 0 0"/>
+      <origin xyz="4.90897e-19 -5.81908e-48 -0.0035" rpy="0 0 0"/>
       <mass value="0.0269304"/>
-      <inertia ixx="2.50677e-06" ixy="4.47593e-38" ixz="7.44e-38" iyy="2.50677e-06" iyz="-4.34267e-37" izz="4.7936e-06"/>
+      <inertia ixx="2.50677e-06" ixy="3.08983e-38" ixz="5.90857e-38" iyy="2.50677e-06" iyz="-3.08983e-38" izz="4.7936e-06"/>
     </inertial>
     <!-- Part roll_bearing -->
     <visual>
-      <origin xyz="0 0.035 -0.085275" rpy="3.14159 -3.85186e-32 -2.5e-37"/>
+      <origin xyz="1.35525e-20 0.035 -0.085275" rpy="3.14159 -1.52879e-63 -1.06911e-50"/>
       <geometry>
         <mesh filename="./assets/roll_bearing.stl"/>
       </geometry>
@@ -155,15 +155,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0.035 -0.085275" rpy="3.14159 -3.85186e-32 -2.5e-37"/>
+      <origin xyz="1.35525e-20 0.035 -0.085275" rpy="3.14159 -1.52879e-63 -1.06911e-50"/>
       <geometry>
-        <mesh filename="./assets/roll_bearing.stl"/>
+        <mesh filename="./assets/roll_bearing_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from base to roll_bearing -->
   <joint name="body_to_base" type="fixed">
-    <origin xyz="7.1259e-05 -0.02061 0.0278" rpy="-3.14159 -1.5335e-15 3.14159"/>
+    <origin xyz="7.1259e-05 -0.02061 0.0278" rpy="-3.14159 -0 -3.14159"/>
     <parent link="base"/>
     <child link="roll_bearing"/>
     <axis xyz="0 0 1"/>
@@ -172,13 +172,13 @@
   <!-- Link roll_bearing_2 -->
   <link name="roll_bearing_2">
     <inertial>
-      <origin xyz="4.77345e-19 8.56761e-33 -0.0035" rpy="0 0 0"/>
+      <origin xyz="4.90897e-19 -5.81908e-48 -0.0035" rpy="0 0 0"/>
       <mass value="0.0269304"/>
-      <inertia ixx="2.50677e-06" ixy="4.47593e-38" ixz="7.44e-38" iyy="2.50677e-06" iyz="-4.34267e-37" izz="4.7936e-06"/>
+      <inertia ixx="2.50677e-06" ixy="3.08983e-38" ixz="5.90857e-38" iyy="2.50677e-06" iyz="-3.08983e-38" izz="4.7936e-06"/>
     </inertial>
     <!-- Part roll_bearing_2 -->
     <visual>
-      <origin xyz="0 0.035 -0.085275" rpy="3.14159 -3.85186e-32 -2.5e-37"/>
+      <origin xyz="1.35525e-20 0.035 -0.085275" rpy="3.14159 -1.52879e-63 -1.06911e-50"/>
       <geometry>
         <mesh filename="./assets/roll_bearing.stl"/>
       </geometry>
@@ -187,15 +187,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0.035 -0.085275" rpy="3.14159 -3.85186e-32 -2.5e-37"/>
+      <origin xyz="1.35525e-20 0.035 -0.085275" rpy="3.14159 -1.52879e-63 -1.06911e-50"/>
       <geometry>
-        <mesh filename="./assets/roll_bearing.stl"/>
+        <mesh filename="./assets/roll_bearing_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from base to roll_bearing_2 -->
   <joint name="bearing" type="fixed">
-    <origin xyz="7.1259e-05 0.02061 0.0278" rpy="-3.14159 -1.5335e-15 3.14159"/>
+    <origin xyz="7.1259e-05 0.02061 0.0278" rpy="-3.14159 -0 -3.14159"/>
     <parent link="base"/>
     <child link="roll_bearing_2"/>
     <axis xyz="0 0 1"/>
@@ -210,7 +210,7 @@
     </inertial>
     <!-- Part trunk_top -->
     <visual>
-      <origin xyz="0.0131343 -3.67116e-18 -0.015" rpy="3.14159 2.98372e-16 -2.79509e-16"/>
+      <origin xyz="0.0131343 -6.16298e-33 -0.015" rpy="3.14159 1.66533e-16 -4.18054e-31"/>
       <geometry>
         <mesh filename="./assets/trunk_top.stl"/>
       </geometry>
@@ -219,9 +219,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0131343 -3.67116e-18 -0.015" rpy="3.14159 2.98372e-16 -2.79509e-16"/>
+      <origin xyz="0.0131343 -6.16298e-33 -0.015" rpy="3.14159 1.66533e-16 -4.18054e-31"/>
       <geometry>
-        <mesh filename="./assets/trunk_top.stl"/>
+        <mesh filename="./assets/trunk_top_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -235,7 +235,7 @@
     </inertial>
   </link>
   <joint name="mpu_frame" type="fixed">
-    <origin xyz="0.0031102 0.010157 -0.0369" rpy="-1.5708 5.75928e-16 2.77949e-17"/>
+    <origin xyz="0.0031102 0.010157 -0.0369" rpy="-1.5708 2.60786e-16 -4.18054e-31"/>
     <parent link="trunk_top"/>
     <child link="mpu"/>
     <axis xyz="0 0 0"/>
@@ -249,7 +249,7 @@
     </inertial>
     <!-- Part actuator -->
     <visual>
-      <origin xyz="-0.037158 -0.0172321 -0.0300503" rpy="-1.5708 3.62596e-16 -3.14159"/>
+      <origin xyz="-0.037158 -0.0172321 -0.0300503" rpy="-1.5708 2.51639e-32 3.14159"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -258,9 +258,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.037158 -0.0172321 -0.0300503" rpy="-1.5708 3.62596e-16 -3.14159"/>
+      <origin xyz="-0.037158 -0.0172321 -0.0300503" rpy="-1.5708 2.51639e-32 3.14159"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -273,7 +273,7 @@
     </inertial>
     <!-- Part neck_left -->
     <visual>
-      <origin xyz="-0.472941 -0.116891 -0.006" rpy="-1.5708 -0 0"/>
+      <origin xyz="-0.472941 -0.116891 -0.006" rpy="-1.5708 -1.21805e-31 -6.16298e-32"/>
       <geometry>
         <mesh filename="./assets/neck_left.stl"/>
       </geometry>
@@ -282,9 +282,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.472941 -0.116891 -0.006" rpy="-1.5708 -0 0"/>
+      <origin xyz="-0.472941 -0.116891 -0.006" rpy="-1.5708 -1.21805e-31 -6.16298e-32"/>
       <geometry>
-        <mesh filename="./assets/neck_left.stl"/>
+        <mesh filename="./assets/neck_left_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -297,7 +297,7 @@
     </inertial>
     <!-- Part actuator_2 -->
     <visual>
-      <origin xyz="-0.040908 -0.00326787 -0.0019497" rpy="1.5708 -3.69019e-31 -3.14159"/>
+      <origin xyz="-0.040908 -0.00326787 -0.0019497" rpy="1.5708 -8.6691e-32 3.14159"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -306,9 +306,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.040908 -0.00326787 -0.0019497" rpy="1.5708 -3.69019e-31 -3.14159"/>
+      <origin xyz="-0.040908 -0.00326787 -0.0019497" rpy="1.5708 -8.6691e-32 3.14159"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -317,11 +317,11 @@
     <inertial>
       <origin xyz="-6.08868e-05 0.0117483 0.01845" rpy="0 0 0"/>
       <mass value="0.0162643"/>
-      <inertia ixx="6.01226e-06" ixy="-2.62377e-08" ixz="-6.18256e-37" iyy="5.8334e-06" iyz="-7.30164e-36" izz="2.98285e-06"/>
+      <inertia ixx="6.01226e-06" ixy="-2.62377e-08" ixz="-2.58028e-37" iyy="5.8334e-06" iyz="7.52639e-40" izz="2.98285e-06"/>
     </inertial>
     <!-- Part head_attachment -->
     <visual>
-      <origin xyz="0.0235363 0.02 0.0262811" rpy="1.5708 -2.02235e-32 1.50603e-18"/>
+      <origin xyz="0.0235363 0.02 0.0262811" rpy="1.5708 2.86854e-32 0"/>
       <geometry>
         <mesh filename="./assets/head_attachment.stl"/>
       </geometry>
@@ -330,9 +330,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0235363 0.02 0.0262811" rpy="1.5708 -2.02235e-32 1.50603e-18"/>
+      <origin xyz="0.0235363 0.02 0.0262811" rpy="1.5708 2.86854e-32 0"/>
       <geometry>
-        <mesh filename="./assets/head_attachment.stl"/>
+        <mesh filename="./assets/head_attachment_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -345,7 +345,7 @@
     </inertial>
     <!-- Part actuator_3 -->
     <visual>
-      <origin xyz="-0.069908 0.00698213 -0.0049997" rpy="1.5708 2.38336e-15 3.14159"/>
+      <origin xyz="-0.069908 0.00698213 -0.0049997" rpy="1.5708 6.31089e-30 -3.14159"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -354,9 +354,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.069908 0.00698213 -0.0049997" rpy="1.5708 2.38336e-15 3.14159"/>
+      <origin xyz="-0.069908 0.00698213 -0.0049997" rpy="1.5708 6.31089e-30 -3.14159"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -369,7 +369,7 @@
     </inertial>
     <!-- Part head_attachment_2 -->
     <visual>
-      <origin xyz="-0.08269 -0.05475 -0.0673698" rpy="1.5708 5.18662e-18 -6.37863e-30"/>
+      <origin xyz="-0.08269 -0.05475 -0.0673698" rpy="1.5708 4.11754e-17 -1.31976e-15"/>
       <geometry>
         <mesh filename="./assets/head_attachment__2.stl"/>
       </geometry>
@@ -378,22 +378,22 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.08269 -0.05475 -0.0673698" rpy="1.5708 5.18662e-18 -6.37863e-30"/>
+      <origin xyz="-0.08269 -0.05475 -0.0673698" rpy="1.5708 4.11754e-17 -1.31976e-15"/>
       <geometry>
-        <mesh filename="./assets/head_attachment__2.stl"/>
+        <mesh filename="./assets/head_attachment__2_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Link headdown -->
   <link name="headdown">
     <inertial>
-      <origin xyz="-0.00101141 0.02 -0.00691737" rpy="0 0 0"/>
-      <mass value="0.202458"/>
-      <inertia ixx="0.000102587" ixy="-3.08154e-10" ixz="7.77556e-06" iyy="0.000245217" iyz="-8.84849e-11" izz="0.000303573"/>
+      <origin xyz="0.00351014 0.02 -0.00643222" rpy="0 0 0"/>
+      <mass value="0.18132"/>
+      <inertia ixx="9.27639e-05" ixy="-2.88556e-10" ixz="9.69983e-06" iyy="0.00020385" iyz="-8.66522e-11" izz="0.000254859"/>
     </inertial>
     <!-- Part headdown -->
     <visual>
-      <origin xyz="-0.104782 0.0369 0.233863" rpy="3.14159 -0.202006 -3.14159"/>
+      <origin xyz="-0.104782 0.0369 0.233863" rpy="-3.14159 -0.202006 -3.14159"/>
       <geometry>
         <mesh filename="./assets/headdown.stl"/>
       </geometry>
@@ -402,9 +402,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.104782 0.0369 0.233863" rpy="3.14159 -0.202006 -3.14159"/>
+      <origin xyz="-0.104782 0.0369 0.233863" rpy="-3.14159 -0.202006 -3.14159"/>
       <geometry>
-        <mesh filename="./assets/headdown.stl"/>
+        <mesh filename="./assets/headdown_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -417,7 +417,7 @@
     </inertial>
     <!-- Part headup -->
     <visual>
-      <origin xyz="0.150757 -0.0182 -0.194646" rpy="-5.33761e-16 0.0810045 -6.4431e-31"/>
+      <origin xyz="0.150757 -0.0182 -0.194646" rpy="-5.33761e-16 0.0810045 -6.28007e-31"/>
       <geometry>
         <mesh filename="./assets/headup.stl"/>
       </geometry>
@@ -426,9 +426,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.150757 -0.0182 -0.194646" rpy="-5.33761e-16 0.0810045 -6.4431e-31"/>
+      <origin xyz="0.150757 -0.0182 -0.194646" rpy="-5.33761e-16 0.0810045 -6.28007e-31"/>
       <geometry>
-        <mesh filename="./assets/headup.stl"/>
+        <mesh filename="./assets/headup_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -442,7 +442,7 @@
   </joint>
   <!-- Joint from head_attachment_2 to headdown -->
   <joint name="dino_head" type="fixed">
-    <origin xyz="-6.93889e-17 -0.00975 -0.008" rpy="5.31994e-15 5.18662e-18 -6.37863e-30"/>
+    <origin xyz="-1.38778e-17 -0.00975 -0.008" rpy="-5.71924e-29 4.11754e-17 -1.31976e-15"/>
     <parent link="head_attachment_2"/>
     <child link="headdown"/>
     <axis xyz="0 0 1"/>
@@ -450,7 +450,7 @@
   </joint>
   <!-- Joint from actuator_3 to head_attachment_2 -->
   <joint name="dino_head_w_act" type="fixed">
-    <origin xyz="-0.03275 0.01025 -0.03505" rpy="-5.2923e-15 2.38336e-15 3.14159"/>
+    <origin xyz="-0.03275 0.01025 -0.03505" rpy="3.06867e-28 6.31089e-30 -3.14159"/>
     <parent link="actuator_3"/>
     <child link="head_attachment_2"/>
     <axis xyz="0 0 1"/>
@@ -458,7 +458,7 @@
   </joint>
   <!-- Joint from head_attachment to actuator_3 -->
   <joint name="head_yaw" type="revolute">
-    <origin xyz="0.00369936 0.025 0.01845" rpy="1.5708 -2.02235e-32 1.50603e-18"/>
+    <origin xyz="0.00369936 0.025 0.01845" rpy="1.5708 2.86854e-32 0"/>
     <parent link="head_attachment"/>
     <child link="actuator_3"/>
     <axis xyz="0 0 1"/>
@@ -466,11 +466,11 @@
   </joint>
   <!-- Joint from actuator_2 to head_attachment -->
   <joint name="head_pitch" type="revolute">
-    <origin xyz="0.029 -0.01025 -0.0338" rpy="1.30202e-16 -2.20411e-15 -1.61183"/>
+    <origin xyz="0.029 -0.01025 -0.0338" rpy="1.2091e-16 -6.8789e-17 -1.5708"/>
     <parent link="actuator_2"/>
     <child link="head_attachment"/>
     <axis xyz="0 0 1"/>
-    <limit effort="10" velocity="10" lower="-1.00616" upper="1.08823"/>
+    <limit effort="10" velocity="10" lower="-1.0472" upper="1.0472"/>
   </joint>
   <!-- Link neck_right -->
   <link name="neck_right">
@@ -481,7 +481,7 @@
     </inertial>
     <!-- Part neck_right -->
     <visual>
-      <origin xyz="-0.502191 0.127141 -0.008425" rpy="1.5708 -4.94801e-31 -1.3595e-31"/>
+      <origin xyz="-0.502191 0.127141 -0.008425" rpy="1.5708 9.10123e-32 8.62817e-32"/>
       <geometry>
         <mesh filename="./assets/neck_right.stl"/>
       </geometry>
@@ -490,15 +490,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.502191 0.127141 -0.008425" rpy="1.5708 -4.94801e-31 -1.3595e-31"/>
+      <origin xyz="-0.502191 0.127141 -0.008425" rpy="1.5708 9.10123e-32 8.62817e-32"/>
       <geometry>
-        <mesh filename="./assets/neck_right.stl"/>
+        <mesh filename="./assets/neck_right_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from actuator_2 to neck_right -->
   <joint name="act_in_neck_right" type="fixed">
-    <origin xyz="-0.00375 -0.0205 -0.032" rpy="-1.39224e-14 -1.12231e-15 1.07149e-28"/>
+    <origin xyz="-0.00375 -0.0205 -0.032" rpy="3.19795e-17 -1.94613e-17 -3.26638e-30"/>
     <parent link="actuator_2"/>
     <child link="neck_right"/>
     <axis xyz="0 0 1"/>
@@ -506,7 +506,7 @@
   </joint>
   <!-- Joint from neck_left to actuator_2 -->
   <joint name="act_in_neck_left" type="fixed">
-    <origin xyz="0.033 -0.01025 0.002425" rpy="3.14159 -0 0"/>
+    <origin xyz="0.033 -0.01025 0.002425" rpy="-3.14159 -1.21805e-31 -6.16298e-32"/>
     <parent link="neck_left"/>
     <child link="actuator_2"/>
     <axis xyz="0 0 1"/>
@@ -514,7 +514,7 @@
   </joint>
   <!-- Joint from actuator to neck_left -->
   <joint name="neck_pitch" type="revolute">
-    <origin xyz="0.03275 -0.01025 -0.03505" rpy="-1.41405e-16 4.51939e-15 1.5708"/>
+    <origin xyz="0.03275 -0.01025 -0.03505" rpy="1.27148e-15 2.16678e-15 1.5708"/>
     <parent link="actuator"/>
     <child link="neck_left"/>
     <axis xyz="0 0 1"/>
@@ -522,7 +522,7 @@
   </joint>
   <!-- Joint from trunk_top to actuator -->
   <joint name="act_to_trunk" type="fixed">
-    <origin xyz="-0.00196569 0.0161 -0.02762" rpy="-1.5708 2.98372e-16 -2.79509e-16"/>
+    <origin xyz="-0.00196569 0.0161 -0.02762" rpy="-1.5708 1.66533e-16 -4.18054e-31"/>
     <parent link="trunk_top"/>
     <child link="actuator"/>
     <axis xyz="0 0 1"/>
@@ -537,7 +537,7 @@
     </inertial>
     <!-- Part actuator_4 -->
     <visual>
-      <origin xyz="0.037158 -0.00326787 -0.0300503" rpy="-1.5708 1.01689e-31 -1.2517e-32"/>
+      <origin xyz="0.037158 -0.00326787 -0.0300503" rpy="-1.5708 9.86076e-32 -1.29873e-43"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -546,9 +546,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.037158 -0.00326787 -0.0300503" rpy="-1.5708 1.01689e-31 -1.2517e-32"/>
+      <origin xyz="0.037158 -0.00326787 -0.0300503" rpy="-1.5708 9.86076e-32 -1.29873e-43"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -561,7 +561,7 @@
     </inertial>
     <!-- Part front_tail -->
     <visual>
-      <origin xyz="-0.0823451 0.0199953 -0.0853844" rpy="-5.69026e-32 0.207231 -3.40149e-17"/>
+      <origin xyz="-0.0823451 0.0199953 -0.0853844" rpy="1.19432e-32 0.207231 3.33528e-32"/>
       <geometry>
         <mesh filename="./assets/front_tail.stl"/>
       </geometry>
@@ -570,9 +570,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0823451 0.0199953 -0.0853844" rpy="-5.69026e-32 0.207231 -3.40149e-17"/>
+      <origin xyz="-0.0823451 0.0199953 -0.0853844" rpy="1.19432e-32 0.207231 3.33528e-32"/>
       <geometry>
-        <mesh filename="./assets/front_tail.stl"/>
+        <mesh filename="./assets/front_tail_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -585,7 +585,7 @@
     </inertial>
     <!-- Part hind_tail -->
     <visual>
-      <origin xyz="-0.113233 0.02 -0.136177" rpy="9.1757e-18 -0.179507 -4.09069e-17"/>
+      <origin xyz="-0.113233 0.02 -0.136177" rpy="-2.80297e-31 -0.179507 -8.97842e-31"/>
       <geometry>
         <mesh filename="./assets/hind_tail.stl"/>
       </geometry>
@@ -594,15 +594,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.113233 0.02 -0.136177" rpy="9.1757e-18 -0.179507 -4.09069e-17"/>
+      <origin xyz="-0.113233 0.02 -0.136177" rpy="-2.80297e-31 -0.179507 -8.97842e-31"/>
       <geometry>
-        <mesh filename="./assets/hind_tail.stl"/>
+        <mesh filename="./assets/hind_tail_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from front_tail to hind_tail -->
   <joint name="hind_tail" type="revolute">
-    <origin xyz="0.0645127 -4.72364e-06 0.000584758" rpy="-4.07364e-15 0.268289 8.59453e-15"/>
+    <origin xyz="0.0645127 -4.72364e-06 0.000584758" rpy="2.08843e-15 0.268289 -4.38561e-15"/>
     <parent link="front_tail"/>
     <child link="hind_tail"/>
     <axis xyz="0 0 1"/>
@@ -617,7 +617,7 @@
     </inertial>
     <!-- Part tail_connector -->
     <visual>
-      <origin xyz="-0.127318 0.02 -0.0858214" rpy="-3.77054e-18 0.0326983 -9.70541e-18"/>
+      <origin xyz="-0.127318 0.02 -0.0858214" rpy="2.13273e-33 0.0326983 -1.89461e-33"/>
       <geometry>
         <mesh filename="./assets/tail_connector.stl"/>
       </geometry>
@@ -626,15 +626,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.127318 0.02 -0.0858214" rpy="-3.77054e-18 0.0326983 -9.70541e-18"/>
+      <origin xyz="-0.127318 0.02 -0.0858214" rpy="2.13273e-33 0.0326983 -1.89461e-33"/>
       <geometry>
-        <mesh filename="./assets/tail_connector.stl"/>
+        <mesh filename="./assets/tail_connector_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from front_tail to tail_connector -->
   <joint name="tail_holder" type="fixed">
-    <origin xyz="0.0580257 -3.94149e-06 -0.0229936" rpy="-1.89315e-15 0.174533 6.69187e-17"/>
+    <origin xyz="0.0580257 -3.94149e-06 -0.0229936" rpy="3.95912e-17 0.174533 6.21269e-17"/>
     <parent link="front_tail"/>
     <child link="tail_connector"/>
     <axis xyz="0 0 1"/>
@@ -642,15 +642,15 @@
   </joint>
   <!-- Joint from actuator_4 to front_tail -->
   <joint name="tail" type="revolute">
-    <origin xyz="-0.03275 -0.01025 -0.03505" rpy="1.03287e-14 1.59777e-15 2.99942"/>
+    <origin xyz="-0.03275 -0.01025 -0.03505" rpy="-4.06308e-17 2.8936e-16 3.14159"/>
     <parent link="actuator_4"/>
     <child link="front_tail"/>
     <axis xyz="0 0 1"/>
-    <limit effort="10" velocity="10" lower="-0.20689" upper="0.491242"/>
+    <limit effort="10" velocity="10" lower="-0.349066" upper="0.349066"/>
   </joint>
   <!-- Joint from trunk_top to actuator_4 -->
   <joint name="trunk_act_hip" type="fixed">
-    <origin xyz="-0.0693357 0.01025 0.0003" rpy="4.55382e-15 8.18789e-16 3.77495e-16"/>
+    <origin xyz="-0.0693357 0.01025 0.0003" rpy="1.55095e-16 8.36883e-28 2.96596e-27"/>
     <parent link="trunk_top"/>
     <child link="actuator_4"/>
     <axis xyz="0 0 1"/>
@@ -665,7 +665,7 @@
     </inertial>
     <!-- Part actuator_5 -->
     <visual>
-      <origin xyz="0.0367981 0.017342 -0.0300503" rpy="-1.5708 1.07852e-31 -4.04089e-33"/>
+      <origin xyz="0.0367981 0.017342 -0.0300503" rpy="-1.5708 1.07637e-31 3.68917e-33"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -674,9 +674,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0367981 0.017342 -0.0300503" rpy="-1.5708 1.07852e-31 -4.04089e-33"/>
+      <origin xyz="0.0367981 0.017342 -0.0300503" rpy="-1.5708 1.07637e-31 3.68917e-33"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -689,7 +689,7 @@
     </inertial>
     <!-- Part hip_actuator -->
     <visual>
-      <origin xyz="0.0230318 0.0127865 0.00829339" rpy="1.5708 -7.12142e-33 -1.68101e-32"/>
+      <origin xyz="0.0230318 0.0127865 0.00829339" rpy="1.5708 -3.07802e-33 -3.4813e-32"/>
       <geometry>
         <mesh filename="./assets/hip_actuator.stl"/>
       </geometry>
@@ -698,9 +698,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0230318 0.0127865 0.00829339" rpy="1.5708 -7.12142e-33 -1.68101e-32"/>
+      <origin xyz="0.0230318 0.0127865 0.00829339" rpy="1.5708 -3.07802e-33 -3.4813e-32"/>
       <geometry>
-        <mesh filename="./assets/hip_actuator.stl"/>
+        <mesh filename="./assets/hip_actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -724,7 +724,7 @@
     <collision>
       <origin xyz="-0.18274 -0.065 0.01905" rpy="1.5708 1.5708 0"/>
       <geometry>
-        <mesh filename="./assets/right_roll_to_pitch.stl"/>
+        <mesh filename="./assets/right_roll_to_pitch_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -737,7 +737,7 @@
     </inertial>
     <!-- Part actuator_6 -->
     <visual>
-      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 1.1299e-31 0"/>
+      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 1.07985e-31 0"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -746,9 +746,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 1.1299e-31 0"/>
+      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 1.07985e-31 0"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -761,7 +761,7 @@
     </inertial>
     <!-- Part right_leg_thigh -->
     <visual>
-      <origin xyz="-6.93889e-18 0 0.01" rpy="-1.5708 -1.13706e-28 1.5708"/>
+      <origin xyz="-1.02696e-15 3.747e-16 0.01" rpy="-1.5708 5.58679e-16 1.5708"/>
       <geometry>
         <mesh filename="./assets/right_leg_thigh.stl"/>
       </geometry>
@@ -770,9 +770,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-6.93889e-18 0 0.01" rpy="-1.5708 -1.13706e-28 1.5708"/>
+      <origin xyz="-1.02696e-15 3.747e-16 0.01" rpy="-1.5708 5.58679e-16 1.5708"/>
       <geometry>
-        <mesh filename="./assets/right_leg_thigh.stl"/>
+        <mesh filename="./assets/right_leg_thigh_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -785,7 +785,7 @@
     </inertial>
     <!-- Part right_upper_cover -->
     <visual>
-      <origin xyz="-0.0311162 -0.0404468 -0.0738697" rpy="-1.67725 -0.0905242 -3.2145e-17"/>
+      <origin xyz="-0.0311162 -0.0404468 -0.0738697" rpy="-1.67725 -0.0905242 1.98132e-17"/>
       <geometry>
         <mesh filename="./assets/right_upper_cover.stl"/>
       </geometry>
@@ -794,15 +794,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0311162 -0.0404468 -0.0738697" rpy="-1.67725 -0.0905242 -3.2145e-17"/>
+      <origin xyz="-0.0311162 -0.0404468 -0.0738697" rpy="-1.67725 -0.0905242 1.98132e-17"/>
       <geometry>
-        <mesh filename="./assets/right_upper_cover.stl"/>
+        <mesh filename="./assets/right_upper_cover_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from right_leg_thigh to right_upper_cover -->
   <joint name="cover_to_leg_right" type="fixed">
-    <origin xyz="-0.007 0.02 -0.01" rpy="4.79141e-15 -3.89605e-15 2.35619"/>
+    <origin xyz="-0.007 0.02 -0.01" rpy="6.98868e-16 -1.19452e-16 2.35619"/>
     <parent link="right_leg_thigh"/>
     <child link="right_upper_cover"/>
     <axis xyz="0 0 1"/>
@@ -817,7 +817,7 @@
     </inertial>
     <!-- Part actuator_7 -->
     <visual>
-      <origin xyz="-0.036026 0.00967064 -0.0300503" rpy="-1.5708 -1.01223e-15 2.96706"/>
+      <origin xyz="-0.036026 0.00967064 -0.0300503" rpy="-1.5708 -2.64277e-17 2.96706"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -826,9 +826,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.036026 0.00967064 -0.0300503" rpy="-1.5708 -1.01223e-15 2.96706"/>
+      <origin xyz="-0.036026 0.00967064 -0.0300503" rpy="-1.5708 -2.64277e-17 2.96706"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -841,7 +841,7 @@
     </inertial>
     <!-- Part right_leg_shin -->
     <visual>
-      <origin xyz="0.0895228 -0.274201 0.008" rpy="1.5708 1.23902e-27 1.5708"/>
+      <origin xyz="0.0895228 -0.274201 0.008" rpy="1.5708 1.36156e-17 1.5708"/>
       <geometry>
         <mesh filename="./assets/right_leg_shin.stl"/>
       </geometry>
@@ -850,9 +850,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0895228 -0.274201 0.008" rpy="1.5708 1.23902e-27 1.5708"/>
+      <origin xyz="0.0895228 -0.274201 0.008" rpy="1.5708 1.36156e-17 1.5708"/>
       <geometry>
-        <mesh filename="./assets/right_leg_shin.stl"/>
+        <mesh filename="./assets/right_leg_shin_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -865,7 +865,7 @@
     </inertial>
     <!-- Part actuator_8 -->
     <visual>
-      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 1.53359e-30 -2.24873e-17"/>
+      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 9.09834e-32 3.42167e-17"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -874,9 +874,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 1.53359e-30 -2.24873e-17"/>
+      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 9.09834e-32 3.42167e-17"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -889,7 +889,7 @@
     </inertial>
     <!-- Part right_foot_ankle -->
     <visual>
-      <origin xyz="-0.0210542 -0.237004 -0.01" rpy="-1.5708 -6.00242e-19 -1.5708"/>
+      <origin xyz="-0.0210542 -0.237004 -0.01" rpy="-1.5708 2.74892e-16 -1.5708"/>
       <geometry>
         <mesh filename="./assets/right_foot_ankle.stl"/>
       </geometry>
@@ -898,9 +898,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0210542 -0.237004 -0.01" rpy="-1.5708 -6.00242e-19 -1.5708"/>
+      <origin xyz="-0.0210542 -0.237004 -0.01" rpy="-1.5708 2.74892e-16 -1.5708"/>
       <geometry>
-        <mesh filename="./assets/right_foot_ankle.stl"/>
+        <mesh filename="./assets/right_foot_ankle_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -913,7 +913,7 @@
     </inertial>
     <!-- Part right_foot_cover -->
     <visual>
-      <origin xyz="0.270388 -0.00459517 0.027" rpy="1.5708 4.28327e-32 -1.02614e-30"/>
+      <origin xyz="0.270388 -0.00459517 0.027" rpy="1.5708 1.29019e-31 9.67786e-18"/>
       <geometry>
         <mesh filename="./assets/right_foot_cover.stl"/>
       </geometry>
@@ -922,15 +922,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.270388 -0.00459517 0.027" rpy="1.5708 4.28327e-32 -1.02614e-30"/>
+      <origin xyz="0.270388 -0.00459517 0.027" rpy="1.5708 1.29019e-31 9.67786e-18"/>
       <geometry>
-        <mesh filename="./assets/right_foot_cover.stl"/>
+        <mesh filename="./assets/right_foot_cover_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from right_foot_ankle to right_foot_cover -->
   <joint name="foot_1" type="fixed">
-    <origin xyz="-0.0256494 0.0333834 0.017" rpy="-3.14159 -5.43972e-17 -1.5708"/>
+    <origin xyz="-0.0256494 0.0333834 0.017" rpy="3.14159 5.81694e-16 -1.5708"/>
     <parent link="right_foot_ankle"/>
     <child link="right_foot_cover"/>
     <axis xyz="0 0 1"/>
@@ -945,7 +945,7 @@
     </inertial>
     <!-- Part right_foot_tpu -->
     <visual>
-      <origin xyz="0.255505 0.01625 0.00465053" rpy="3.22123e-31 0.0375317 1.09077e-31"/>
+      <origin xyz="0.255505 0.01625 0.00465053" rpy="-1.62497e-32 0.0375317 3.15517e-32"/>
       <geometry>
         <mesh filename="./assets/right_foot_tpu.stl"/>
       </geometry>
@@ -954,9 +954,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.255505 0.01625 0.00465053" rpy="3.22123e-31 0.0375317 1.09077e-31"/>
+      <origin xyz="0.255505 0.01625 0.00465053" rpy="-1.62497e-32 0.0375317 3.15517e-32"/>
       <geometry>
-        <mesh filename="./assets/right_foot_tpu.stl"/>
+        <mesh filename="./assets/right_foot_tpu_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -970,14 +970,14 @@
     </inertial>
   </link>
   <joint name="right_foot_frame" type="fixed">
-    <origin xyz="-0.0138727 -0.005 -0.00631827" rpy="1.70264e-29 -0.025933 -3.14159"/>
+    <origin xyz="-0.0138727 -0.005 -0.00631827" rpy="3.71266e-16 -0.025933 -3.14159"/>
     <parent link="right_foot_tpu"/>
     <child link="right_foot"/>
     <axis xyz="0 0 0"/>
   </joint>
   <!-- Joint from right_foot_ankle to right_foot_tpu -->
   <joint name="foot_2" type="fixed">
-    <origin xyz="-0.0348065 0.0184577 0.00657843" rpy="-1.5708 1.70885e-18 -1.53308"/>
+    <origin xyz="-0.0348065 0.0184577 0.00657843" rpy="-1.5708 -1.78275e-16 -1.53308"/>
     <parent link="right_foot_ankle"/>
     <child link="right_foot_tpu"/>
     <axis xyz="0 0 1"/>
@@ -985,7 +985,7 @@
   </joint>
   <!-- Joint from actuator_8 to right_foot_ankle -->
   <joint name="right_ankle" type="revolute">
-    <origin xyz="-0.03275 0.01025 -0.03505" rpy="3.3116e-31 1.96116e-30 0.383972"/>
+    <origin xyz="-0.03275 0.01025 -0.03505" rpy="-9.00623e-32 3.54234e-33 0.349066"/>
     <parent link="actuator_8"/>
     <child link="right_foot_ankle"/>
     <axis xyz="0 0 1"/>
@@ -993,7 +993,7 @@
   </joint>
   <!-- Joint from right_leg_shin to actuator_8 -->
   <joint name="right_knee_act" type="fixed">
-    <origin xyz="-0.0171179 -0.0355095 -0.005" rpy="3.14159 1.24719e-27 1.6057"/>
+    <origin xyz="-0.0171179 -0.0355095 -0.005" rpy="3.14159 -1.97425e-16 1.6057"/>
     <parent link="right_leg_shin"/>
     <child link="actuator_8"/>
     <axis xyz="0 0 1"/>
@@ -1001,7 +1001,7 @@
   </joint>
   <!-- Joint from actuator_7 to right_leg_shin -->
   <joint name="right_knee" type="revolute">
-    <origin xyz="0.0340323 0.0044073 -0.03505" rpy="7.0087e-16 -7.64176e-16 2.44346"/>
+    <origin xyz="0.0340323 0.0044073 -0.03505" rpy="2.70465e-16 1.25637e-16 2.44346"/>
     <parent link="actuator_7"/>
     <child link="right_leg_shin"/>
     <axis xyz="0 0 1"/>
@@ -1009,7 +1009,7 @@
   </joint>
   <!-- Joint from right_leg_thigh to actuator_7 -->
   <joint name="leg_act_right" type="fixed">
-    <origin xyz="-0.00580147 0.0504366 -0.006" rpy="-3.14159 -1.13706e-28 1.5708"/>
+    <origin xyz="-0.00580147 0.0504366 -0.006" rpy="-3.14159 5.58679e-16 1.5708"/>
     <parent link="right_leg_thigh"/>
     <child link="actuator_7"/>
     <axis xyz="0 0 1"/>
@@ -1017,7 +1017,7 @@
   </joint>
   <!-- Joint from actuator_6 to right_leg_thigh -->
   <joint name="right_hip_pitch" type="revolute">
-    <origin xyz="-0.03275 0.01025 -0.03505" rpy="1.0813e-30 1.33934e-31 0.523599"/>
+    <origin xyz="-0.03275 0.01025 -0.03505" rpy="-1.01993e-31 6.16298e-32 0.523599"/>
     <parent link="actuator_6"/>
     <child link="right_leg_thigh"/>
     <axis xyz="0 0 1"/>
@@ -1025,7 +1025,7 @@
   </joint>
   <!-- Joint from right_roll_to_pitch to actuator_6 -->
   <joint name="act_in_hip_right" type="fixed">
-    <origin xyz="-0.0523698 -0.01025 0.00236" rpy="1.57772e-30 1.5708 0"/>
+    <origin xyz="-0.0523698 -0.01025 0.00236" rpy="-5.55112e-17 1.5708 0"/>
     <parent link="right_roll_to_pitch"/>
     <child link="actuator_6"/>
     <axis xyz="0 0 1"/>
@@ -1033,7 +1033,7 @@
   </joint>
   <!-- Joint from hip_actuator to right_roll_to_pitch -->
   <joint name="right_hip_roll" type="revolute">
-    <origin xyz="0.01905 1.38778e-17 -0.046015" rpy="-1.5708 -3.47657e-28 1.5708"/>
+    <origin xyz="0.01905 -2.46678e-15 -0.046015" rpy="-1.5708 -6.88059e-16 1.5708"/>
     <parent link="hip_actuator"/>
     <child link="right_roll_to_pitch"/>
     <axis xyz="0 0 1"/>
@@ -1041,7 +1041,7 @@
   </joint>
   <!-- Joint from actuator_5 to hip_actuator -->
   <joint name="right_hip_yaw" type="revolute">
-    <origin xyz="-0.0331099 0.0103599 -0.03505" rpy="1.4039e-14 -4.42558e-17 3.14159"/>
+    <origin xyz="-0.0331099 0.0103599 -0.03505" rpy="1.84353e-15 1.44468e-16 3.14159"/>
     <parent link="actuator_5"/>
     <child link="hip_actuator"/>
     <axis xyz="0 0 1"/>
@@ -1049,7 +1049,7 @@
   </joint>
   <!-- Joint from trunk_top to actuator_5 -->
   <joint name="hip_act_trunk_right" type="fixed">
-    <origin xyz="-0.0525357 0.01036 -0.0311" rpy="-3.14159 -5.55112e-16 3.14159"/>
+    <origin xyz="-0.0525357 0.01036 -0.0311" rpy="-3.14159 -1.86117e-16 -3.14159"/>
     <parent link="trunk_top"/>
     <child link="actuator_5"/>
     <axis xyz="0 0 1"/>
@@ -1064,7 +1064,7 @@
     </inertial>
     <!-- Part actuator_9 -->
     <visual>
-      <origin xyz="0.037158 -0.00326787 -0.0300503" rpy="-1.5708 4.93038e-32 -1.58333e-32"/>
+      <origin xyz="0.037158 -0.00326787 -0.0300503" rpy="-1.5708 8.62817e-32 -9.14128e-46"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -1073,9 +1073,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.037158 -0.00326787 -0.0300503" rpy="-1.5708 4.93038e-32 -1.58333e-32"/>
+      <origin xyz="0.037158 -0.00326787 -0.0300503" rpy="-1.5708 8.62817e-32 -9.14128e-46"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1088,7 +1088,7 @@
     </inertial>
     <!-- Part hip_actuator_2 -->
     <visual>
-      <origin xyz="0.0230318 0.0127865 0.00829339" rpy="1.5708 -3.11107e-33 7.48795e-33"/>
+      <origin xyz="0.0230318 0.0127865 0.00829339" rpy="1.5708 -1.90626e-40 -1.56468e-39"/>
       <geometry>
         <mesh filename="./assets/hip_actuator.stl"/>
       </geometry>
@@ -1097,9 +1097,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0230318 0.0127865 0.00829339" rpy="1.5708 -3.11107e-33 7.48795e-33"/>
+      <origin xyz="0.0230318 0.0127865 0.00829339" rpy="1.5708 -1.90626e-40 -1.56468e-39"/>
       <geometry>
-        <mesh filename="./assets/hip_actuator.stl"/>
+        <mesh filename="./assets/hip_actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1123,7 +1123,7 @@
     <collision>
       <origin xyz="-0.035 -0.065 0.01905" rpy="1.5708 1.5708 0"/>
       <geometry>
-        <mesh filename="./assets/left_roll_to_pitch.stl"/>
+        <mesh filename="./assets/left_roll_to_pitch_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1136,7 +1136,7 @@
     </inertial>
     <!-- Part actuator_10 -->
     <visual>
-      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 -8.27781e-32 0"/>
+      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 5.04363e-32 0"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -1145,9 +1145,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 -8.27781e-32 0"/>
+      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 5.04363e-32 0"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1160,7 +1160,7 @@
     </inertial>
     <!-- Part left_motor_thigh -->
     <visual>
-      <origin xyz="0 2.08167e-17 0.01" rpy="1.5708 1.8444e-28 -1.5708"/>
+      <origin xyz="-1.38778e-17 2.08167e-17 0.01" rpy="1.5708 -4.13619e-15 -1.5708"/>
       <geometry>
         <mesh filename="./assets/left_motor_thigh.stl"/>
       </geometry>
@@ -1169,9 +1169,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0 2.08167e-17 0.01" rpy="1.5708 1.8444e-28 -1.5708"/>
+      <origin xyz="-1.38778e-17 2.08167e-17 0.01" rpy="1.5708 -4.13619e-15 -1.5708"/>
       <geometry>
-        <mesh filename="./assets/left_motor_thigh.stl"/>
+        <mesh filename="./assets/left_motor_thigh_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1184,7 +1184,7 @@
     </inertial>
     <!-- Part left_upper_cover -->
     <visual>
-      <origin xyz="-0.0411388 0.0285999 0.0365452" rpy="1.67725 -0.0905242 -9.17234e-17"/>
+      <origin xyz="-0.0411388 0.0285999 0.0365452" rpy="1.67725 -0.0905242 1.11259e-16"/>
       <geometry>
         <mesh filename="./assets/left_upper_cover.stl"/>
       </geometry>
@@ -1193,15 +1193,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0411388 0.0285999 0.0365452" rpy="1.67725 -0.0905242 -9.17234e-17"/>
+      <origin xyz="-0.0411388 0.0285999 0.0365452" rpy="1.67725 -0.0905242 1.11259e-16"/>
       <geometry>
-        <mesh filename="./assets/left_upper_cover.stl"/>
+        <mesh filename="./assets/left_upper_cover_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from left_motor_thigh to left_upper_cover -->
   <joint name="cover_to_leg_left" type="fixed">
-    <origin xyz="-0.007 -0.02 -0.01" rpy="4.26605e-15 -1.38261e-15 -2.35619"/>
+    <origin xyz="-0.007 -0.02 -0.01" rpy="7.55956e-15 1.64177e-15 -2.30383"/>
     <parent link="left_motor_thigh"/>
     <child link="left_upper_cover"/>
     <axis xyz="0 0 1"/>
@@ -1216,7 +1216,7 @@
     </inertial>
     <!-- Part actuator_11 -->
     <visual>
-      <origin xyz="-0.0336011 -0.0234228 -0.0300503" rpy="-1.5708 -7.4388e-28 -2.96706"/>
+      <origin xyz="-0.0336011 -0.0234228 -0.0300503" rpy="-1.5708 3.40175e-15 -2.96706"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -1225,9 +1225,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0336011 -0.0234228 -0.0300503" rpy="-1.5708 -7.4388e-28 -2.96706"/>
+      <origin xyz="-0.0336011 -0.0234228 -0.0300503" rpy="-1.5708 3.40175e-15 -2.96706"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1240,7 +1240,7 @@
     </inertial>
     <!-- Part left_leg_shin -->
     <visual>
-      <origin xyz="0.0895228 0.274201 0.008" rpy="-1.5708 5.11428e-28 -1.5708"/>
+      <origin xyz="0.0895228 0.274201 0.008" rpy="-1.5708 -1.06083e-15 -1.5708"/>
       <geometry>
         <mesh filename="./assets/left_leg_shin.stl"/>
       </geometry>
@@ -1249,9 +1249,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0895228 0.274201 0.008" rpy="-1.5708 5.11428e-28 -1.5708"/>
+      <origin xyz="0.0895228 0.274201 0.008" rpy="-1.5708 -1.06083e-15 -1.5708"/>
       <geometry>
-        <mesh filename="./assets/left_leg_shin.stl"/>
+        <mesh filename="./assets/left_leg_shin_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1264,7 +1264,7 @@
     </inertial>
     <!-- Part actuator_12 -->
     <visual>
-      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 1.22119e-30 -3.39439e-17"/>
+      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 1.11402e-31 -1.32951e-17"/>
       <geometry>
         <mesh filename="./assets/actuator.stl"/>
       </geometry>
@@ -1273,9 +1273,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 1.22119e-30 -3.39439e-17"/>
+      <origin xyz="0.037158 0.0172321 -0.0300503" rpy="-1.5708 1.11402e-31 -1.32951e-17"/>
       <geometry>
-        <mesh filename="./assets/actuator.stl"/>
+        <mesh filename="./assets/actuator_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1288,7 +1288,7 @@
     </inertial>
     <!-- Part left_foot_ankle -->
     <visual>
-      <origin xyz="-0.0210542 0.237004 0" rpy="1.5708 -1.69957e-28 1.5708"/>
+      <origin xyz="-0.0210542 0.237004 -1.38778e-17" rpy="1.5708 8.58761e-18 1.5708"/>
       <geometry>
         <mesh filename="./assets/left_foot_ankle.stl"/>
       </geometry>
@@ -1297,9 +1297,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0210542 0.237004 0" rpy="1.5708 -1.69957e-28 1.5708"/>
+      <origin xyz="-0.0210542 0.237004 -1.38778e-17" rpy="1.5708 8.58761e-18 1.5708"/>
       <geometry>
-        <mesh filename="./assets/left_foot_ankle.stl"/>
+        <mesh filename="./assets/left_foot_ankle_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1312,7 +1312,7 @@
     </inertial>
     <!-- Part left_foot_cover -->
     <visual>
-      <origin xyz="0.309816 0.0142498 0.017" rpy="-1.5708 1.3861e-31 0"/>
+      <origin xyz="0.309816 0.0142498 0.017" rpy="-1.5708 -1.74e-31 7.05331e-19"/>
       <geometry>
         <mesh filename="./assets/left_foot_cover.stl"/>
       </geometry>
@@ -1321,15 +1321,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.309816 0.0142498 0.017" rpy="-1.5708 1.3861e-31 0"/>
+      <origin xyz="0.309816 0.0142498 0.017" rpy="-1.5708 -1.74e-31 7.05331e-19"/>
       <geometry>
-        <mesh filename="./assets/left_foot_cover.stl"/>
+        <mesh filename="./assets/left_foot_cover_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from left_foot_ankle to left_foot_cover -->
   <joint name="foot_3" type="fixed">
-    <origin xyz="-0.0353039 -0.0728116 0.017" rpy="-3.14159 7.6274e-16 1.5708"/>
+    <origin xyz="-0.0353039 -0.0728116 0.017" rpy="-3.14159 -1.22683e-16 1.5708"/>
     <parent link="left_foot_ankle"/>
     <child link="left_foot_cover"/>
     <axis xyz="0 0 1"/>
@@ -1344,7 +1344,7 @@
     </inertial>
     <!-- Part left_foot_tpu -->
     <visual>
-      <origin xyz="0.255505 -0.00625 0.00465053" rpy="-7.96165e-32 0.0375317 1.50525e-31"/>
+      <origin xyz="0.255505 -0.00625 0.00465053" rpy="-7.08397e-31 0.0375317 -2.10334e-31"/>
       <geometry>
         <mesh filename="./assets/left_foot_tpu.stl"/>
       </geometry>
@@ -1353,9 +1353,9 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.255505 -0.00625 0.00465053" rpy="-7.96165e-32 0.0375317 1.50525e-31"/>
+      <origin xyz="0.255505 -0.00625 0.00465053" rpy="-7.08397e-31 0.0375317 -2.10334e-31"/>
       <geometry>
-        <mesh filename="./assets/left_foot_tpu.stl"/>
+        <mesh filename="./assets/left_foot_tpu_convex.stl"/>
       </geometry>
     </collision>
   </link>
@@ -1369,14 +1369,14 @@
     </inertial>
   </link>
   <joint name="left_foot_frame" type="fixed">
-    <origin xyz="-0.0138727 0.005 -0.00631827" rpy="-2.25568e-28 -0.025933 -3.14159"/>
+    <origin xyz="-0.0138727 0.005 -0.00631827" rpy="-1.37154e-14 -0.025933 3.14159"/>
     <parent link="left_foot_tpu"/>
     <child link="left_foot"/>
     <axis xyz="0 0 0"/>
   </joint>
   <!-- Joint from left_foot_ankle to left_foot_tpu -->
   <joint name="foot_4" type="fixed">
-    <origin xyz="-0.0348065 -0.0184577 0.00657843" rpy="1.5708 2.30866e-18 1.53308"/>
+    <origin xyz="-0.0348065 -0.0184577 0.00657843" rpy="1.5708 1.09067e-17 1.53308"/>
     <parent link="left_foot_ankle"/>
     <child link="left_foot_tpu"/>
     <axis xyz="0 0 1"/>
@@ -1384,7 +1384,7 @@
   </joint>
   <!-- Joint from actuator_12 to left_foot_ankle -->
   <joint name="left_ankle" type="revolute">
-    <origin xyz="-0.03275 0.01025 -0.03505" rpy="3.68296e-31 -1.80943e-30 -0.383972"/>
+    <origin xyz="-0.03275 0.01025 -0.03505" rpy="-1.30487e-31 -1.82467e-32 -0.349066"/>
     <parent link="actuator_12"/>
     <child link="left_foot_ankle"/>
     <axis xyz="0 0 1"/>
@@ -1392,7 +1392,7 @@
   </joint>
   <!-- Joint from left_leg_shin to actuator_12 -->
   <joint name="left_act_shin" type="fixed">
-    <origin xyz="0.00337105 0.0348373 -0.005" rpy="-3.14159 -4.31026e-17 -1.6057"/>
+    <origin xyz="0.00337105 0.0348373 -0.005" rpy="-3.14159 -1.07809e-15 -1.6057"/>
     <parent link="left_leg_shin"/>
     <child link="actuator_12"/>
     <axis xyz="0 0 1"/>
@@ -1400,7 +1400,7 @@
   </joint>
   <!-- Joint from actuator_11 to left_leg_shin -->
   <joint name="left_knee" type="revolute">
-    <origin xyz="0.0340323 -0.0044073 -0.03505" rpy="-3.23833e-28 -6.71832e-28 -2.44346"/>
+    <origin xyz="0.0340323 -0.0044073 -0.03505" rpy="9.55429e-15 -1.58817e-15 -2.44346"/>
     <parent link="actuator_11"/>
     <child link="left_leg_shin"/>
     <axis xyz="0 0 1"/>
@@ -1408,7 +1408,7 @@
   </joint>
   <!-- Joint from left_motor_thigh to actuator_11 -->
   <joint name="leg_act_left" type="fixed">
-    <origin xyz="-0.00580147 -0.0504366 -0.006" rpy="3.14159 1.8444e-28 -1.5708"/>
+    <origin xyz="-0.00580147 -0.0504366 -0.006" rpy="-3.14159 -4.13619e-15 -1.5708"/>
     <parent link="left_motor_thigh"/>
     <child link="actuator_11"/>
     <axis xyz="0 0 1"/>
@@ -1416,7 +1416,7 @@
   </joint>
   <!-- Joint from actuator_10 to left_motor_thigh -->
   <joint name="left_hip_pitch" type="revolute">
-    <origin xyz="-0.03275 0.01025 -0.03505" rpy="-1.37063e-30 -6.25343e-32 -0.523599"/>
+    <origin xyz="-0.03275 0.01025 -0.03505" rpy="-3.95057e-33 -9.24446e-32 -0.523599"/>
     <parent link="actuator_10"/>
     <child link="left_motor_thigh"/>
     <axis xyz="0 0 1"/>
@@ -1432,7 +1432,7 @@
   </joint>
   <!-- Joint from hip_actuator_2 to left_roll_to_pitch -->
   <joint name="left_hip_roll" type="revolute">
-    <origin xyz="0.01905 -3.46945e-18 -0.046015" rpy="-1.5708 -1.46516e-29 1.5708"/>
+    <origin xyz="0.01905 1.04083e-17 -0.046015" rpy="-1.5708 -5.55112e-17 1.5708"/>
     <parent link="hip_actuator_2"/>
     <child link="left_roll_to_pitch"/>
     <axis xyz="0 0 1"/>
@@ -1440,7 +1440,7 @@
   </joint>
   <!-- Joint from actuator_9 to hip_actuator_2 -->
   <joint name="left_hip_yaw" type="revolute">
-    <origin xyz="-0.03275 -0.01025 -0.03505" rpy="-9.15416e-15 -1.21801e-16 -3.14159"/>
+    <origin xyz="-0.03275 -0.01025 -0.03505" rpy="1.66533e-15 1.66533e-16 -3.14159"/>
     <parent link="actuator_9"/>
     <child link="hip_actuator_2"/>
     <axis xyz="0 0 1"/>
@@ -1448,7 +1448,7 @@
   </joint>
   <!-- Joint from trunk_top to actuator_9 -->
   <joint name="hip_act_trunk_left" type="fixed">
-    <origin xyz="-0.0525357 -0.01036 -0.0311" rpy="3.14159 -4.09395e-16 3.14159"/>
+    <origin xyz="-0.0525357 -0.01036 -0.0311" rpy="-3.14159 -1.66533e-16 -3.14159"/>
     <parent link="trunk_top"/>
     <child link="actuator_9"/>
     <axis xyz="0 0 1"/>
@@ -1463,7 +1463,7 @@
     </inertial>
     <!-- Part raspberrypizerow -->
     <visual>
-      <origin xyz="0.029025 -0.011525 -2.77556e-17" rpy="-1.5708 -3.08149e-33 4.05633e-33"/>
+      <origin xyz="0.029025 -0.011525 2.77556e-17" rpy="-1.5708 1.04173e-32 1.11909e-46"/>
       <geometry>
         <mesh filename="./assets/raspberrypizerow.stl"/>
       </geometry>
@@ -1472,15 +1472,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0.029025 -0.011525 -2.77556e-17" rpy="-1.5708 -3.08149e-33 4.05633e-33"/>
+      <origin xyz="0.029025 -0.011525 2.77556e-17" rpy="-1.5708 1.04173e-32 1.11909e-46"/>
       <geometry>
-        <mesh filename="./assets/raspberrypizerow.stl"/>
+        <mesh filename="./assets/raspberrypizerow_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from trunk_top to raspberrypizerow -->
   <joint name="rpi" type="fixed">
-    <origin xyz="-0.0822857 0.0115 -0.0379" rpy="-2.72803e-15 5.41234e-16 -6.95838e-17"/>
+    <origin xyz="-0.0822857 0.0115 -0.0379" rpy="-2.33147e-15 2.60786e-16 -8.04893e-31"/>
     <parent link="trunk_top"/>
     <child link="raspberrypizerow"/>
     <axis xyz="0 0 1"/>
@@ -1491,7 +1491,7 @@
     <inertial>
       <origin xyz="0.0185 -0.014 -0.002" rpy="0 0 0"/>
       <mass value="0.00481947"/>
-      <inertia ixx="3.21298e-07" ixy="-4.21362e-37" ixz="-4.14427e-39" iyy="5.56247e-07" iyz="-1.04404e-22" izz="8.64694e-07"/>
+      <inertia ixx="3.21298e-07" ixy="-4.50951e-55" ixz="1.77901e-39" iyy="5.56247e-07" iyz="-1.04404e-22" izz="8.64694e-07"/>
     </inertial>
     <!-- Part motor_driver -->
     <visual>
@@ -1506,13 +1506,13 @@
     <collision>
       <origin xyz="-0.01976 -0.0144 0.07303" rpy="-1.5708 -1.5708 0"/>
       <geometry>
-        <mesh filename="./assets/motor_driver.stl"/>
+        <mesh filename="./assets/motor_driver_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from trunk_top to motor_driver -->
   <joint name="servo_driver" type="fixed">
-    <origin xyz="-0.0628957 -0.01976 -0.0294" rpy="-1.5708 -9.45213e-18 -1.5708"/>
+    <origin xyz="-0.0628957 -0.01976 -0.0294" rpy="-1.5708 -1.16573e-15 -1.5708"/>
     <parent link="trunk_top"/>
     <child link="motor_driver"/>
     <axis xyz="0 0 1"/>
@@ -1523,7 +1523,7 @@
     <inertial>
       <origin xyz="0.0185 0.0085 -0.002" rpy="0 0 0"/>
       <mass value="0.00292611"/>
-      <inertia ixx="7.43719e-08" ixy="-3.34306e-37" ixz="2.94999e-39" iyy="3.37722e-07" iyz="-2.25324e-23" izz="4.04291e-07"/>
+      <inertia ixx="7.43719e-08" ixy="-4.73249e-52" ixz="-1.60186e-67" iyy="3.37722e-07" iyz="-2.25324e-23" izz="4.04291e-07"/>
     </inertial>
     <!-- Part powermodule -->
     <visual>
@@ -1538,13 +1538,13 @@
     <collision>
       <origin xyz="0.0688599 0.000727026 0.07303" rpy="-1.5708 -1.5708 0"/>
       <geometry>
-        <mesh filename="./assets/powermodule.stl"/>
+        <mesh filename="./assets/powermodule_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from trunk_top to powermodule -->
   <joint name="charger_booster" type="fixed">
-    <origin xyz="-0.0598957 0.01936 0.0011" rpy="-2.86244e-17 1.5708 0"/>
+    <origin xyz="-0.0598957 0.01936 0.0011" rpy="-7.49401e-16 1.5708 0"/>
     <parent link="trunk_top"/>
     <child link="powermodule"/>
     <axis xyz="0 0 1"/>
@@ -1552,7 +1552,7 @@
   </joint>
   <!-- Joint from base to trunk_top -->
   <joint name="top_to_bottom_trunk" type="fixed">
-    <origin xyz="0.0198569 -2.57957e-17 0.103675" rpy="3.14159 7.42462e-16 -3.55832e-20"/>
+    <origin xyz="0.0198569 -1.78403e-17 0.103675" rpy="3.14159 -3.9443e-31 0"/>
     <parent link="base"/>
     <child link="trunk_top"/>
     <axis xyz="0 0 1"/>
@@ -1567,7 +1567,7 @@
     </inertial>
     <!-- Part box -->
     <visual>
-      <origin xyz="-0.0096 1.38778e-17 -6.93889e-18" rpy="-3.14159 -4.68375e-15 1.5708"/>
+      <origin xyz="-0.0096 0 -2.08167e-17" rpy="-3.14159 -3.75406e-15 1.5708"/>
       <geometry>
         <mesh filename="./assets/box.stl"/>
       </geometry>
@@ -1576,22 +1576,22 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0096 1.38778e-17 -6.93889e-18" rpy="-3.14159 -4.68375e-15 1.5708"/>
+      <origin xyz="-0.0096 0 -2.08167e-17" rpy="-3.14159 -3.75406e-15 1.5708"/>
       <geometry>
-        <mesh filename="./assets/box.stl"/>
+        <mesh filename="./assets/box_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Link liion -->
   <link name="liion">
     <inertial>
-      <origin xyz="-1.05742e-18 2.41604e-18 -0.0332079" rpy="0 0 0"/>
+      <origin xyz="-1.05722e-18 -1.14617e-17 -0.0332079" rpy="0 0 0"/>
       <mass value="0.00882883"/>
-      <inertia ixx="3.28823e-06" ixy="3.85107e-36" ixz="-1.94034e-36" iyy="3.28823e-06" iyz="-2.42731e-37" izz="3.58193e-07"/>
+      <inertia ixx="3.28823e-06" ixy="3.02649e-37" ixz="-5.0039e-37" iyy="3.28823e-06" iyz="2.3475e-37" izz="3.58193e-07"/>
     </inertial>
     <!-- Part liion -->
     <visual>
-      <origin xyz="0 0 -0.00038" rpy="1.5708 5.96822e-31 1.4865e-32"/>
+      <origin xyz="0 -1.38778e-17 -0.00038" rpy="1.5708 1.22632e-31 3.57147e-32"/>
       <geometry>
         <mesh filename="./assets/liion.stl"/>
       </geometry>
@@ -1600,15 +1600,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 -0.00038" rpy="1.5708 5.96822e-31 1.4865e-32"/>
+      <origin xyz="0 -1.38778e-17 -0.00038" rpy="1.5708 1.22632e-31 3.57147e-32"/>
       <geometry>
-        <mesh filename="./assets/liion.stl"/>
+        <mesh filename="./assets/liion_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from box to liion -->
   <joint name="batt_one" type="fixed">
-    <origin xyz="0.0004 -0.0355 -0.011" rpy="1.5708 5.85194e-16 2.35988e-14"/>
+    <origin xyz="0.0004 -0.0355 -0.011" rpy="1.5708 5.84918e-16 2.08238e-15"/>
     <parent link="box"/>
     <child link="liion"/>
     <axis xyz="0 0 1"/>
@@ -1617,13 +1617,13 @@
   <!-- Link liion_2 -->
   <link name="liion_2">
     <inertial>
-      <origin xyz="-1.05742e-18 2.41604e-18 -0.0332079" rpy="0 0 0"/>
+      <origin xyz="-1.05722e-18 -1.14617e-17 -0.0332079" rpy="0 0 0"/>
       <mass value="0.00882883"/>
-      <inertia ixx="3.28823e-06" ixy="1.09894e-38" ixz="0" iyy="3.28823e-06" iyz="0" izz="3.58193e-07"/>
+      <inertia ixx="3.28823e-06" ixy="3.00487e-37" ixz="-3.49609e-37" iyy="3.28823e-06" iyz="2.57223e-37" izz="3.58193e-07"/>
     </inertial>
     <!-- Part liion_2 -->
     <visual>
-      <origin xyz="0 0 -0.00038" rpy="1.5708 -0 -4.63876e-32"/>
+      <origin xyz="0 -1.38778e-17 -0.00038" rpy="1.5708 1.20027e-31 1.79474e-32"/>
       <geometry>
         <mesh filename="./assets/liion.stl"/>
       </geometry>
@@ -1632,15 +1632,15 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 -0.00038" rpy="1.5708 -0 -4.63876e-32"/>
+      <origin xyz="0 -1.38778e-17 -0.00038" rpy="1.5708 1.20027e-31 1.79474e-32"/>
       <geometry>
-        <mesh filename="./assets/liion.stl"/>
+        <mesh filename="./assets/liion_convex.stl"/>
       </geometry>
     </collision>
   </link>
   <!-- Joint from box to liion_2 -->
   <joint name="batt_two" type="fixed">
-    <origin xyz="-0.0196 -0.0355 -0.011" rpy="1.5708 5.87121e-16 1.95542e-15"/>
+    <origin xyz="-0.0196 -0.0355 -0.011" rpy="1.5708 5.84688e-16 2.08531e-15"/>
     <parent link="box"/>
     <child link="liion_2"/>
     <axis xyz="0 0 1"/>
@@ -1648,7 +1648,7 @@
   </joint>
   <!-- Joint from base to box -->
   <joint name="battpack" type="fixed">
-    <origin xyz="-0.0515073 0.0096 0.042" rpy="1.5708 5.00235e-15 1.5708"/>
+    <origin xyz="-0.0515073 0.0096 0.042" rpy="1.5708 9.86076e-32 1.5708"/>
     <parent link="base"/>
     <child link="box"/>
     <axis xyz="0 0 1"/>
