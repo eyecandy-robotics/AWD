@@ -62,7 +62,7 @@ parser.add_argument(
     "-s",
     "--skip_warmup",
     action="store_true",
-    default=True,
+    default=False,
     help="don't record warmup motion",
 )
 parser.add_argument(

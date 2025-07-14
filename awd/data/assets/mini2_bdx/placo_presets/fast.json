@@ -26,6 +26,7 @@
   
   "head_bob": true,
   "head_bob_amplitude": 0.1,
+  "invert_neck_pitch": true,
   
   "joints": [
     "left_hip_yaw",
@@ -37,8 +38,6 @@
     "head_pitch",
     "head_yaw",
     "head_roll",
-    "left_antenna",
-    "right_antenna",
     "right_hip_yaw",
     "right_hip_roll",
     "right_hip_pitch",

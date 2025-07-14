@@ -123,8 +123,8 @@ class PlacoWalkEngine:
         self.tasks.left_foot_task.orientation().mask.set_axises("yz", "local")
         self.tasks.right_foot_task.orientation().mask.set_axises("yz", "local")
         # self.tasks.trunk_orientation_task.configure("trunk_orientation", "soft", 1e-4)
-        self.tasks.left_foot_task.orientation().configure("left_foot_orientation", "soft", 1e-6)
-        self.tasks.right_foot_task.orientation().configure("right_foot_orientation", "soft", 1e-6)
+        # self.tasks.left_foot_task.orientation().configure("left_foot_orientation", "soft", 1e-6)
+        # self.tasks.right_foot_task.orientation().configure("right_foot_orientation", "soft", 1e-6)
 
         # # Creating a joint task to assign DoF values for upper body
         self.joints = self.parameters.joints
@@ -177,7 +177,7 @@ class PlacoWalkEngine:
         self.time_since_last_right_contact = 0.0
         self.time_since_last_left_contact = 0.0
         self.start = None
-        self.initial_delay = 0
+        self.initial_delay = 0.0
         # self.initial_delay = 0
         self.t = self.initial_delay
         self.last_replan = 0
@@ -187,6 +187,10 @@ class PlacoWalkEngine:
             2 * self.parameters.single_support_duration
             + 2 * self.parameters.double_support_duration()
         )
+
+        self.robot.update_kinematics()
+        self.solver.solve(True)
+        
         print("## period:", self.period)
 
     def load_defaults(self, filename):

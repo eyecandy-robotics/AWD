@@ -61,28 +61,28 @@ def load_sample_presets(bdx_type):
                     ]
     elif bdx_type in ["go_bdx", "mini_bdx", "mini2_bdx"]:
         sample_data = [
-            {'x':  0.0, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.24,
+            {'x':  0.0, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.22,
                                                         'head_bob_amplitude':0.15, 'neck_pitch':0.5, 'head_pitch':-0.4,
                                                         'double_support_ratio':0.5}}, # in-place
-            {'x':  0.05, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.23,
+            {'x':  0.05, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.21,
                                                         'head_bob_amplitude':0.15, 'neck_pitch':0.5, 'head_pitch':-0.4,
                                                         'double_support_ratio':0.5}}, # forward slow
-            {'x':  0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -3.0, 'single_support_duration': 0.22,
+            {'x':  0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -3.0, 'single_support_duration': 0.20,
                                                         'head_bob_amplitude':0.125, 'neck_pitch':0.25, 'head_pitch':-0.25,
                                                         'double_support_ratio':0.5}}, # forward med
-            {'x':  0.15, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+            {'x':  0.15, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 3.0, 'single_support_duration': 0.18,
                                                         'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
                                                         'double_support_ratio':0.5}}, # forward fast
-            {'x':  0.0, 'y':  0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+            {'x':  0.0, 'y':  0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 3.0, 'single_support_duration': 0.18,
                                                         'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
                                                         'double_support_ratio':0.5}}, # strafe right
-            {'x':  0.0, 'y': -0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+            {'x':  0.0, 'y': -0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': 3.0, 'single_support_duration': 0.18,
                                                         'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
                                                         'double_support_ratio':0.5}}, # strafe left
-            {'x':  0.0, 'y':  0.0, 'theta':  0.5, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+            {'x':  0.0, 'y':  0.0, 'theta':  0.5, 'G': {'walk_trunk_pitch': 3.0, 'single_support_duration': 0.18,
                                                         'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
                                                         'double_support_ratio':0.5}}, # turn right
-            {'x':  0.0, 'y':  0.0, 'theta': -0.5, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+            {'x':  0.0, 'y':  0.0, 'theta': -0.5, 'G': {'walk_trunk_pitch': 3.0, 'single_support_duration': 0.18,
                                                         'head_bob_amplitude':0.1, 'neck_pitch':0.1, 'head_pitch':-0.1,
                                                         'double_support_ratio':0.5}}, # turn left
             {'x': -0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 0.0, 'single_support_duration': 0.20,
