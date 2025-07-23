@@ -26,7 +26,7 @@ frame_duration = episode["FrameDuration"]
 
 frames = episode["Frames"]
 frame_offsets = episode["Frame_offset"][0]
-period = episode["Placo"]["period"]
+# period = episode["Placo"]["period"]
 
 joint_names = episode["Joints"]
 
@@ -107,12 +107,12 @@ print("Linear Velocity Mean:")
 print(f"x: {np.mean(x_lin_vel):.2f}, y: {np.mean(y_lin_vel):.2f}, z: {np.mean(angular_vel_z):.2f}")
 
 # Calculate fps from frame duration
-fps = 1.0 / frame_duration
-nb_steps_in_period = int(period * fps)
+# fps = 1.0 / frame_duration
+# nb_steps_in_period = int(period * fps)
 
 # Create cyclical period array using the number of steps in period
 frame_indices = np.arange(len(frames))
-period_array = (frame_indices % nb_steps_in_period) / nb_steps_in_period  # This will cycle from 0 to 1
+# period_array = (frame_indices % nb_steps_in_period) / nb_steps_in_period  # This will cycle from 0 to 1
 
 plt.figure(figsize=(12, 6))
 
@@ -120,7 +120,7 @@ plt.figure(figsize=(12, 6))
 plt.plot(x_lin_vel, label="x_lin_vel")
 plt.plot(y_lin_vel, label="y_lin_vel")
 plt.plot(angular_vel_z, label="angular_vel_z")
-plt.plot(period_array, label="period")
+# plt.plot(period_array, label="period")
 
 # Plot foot contacts if available
 if foot_contacts_slice:
@@ -140,6 +140,18 @@ for i in range(joint_pos.shape[1]):
 plt.title("Joint Positions")
 plt.xlabel("Frame")
 plt.ylabel("Position")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+
+# plot joint positions (nx15)
+joints_vel = np.array(joints_vel)
+plt.figure(figsize=(12, 6))
+for i in range(joints_vel.shape[1]):
+    plt.plot(joints_vel[:, i], label=f"Joint {i+1}")
+plt.title("Joint vel")
+plt.xlabel("Frame")
+plt.ylabel("vel")
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()

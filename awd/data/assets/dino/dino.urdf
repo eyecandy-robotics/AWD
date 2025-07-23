@@ -601,12 +601,12 @@
     </collision>
   </link>
   <!-- Joint from front_tail to hind_tail -->
-  <joint name="hind_tail" type="revolute">
+  <joint name="hind_tail" type="fixed">
     <origin xyz="0.0645127 -4.72364e-06 0.000584758" rpy="2.08843e-15 0.268289 -4.38561e-15"/>
     <parent link="front_tail"/>
     <child link="hind_tail"/>
     <axis xyz="0 0 1"/>
-    <limit effort="10" velocity="10" lower="-0.698132" upper="0.698132"/>
+    <limit effort="10" velocity="10"/>
   </joint>
   <!-- Link tail_connector -->
   <link name="tail_connector">

@@ -13,14 +13,13 @@ joints:
 - 'right_knee'
 - 'right_ankle'
 - 'tail'
-- 'hind_tail'
 
-dof_body_ids: [1, 2, 3, 4, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16]
-dof_offsets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+dof_body_ids: [1, 2, 3, 4, 6, 7, 9, 10, 11, 12, 13, 14, 15]
+dof_offsets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
-dof_obs_size: 15
+dof_obs_size: 14
 num_obs: 38
-num_actions: 15
+num_actions: 14
 num_amp_obs_per_step: 51
 
 # motor_efforts are only used in torque control mode (pd_control=False)
@@ -183,19 +182,6 @@ dof_props:
       "d_gain": 1.1,
     }
   right_ankle:
-    {
-      "damping": 1.0,
-      "stiffness": 10,
-      "friction": 0.052,
-      "armature": 0.028,
-      "velocity": 3.0,
-      "max_effort": 2.5,
-      "init_pos": -0.0,
-      "motor_efforts": 10,
-      "p_gain": 14.55,
-      "d_gain": 1.1,
-    }
-  hind_tail:
     {
       "damping": 1.0,
       "stiffness": 10,

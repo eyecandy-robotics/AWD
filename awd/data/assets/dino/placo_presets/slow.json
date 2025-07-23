@@ -2,17 +2,17 @@
   "dx": 0.0,
   "dy": 0.0,
   "dtheta": 0.0,
-  "duration": 8,
+  "duration": 4,
   "hardware": true,
   "double_support_ratio": 0.5,
   "startend_double_support_ratio": 1.0,
   "planned_timesteps": 48,
   "replan_timesteps": 10,
-  "walk_com_height": 0.165,
+  "walk_com_height": 0.175,
   "walk_foot_height": 0.03,
   "walk_trunk_pitch": -4,
   "walk_foot_rise_ratio": 0.02,
-  "single_support_duration": 0.24,
+  "single_support_duration": 0.22,
   "single_support_timesteps": 10,
   "foot_length": 0.06,
   "feet_spacing": 0.16,
@@ -46,14 +46,12 @@
     "right_hip_pitch",
     "right_knee",
     "right_ankle",
-    "tail",
-    "hind_tail"
+    "tail"
   ],
   "joint_angles": {
     "neck_pitch": 0.0,
     "head_pitch": 0.0,
     "head_yaw": 0.0,
-    "hind_tail": 0.0,
     "tail": 0.0
   }
 }

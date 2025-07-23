@@ -6,7 +6,7 @@ import argparse
 import time
 from concurrent.futures import ThreadPoolExecutor
 import re
-from gait.gait_blending import blend_gait_parameters, vel_to_step
+from gait.gait_blending import blend_gait_parameters, vel_to_step, gait_sample_data, gait_sample_data_med_only
 
 def run_command_with_logging(cmd_log_tuple):
     cmd, log_file = cmd_log_tuple
@@ -26,7 +26,7 @@ def numeric_prefix_sort_key(item):
         return (number_part, rest_part)
     return (float("inf"), preset_name)
 
-def load_sample_presets(bdx_type):
+def load_sample_presets(bdx_type, static_gait=False):
     
     # Create nine dummy samples with (x, y, theta) and a parameter dict G
     if bdx_type == "dino":
@@ -89,6 +89,10 @@ def load_sample_presets(bdx_type):
                                                         'head_bob_amplitude':0.1, 'neck_pitch':0.15, 'head_pitch':-0.15,
                                                         'double_support_ratio':0.5}}, # backward med
                     ]
+    if static_gait:
+        # Use only the medium preset for static gait
+        sample_data = gait_sample_data_med_only
+                    
     return sample_data
 
 def main(args):
@@ -142,7 +146,7 @@ def main(args):
     os.makedirs(log_dir, exist_ok=True)
 
     # Load sample presets for gait blending
-    sample_data = load_sample_presets(args.bdx_type)
+    sample_data = load_sample_presets(args.bdx_type, args.static_gait)
     
     # Use medium as base preset
     base_preset = "medium"
@@ -266,11 +270,10 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate AMP data with gait blending")
-    parser.add_argument("--bdx_type", choices=["go_bdx", "mini_bdx", "mini2_bdx", "dino"], 
-                        required=True, help="Type of BDX to generate data for")
+    parser.add_argument("--bdx_type", choices=["go_bdx", "mini_bdx", "mini2_bdx", "dino"], required=True, help="Type of BDX to generate data for")
     parser.add_argument("--num", type=int, default=100, help="Number of motion files to generate.")
-    parser.add_argument("--sweep", action="store_true", 
-                       help="Sweep through the velocity values.")
+    parser.add_argument("--sweep", action="store_true", help="Sweep through the velocity values.")
+    parser.add_argument("--static_gait", action="store_true", help="use med_only gait sample data instead of blending")
     parser.add_argument("-j", "--jobs", nargs="?", type=int, const=os.cpu_count(), default=1,
                        help="Number of parallel jobs. If -j is provided without a number, "
                             "uses the number of CPU cores available. Default is 1.")
