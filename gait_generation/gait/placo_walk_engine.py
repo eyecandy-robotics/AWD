@@ -110,10 +110,50 @@ class PlacoWalkEngine:
         # self.robot.set_joint_limits("left_knee", *knee_limits)
         # self.robot.set_joint_limits("right_knee", *knee_limits)
     
-        self.default_angles = init_params.get('joint_angles', {})
+        # Set default joint angles based on robot type if not provided in init_params
+        # Initialize default joint positions based on robot type
+        if "mini2" in robot_type:
+            self.default_angles = {
+                "left_hip_yaw": 0.002,
+                "left_hip_roll": 0.053,
+                "left_hip_pitch": -0.63,
+                "left_knee": 1.368,
+                "left_ankle": -0.784,
+                "neck_pitch": 0.5,
+                "head_pitch": -0.5,
+                "head_yaw": 0,
+                "head_roll": 0,
+                "right_hip_yaw": -0.003,
+                "right_hip_roll": -0.065,
+                "right_hip_pitch": 0.635,
+                "right_knee": 1.379,
+                "right_ankle": -0.796,
+            }
+        elif "dino" in robot_type:
+            self.default_angles = {
+                "neck_pitch": 0,
+                "head_pitch": 0,
+                "head_yaw": 0,
+                "left_hip_yaw": 0,
+                "left_hip_roll": 0,
+                "left_hip_pitch": -0.1961,
+                "left_knee": -0.4055,
+                "left_ankle": -0.2093,
+                "right_hip_yaw": 0,
+                "right_hip_roll": 0,
+                "right_hip_pitch": 0.19610,
+                "right_knee": 0.4056,
+                "right_ankle": 0.2093,
+                "tail": 0.0,
+            }
+            
+        # Apply joint angles
         for joint_name in self.default_angles:
             self.robot.set_joint(joint_name, self.default_angles[joint_name])
 
+        self.robot.update_kinematics()
+        self.solver.solve(True)
+        
         # Creating the walk QP tasks
         self.tasks = placo.WalkTasks()
         if hasattr(self.parameters, 'trunk_mode'):
@@ -123,12 +163,11 @@ class PlacoWalkEngine:
         self.tasks.left_foot_task.orientation().mask.set_axises("yz", "local")
         self.tasks.right_foot_task.orientation().mask.set_axises("yz", "local")
         # self.tasks.trunk_orientation_task.configure("trunk_orientation", "soft", 1e-4)
-        # self.tasks.left_foot_task.orientation().configure("left_foot_orientation", "soft", 1e-6)
-        # self.tasks.right_foot_task.orientation().configure("right_foot_orientation", "soft", 1e-6)
+        self.tasks.left_foot_task.orientation().configure("left_foot_orientation", "soft", 1e-7)
+        self.tasks.right_foot_task.orientation().configure("right_foot_orientation", "soft", 1e-7)
 
         # # Creating a joint task to assign DoF values for upper body
         self.joints = self.parameters.joints
-        print(self.joints)
         joint_degrees = self.parameters.joint_angles
         joint_radians = {joint: np.deg2rad(degrees) for joint, degrees in joint_degrees.items()}
         self.joints_task = self.solver.add_joints_task()
@@ -137,14 +176,15 @@ class PlacoWalkEngine:
 
         # Placing the robot in the initial position
         print("Placing the robot in the initial position...")
-        self.tasks.reach_initial_pose(
-            np.eye(4),
-            self.parameters.feet_spacing,
-            self.parameters.walk_com_height,
-            self.parameters.walk_trunk_pitch,
-        )
-        self.robot.update_kinematics()
-        print("Initial position reached")
+        # self.tasks.reach_initial_pose(
+        #     np.eye(4),
+        #     self.parameters.feet_spacing,
+        #     self.parameters.walk_com_height,
+        #     self.parameters.walk_trunk_pitch,
+        # )
+        
+        # self.robot.update_kinematics()
+        # print("Initial position reached")
         # exit()
 
         # Creating the FootstepsPlanner
@@ -330,8 +370,13 @@ class PlacoWalkEngine:
             _ = self.solver.solve(True)
         
         if self.head_bob:
-            self.robot.set_joint("head_pitch", self.default_angles["head_pitch"] + self.head_bob_amplitude*np.sin(2*2*np.pi*self.t / self.period))
-            self.robot.set_joint("neck_pitch", self.default_angles["neck_pitch"] + self.neck_pitch_sign*self.head_bob_amplitude*np.sin(2*2*np.pi*self.t / self.period))
+            # Triangle wave with 2 cycles per period instead of 4
+            t_normalized = 2 * self.t / self.period
+            triangle_wave = 2 * np.abs(2 * (t_normalized % 1) - 1) - 1
+            triangle_wave *= self.head_bob_amplitude
+            
+            self.robot.set_joint("head_pitch", self.default_angles["head_pitch"] + triangle_wave)
+            self.robot.set_joint("neck_pitch", self.default_angles["neck_pitch"] + self.neck_pitch_sign * triangle_wave)
         
         if self.tail_wiggle:
             self.robot.set_joint("tail", self.default_angles["tail"] + self.tail_wiggle_amplitude*np.sin(2*np.pi*self.t / self.period))
