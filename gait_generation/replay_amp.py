@@ -165,7 +165,6 @@ original_joint_limits = {
     "head_yaw": (-180.0, 180.0),
     "head_pitch": (-60.0, 60.0),
     "neck_pitch": (-60.0, 90.0),
-    "hind_tail": (-40.0, 40.0),
     "tail": (-20.0, 20.0),           # Updated from (-15.0, 15.0)
     "right_ankle": (-60.0, 60.0),
     "right_knee": (-40.0, 70.0),     # Updated from (-60.0, 30.0)
