@@ -5,12 +5,9 @@ from scipy.spatial.transform import Rotation as R
 
 # Set parameters
 FPS = bpy.context.scene.render.fps
-# Access the scene's unit settings
 units = bpy.context.scene.unit_settings
-
-# Get the current unit system
-unit_system = units.system  # Options: 'NONE', 'METRIC', 'IMPERIAL'
-unit_scale = units.scale_length  # Default is 1.0 for meters
+unit_system = units.system
+unit_scale = units.scale_length
 foot_contact_height_thresh = 0.6
 
 print(unit_scale)
@@ -31,22 +28,13 @@ episode = {
 }
 
 actual_joint_names = [
-    "neck_pitch",
-    "head_pitch",
-    "head_yaw",
-    "left_hip_yaw",
-    "left_hip_roll",
-    "left_hip_pitch",
-    "left_knee",
-    "left_ankle",
-    "right_hip_yaw",
-    "right_hip_roll",
-    "right_hip_pitch",
-    "right_knee",
-    "right_ankle",
+    "neck_pitch", "head_pitch", "head_yaw",
+    "left_hip_yaw", "left_hip_roll", "left_hip_pitch",
+    "left_knee", "left_ankle",
+    "right_hip_yaw", "right_hip_roll", "right_hip_pitch",
+    "right_knee", "right_ankle",
     "tail",
-    "hind_tail"
-  ]
+]
 
 joint_names = [joint_name + ".revolute.bone" for joint_name in actual_joint_names]
 
@@ -55,9 +43,9 @@ object_names = {
     "left_toe": "left_foot_tpu",
     "right_toe": "right_foot_tpu"
 }
-default_angles = [0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0, 0.0, 0.0]
+default_angles = [0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0, 0.0]
 
-# Initialize storage arrays
+# Init storage
 prev_joint_angles = None
 prev_left_toe_pos = None
 prev_right_toe_pos = None
@@ -66,7 +54,15 @@ prev_pelvis_quat = None
 pelvis_positions = []
 frames_data = []
 
-# Helper function to calculate angular velocity
+eyes = None
+mat = bpy.data.materials.get("eyes")
+if mat and mat.use_nodes:
+    for node in mat.node_tree.nodes:
+        if node.type == 'BSDF_PRINCIPLED':
+            eyes = node
+            break
+
+# Helper: angular velocity
 def compute_angular_velocity(quat, prev_quat, dt):
     if prev_quat is None:
         return [0.0, 0.0, 0.0]
@@ -77,11 +73,11 @@ def compute_angular_velocity(quat, prev_quat, dt):
     angular_velocity = axis * (angle / dt)
     return list(angular_velocity)
 
-# Animation frame range
+# Frame range
 start_frame = bpy.context.scene.frame_start
 end_frame = bpy.context.scene.frame_end
 
-# Loop through frames to capture data
+# Loop through frames
 for frame in range(start_frame, end_frame + 1):
     bpy.context.scene.frame_set(frame)
     
@@ -91,41 +87,35 @@ for frame in range(start_frame, end_frame + 1):
     # Get joint angles
     depsgraph = bpy.context.evaluated_depsgraph_get()
     obj_eval = bpy.context.object.evaluated_get(depsgraph)
-    idx = 0
     for bone in obj_eval.pose.bones:
         if bone.name in joint_names:
             relative_matrix = bone.matrix
             parent_bone = bone.parent
             if parent_bone:
-                relative_matrix =  parent_bone.matrix.inverted() @ relative_matrix
+                relative_matrix = parent_bone.matrix.inverted() @ relative_matrix
             euler_angles = relative_matrix.to_euler()
-            #print(bone.name, euler_angles)
-            if "head_yaw" in bone.name:
+            if "hind" in bone.name:
+                joint_angle = euler_angles.x
+            elif "head_yaw" in bone.name:
                 joint_angle = euler_angles.z
             else:
                 joint_angle = euler_angles.y
-            frame_joint_angles[joint_names.index(bone.name)] = round(joint_angle - default_angles[joint_names.index(bone.name)], 4)
-            idx += 1
-    #print("====")
+            idx = joint_names.index(bone.name)
+            frame_joint_angles[idx] = round(joint_angle - default_angles[idx], 4)
     
     frame_joint_angles = np.unwrap(frame_joint_angles).tolist()
-    
-    #print(frame_joint_angles)
 
-    # Get object positions and quaternion for pelvis
+    # Pelvis and toes
     pelvis_obj = bpy.data.objects[object_names["pelvis"]]
-    pelvis_position = pelvis_obj.matrix_world.translation * unit_scale  # Scale the position
+    pelvis_position = pelvis_obj.matrix_world.translation * unit_scale
     pelvis_quat = pelvis_obj.matrix_world.to_quaternion()
 
-    left_toe_pos = bpy.data.objects[object_names["left_toe"]].matrix_world.translation * unit_scale  # Scale the position
-    right_toe_pos = bpy.data.objects[object_names["right_toe"]].matrix_world.translation * unit_scale  # Scale the position
+    left_toe_pos = bpy.data.objects[object_names["left_toe"]].matrix_world.translation * unit_scale
+    right_toe_pos = bpy.data.objects[object_names["right_toe"]].matrix_world.translation * unit_scale
     
-    #print(left_toe_pos, right_toe_pos, pelvis_position)
-    
-    # Store pelvis position for average velocity and yaw calculation
     pelvis_positions.append([pelvis_position.x, pelvis_position.y, pelvis_position.z])
 
-    # Calculate velocities
+    # Velocities
     if prev_pelvis_pos is not None:
         world_linear_vel = list((np.array([pelvis_position.x, pelvis_position.y, pelvis_position.z]) - np.array(prev_pelvis_pos)) * FPS)
     else:
@@ -150,8 +140,9 @@ for frame in range(start_frame, end_frame + 1):
     )
     
     foot_contacts = [left_toe_pos.z < foot_contact_height_thresh, right_toe_pos.z < foot_contact_height_thresh]
-    # Append frame data to episode["Frames"]
-    frame_data["root_pos"] = [pelvis_position.x, pelvis_position.y, pelvis_position.z+0.01]
+
+    # === Fill frame_data ===
+    frame_data["root_pos"] = [pelvis_position.x, pelvis_position.y, pelvis_position.z-0.007]
     frame_data["root_quat"] = [pelvis_quat.x, pelvis_quat.y, pelvis_quat.z, pelvis_quat.w]
     frame_data["joints_pos"] = frame_joint_angles
     frame_data["left_toe_pos"] = [left_toe_pos.x, left_toe_pos.y, left_toe_pos.z+0.01]
@@ -163,16 +154,23 @@ for frame in range(start_frame, end_frame + 1):
     frame_data["right_toe_vel"] = right_toe_vel
     frame_data["foot_contacts"] = foot_contacts
 
+    # Optional emission values
+    if eyes:
+        emission_color = eyes.inputs[27].default_value[:]
+        emission_strength = eyes.inputs[28].default_value
+        frame_data["eyes_color"] = list(emission_color)
+        frame_data["eyes_strength"] = float(emission_strength)
+
     frames_data.append(frame_data)
 
-    # Update previous frame values
+    # Update prev
     prev_joint_angles = frame_joint_angles
     prev_left_toe_pos = [left_toe_pos.x, left_toe_pos.y, left_toe_pos.z+0.01]
     prev_right_toe_pos = [right_toe_pos.x, right_toe_pos.y, right_toe_pos.z+0.01]
     prev_pelvis_pos = [pelvis_position.x, pelvis_position.y, pelvis_position.z+0.01]
     prev_pelvis_quat = [pelvis_quat.x, pelvis_quat.y, pelvis_quat.z, pelvis_quat.w]
 
-# Calculate Vel_x, Vel_y, and Yaw based on pelvis positions
+# Vel_x, Vel_y, Yaw
 pelvis_positions = np.array(pelvis_positions)
 velocities = np.diff(pelvis_positions, axis=0) * FPS
 episode["Joints"] = actual_joint_names
@@ -180,29 +178,30 @@ episode["Vel_x"] = np.mean(velocities[:, 0]).tolist()
 episode["Vel_y"] = np.mean(velocities[:, 1]).tolist()
 episode["Yaw"] = np.arctan2(np.mean(velocities[:, 1]), np.mean(velocities[:, 0])).tolist()
 
-# Calculate offsets and sizes programmatically
+# Frame offsets
 offset = 0
 for key, value in frames_data[0].items():
     episode["Frame_offset"][0][key] = offset
     size = len(value) if isinstance(value, list) else 1
     episode["Frame_size"][0][key] = size
     offset += size
-    
-# Add collected frame data to episode
+
+# Collect frame arrays
 for frame in frames_data:
-    episode["Frames"].append(
+    frame_array = (
         frame["root_pos"] + frame["root_quat"] + frame["joints_pos"] +
         frame["left_toe_pos"] + frame["right_toe_pos"] +
         frame["world_linear_vel"] + frame["world_angular_vel"] + frame["joints_vel"] +
         frame["left_toe_vel"] + frame["right_toe_vel"] + frame["foot_contacts"]
     )
+    if eyes:
+        frame_array += frame["eyes_color"] + [frame["eyes_strength"]]
+    episode["Frames"].append(frame_array)
 
 print("Episode data filled.")
 
-# Define the output file path
+# Save JSON
 output_path = "blender.json"
-
-# Save the episode dictionary as a JSON file
 with open(output_path, 'w') as f:
     json.dump(episode, f, indent=4)
 

@@ -57,7 +57,10 @@ for frame_idx, flat_data in enumerate(episode["Frames"], start=1):
             print(f"Bone not found: {bone_name}")
             continue
         bone.rotation_mode = 'XYZ' 
-        bone.rotation_euler.y = angle
+        if "head_yaw" in bone.name:
+            bone.rotation_euler.x = angle
+        else:
+            bone.rotation_euler.y = angle
         bone.keyframe_insert(data_path="rotation_euler", index=-1)
 
 print("✅ Full animation (pelvis + joints) applied from JSON.")
