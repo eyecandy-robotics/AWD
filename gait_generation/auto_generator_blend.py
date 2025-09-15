@@ -151,7 +151,16 @@ def main(args):
     # Use medium as base preset
     base_preset = "medium"
 
-    if args.sweep:
+    # Check if single velocity is specified
+    single_velocity_specified = args.x_vel is not None or args.y_vel is not None or args.theta_vel is not None
+    
+    if single_velocity_specified:
+        # Use specified velocities or default to 0 if not provided
+        single_x_vel = args.x_vel if args.x_vel is not None else 0.0
+        single_y_vel = args.y_vel if args.y_vel is not None else 0.0
+        single_theta_vel = args.theta_vel if args.theta_vel is not None else 0.0
+        all_n = 1
+    elif args.sweep:
         # Create sweep in velocity space
         x_vels = np.arange(min_sweep_x_vel, max_sweep_x_vel + sweep_xy_vel_granularity, sweep_xy_vel_granularity)
         y_vels = np.arange(min_sweep_y_vel, max_sweep_y_vel + sweep_xy_vel_granularity, sweep_xy_vel_granularity)
@@ -172,7 +181,12 @@ def main(args):
         with open(os.path.join(presets_dir, f"{base_preset}.json")) as file:
             data = json.load(file)
 
-        if args.sweep:
+        if single_velocity_specified:
+            # Use the specified single velocity
+            x_vel = round(single_x_vel, 2)
+            y_vel = round(single_y_vel, 2)
+            theta_vel = round(single_theta_vel, 2)
+        elif args.sweep:
             x_idx = i % len(x_vels)
             y_idx = (i // len(x_vels)) % len(y_vels)
             theta_idx = (i // (len(x_vels) * len(y_vels))) % len(theta_vels)
@@ -274,6 +288,9 @@ if __name__ == "__main__":
     parser.add_argument("--num", type=int, default=100, help="Number of motion files to generate.")
     parser.add_argument("--sweep", action="store_true", help="Sweep through the velocity values.")
     parser.add_argument("--static_gait", action="store_true", help="use med_only gait sample data instead of blending")
+    parser.add_argument("--x_vel", type=float, help="Specify single x velocity (m/s) to generate only one motion file")
+    parser.add_argument("--y_vel", type=float, help="Specify single y velocity (m/s) to generate only one motion file")
+    parser.add_argument("--theta_vel", type=float, help="Specify single theta velocity (rad/s) to generate only one motion file")
     parser.add_argument("-j", "--jobs", nargs="?", type=int, const=os.cpu_count(), default=1,
                        help="Number of parallel jobs. If -j is provided without a number, "
                             "uses the number of CPU cores available. Default is 1.")
