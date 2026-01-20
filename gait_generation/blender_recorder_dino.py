@@ -27,22 +27,19 @@ episode = {
     "MotionWeight": 1,
 }
 
-actual_joint_names = [
-    "neck_pitch", "head_pitch", "head_yaw",
-    "left_hip_yaw", "left_hip_roll", "left_hip_pitch",
-    "left_knee", "left_ankle",
-    "right_hip_yaw", "right_hip_roll", "right_hip_pitch",
-    "right_knee", "right_ankle",
-    "tail",
-]
+actual_joint_names = ['neck_pitch', 'head_pitch', 'head_yaw', 'tail', 'right_hip_yaw', 'right_hip_roll', 'right_hip_pitch', 
+                      'right_knee', 'right_ankle', 'left_hip_yaw', 'left_hip_roll', 'left_hip_pitch', 'left_knee', 'left_ankle']
 
 joint_names = [joint_name + ".revolute.bone" for joint_name in actual_joint_names]
 
-object_names = {
+key_body_names = {
     "pelvis": "base",
     "left_toe": "left_foot_tpu",
-    "right_toe": "right_foot_tpu"
+    "right_toe": "right_foot_tpu",
 }
+
+body_names = ['base', 'body_front', 'headdown', 'front_tail', 'right_upper_cover', 'left_upper_cover', 'left_foot_tpu', 'right_foot_tpu'] 
+
 default_angles = [0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0, 0.0]
 
 # Init storage
@@ -51,16 +48,18 @@ prev_left_toe_pos = None
 prev_right_toe_pos = None
 prev_pelvis_pos = None
 prev_pelvis_quat = None
+prev_body_positions = {name: None for name in body_names}
+prev_body_quats = {name: None for name in body_names}
 pelvis_positions = []
 frames_data = []
 
 eyes = None
-mat = bpy.data.materials.get("eyes")
-if mat and mat.use_nodes:
-    for node in mat.node_tree.nodes:
-        if node.type == 'BSDF_PRINCIPLED':
-            eyes = node
-            break
+# mat = bpy.data.materials.get("eyes")
+# if mat and mat.use_nodes:
+#     for node in mat.node_tree.nodes:
+#         if node.type == 'BSDF_PRINCIPLED':
+#             eyes = node
+#             break
 
 # Helper: angular velocity
 def compute_angular_velocity(quat, prev_quat, dt):
@@ -106,12 +105,12 @@ for frame in range(start_frame, end_frame + 1):
     frame_joint_angles = np.unwrap(frame_joint_angles).tolist()
 
     # Pelvis and toes
-    pelvis_obj = bpy.data.objects[object_names["pelvis"]]
+    pelvis_obj = bpy.data.objects[key_body_names["pelvis"]]
     pelvis_position = pelvis_obj.matrix_world.translation * unit_scale
     pelvis_quat = pelvis_obj.matrix_world.to_quaternion()
 
-    left_toe_pos = bpy.data.objects[object_names["left_toe"]].matrix_world.translation * unit_scale
-    right_toe_pos = bpy.data.objects[object_names["right_toe"]].matrix_world.translation * unit_scale
+    left_toe_pos = bpy.data.objects[key_body_names["left_toe"]].matrix_world.translation * unit_scale
+    right_toe_pos = bpy.data.objects[key_body_names["right_toe"]].matrix_world.translation * unit_scale
     
     pelvis_positions.append([pelvis_position.x, pelvis_position.y, pelvis_position.z])
 
@@ -141,6 +140,43 @@ for frame in range(start_frame, end_frame + 1):
     
     foot_contacts = [left_toe_pos.z < foot_contact_height_thresh, right_toe_pos.z < foot_contact_height_thresh]
 
+    # === Body tracking for all bodies ===
+    body_pos_w = []
+    body_quat_w = []
+    body_lin_vel_w = []
+    body_ang_vel_w = []
+    
+    for body_name in body_names:
+        body_obj = bpy.data.objects.get(body_name)
+        if body_obj:
+            pos = body_obj.matrix_world.translation * unit_scale
+            quat = body_obj.matrix_world.to_quaternion()
+            
+            body_pos_w.extend([pos.x, pos.y, pos.z])
+            body_quat_w.extend([quat.x, quat.y, quat.z, quat.w])
+            
+            # Linear velocity
+            if prev_body_positions[body_name] is not None:
+                lin_vel = list((np.array([pos.x, pos.y, pos.z]) - np.array(prev_body_positions[body_name])) * FPS)
+            else:
+                lin_vel = [0.0, 0.0, 0.0]
+            body_lin_vel_w.extend(lin_vel)
+            
+            # Angular velocity
+            ang_vel = compute_angular_velocity(
+                quat=[quat.x, quat.y, quat.z, quat.w],
+                prev_quat=prev_body_quats[body_name],
+                dt=1 / FPS
+            )
+            body_ang_vel_w.extend(ang_vel)
+            
+            # Update prev
+            prev_body_positions[body_name] = [pos.x, pos.y, pos.z]
+            prev_body_quats[body_name] = [quat.x, quat.y, quat.z, quat.w]
+        else:
+            # Body not found, fill with zeros
+            print(f"Warning: Body '{body_name}' not found.")
+
     # === Fill frame_data ===
     frame_data["root_pos"] = [pelvis_position.x, pelvis_position.y, pelvis_position.z-0.007]
     frame_data["root_quat"] = [pelvis_quat.x, pelvis_quat.y, pelvis_quat.z, pelvis_quat.w]
@@ -153,6 +189,10 @@ for frame in range(start_frame, end_frame + 1):
     frame_data["left_toe_vel"] = left_toe_vel
     frame_data["right_toe_vel"] = right_toe_vel
     frame_data["foot_contacts"] = foot_contacts
+    frame_data["body_pos_w"] = body_pos_w
+    frame_data["body_quat_w"] = body_quat_w
+    frame_data["body_lin_vel_w"] = body_lin_vel_w
+    frame_data["body_ang_vel_w"] = body_ang_vel_w
 
     # Optional emission values
     if eyes:
@@ -192,7 +232,8 @@ for frame in frames_data:
         frame["root_pos"] + frame["root_quat"] + frame["joints_pos"] +
         frame["left_toe_pos"] + frame["right_toe_pos"] +
         frame["world_linear_vel"] + frame["world_angular_vel"] + frame["joints_vel"] +
-        frame["left_toe_vel"] + frame["right_toe_vel"] + frame["foot_contacts"]
+        frame["left_toe_vel"] + frame["right_toe_vel"] + frame["foot_contacts"] +
+        frame["body_pos_w"] + frame["body_quat_w"] + frame["body_lin_vel_w"] + frame["body_ang_vel_w"]
     )
     if eyes:
         frame_array += frame["eyes_color"] + [frame["eyes_strength"]]
