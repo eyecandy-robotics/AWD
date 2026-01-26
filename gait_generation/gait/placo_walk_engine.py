@@ -105,14 +105,14 @@ class PlacoWalkEngine:
             urdf_joint_limits.update(joint_limits)
             
         # Apply joint limits to all joints
-        for joint_name, limits in urdf_joint_limits.items():
-            print(f"limits {joint_name}: {np.rad2deg(limits)}")
-            self.robot.set_joint_limits(joint_name, limits[0], limits[1])
+        # for joint_name, limits in urdf_joint_limits.items():
+        #     print(f"limits {joint_name}: {np.rad2deg(limits)}")
+        #     self.robot.set_joint_limits(joint_name, limits[0], limits[1])
                         
         # Apply specific knee limits if not already set from URDF
-        # knee_limits = np.deg2rad([-60, 30])
-        # self.robot.set_joint_limits("left_knee", *knee_limits)
-        # self.robot.set_joint_limits("right_knee", *knee_limits)
+        knee_limits = np.deg2rad([-60, 30])
+        self.robot.set_joint_limits("left_knee", *knee_limits)
+        self.robot.set_joint_limits("right_knee", *knee_limits)
     
         # Set default joint angles based on robot type if not provided in init_params
         # Initialize default joint positions based on robot type
@@ -172,8 +172,8 @@ class PlacoWalkEngine:
         for joint_name in self.default_angles:
             self.robot.set_joint(joint_name, self.default_angles[joint_name])
 
-        self.robot.update_kinematics()
-        self.solver.solve(True)
+        # self.robot.update_kinematics()
+        # self.solver.solve(True)
         
         # Creating the walk QP tasks
         self.tasks = placo.WalkTasks()
@@ -184,27 +184,27 @@ class PlacoWalkEngine:
         self.tasks.left_foot_task.orientation().mask.set_axises("yz", "local")
         self.tasks.right_foot_task.orientation().mask.set_axises("yz", "local")
         # self.tasks.trunk_orientation_task.configure("trunk_orientation", "soft", 1e-4)
-        self.tasks.left_foot_task.orientation().configure("left_foot_orientation", "soft", 1e-7)
-        self.tasks.right_foot_task.orientation().configure("right_foot_orientation", "soft", 1e-7)
+        self.tasks.left_foot_task.orientation().configure("left_foot_orientation", "soft", 1e-5)
+        self.tasks.right_foot_task.orientation().configure("right_foot_orientation", "soft", 1e-5)
 
         # # Creating a joint task to assign DoF values for upper body
         # self.joints and self.joint_angles are set in load_parameters
         joint_radians = {joint: np.deg2rad(degrees) for joint, degrees in self.joint_angles.items()}
         self.joints_task = self.solver.add_joints_task()
         self.joints_task.set_joints(joint_radians)
-        self.joints_task.configure("joints", "soft", 1.0)
+        self.joints_task.configure("joints", "soft", 0.1)
 
         # Placing the robot in the initial position
         print("Placing the robot in the initial position...")
-        # self.tasks.reach_initial_pose(
-        #     np.eye(4),
-        #     self.parameters.feet_spacing,
-        #     self.parameters.walk_com_height,
-        #     self.parameters.walk_trunk_pitch,
-        # )
+        self.tasks.reach_initial_pose(
+            np.eye(4),
+            self.parameters.feet_spacing,
+            self.parameters.walk_com_height,
+            self.parameters.walk_trunk_pitch,
+        )
         
-        # self.robot.update_kinematics()
-        # print("Initial position reached")
+        self.robot.update_kinematics()
+        print("Initial position reached")
         # exit()
 
         # Creating the FootstepsPlanner
@@ -214,7 +214,7 @@ class PlacoWalkEngine:
         self.d_x = 0.0
         self.d_y = 0.0
         self.d_theta = 0.0
-        self.nb_steps = 5
+        self.nb_steps = 10
         self.repetitive_footsteps_planner.configure(
             self.d_x, self.d_y, self.d_theta, self.nb_steps
         )

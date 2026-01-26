@@ -1,8 +1,7 @@
 torch>=2.0.0
 numpy>=1.24.0
 termcolor
-rl-games @ git+https://github.com/Denys88/rl_games.git
-wandb>=0.13.0
+wandb
 torchvision>=0.15.0
 cuda-python
 pyyaml>=5.3.1
@@ -12,4 +11,4 @@ pybullet>=3.2.5
 six
 meshcat
 flask
-placo>=0.9.0
+placo
