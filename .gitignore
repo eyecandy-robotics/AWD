@@ -17,3 +17,4 @@ tmp
 gait_generation/gait/gait_2d_heatmaps.png
 gait_generation/gait/gait_params_vs_velocity.png
 gait_generation/gait/gait_cycle_vs_velocity.png
+.venv
