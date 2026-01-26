@@ -278,7 +278,7 @@ def record(pwe, args_dict):
         "double_support_ratio": pwe.parameters.double_support_ratio,
         "startend_double_support_ratio": pwe.parameters.startend_double_support_ratio,
         "planned_timesteps": pwe.parameters.planned_timesteps,
-        "replan_timesteps": pwe.parameters.replan_timesteps,
+        # "replan_timesteps": pwe.parameters.replan_timesteps,  # Removed in Placo 0.9+
         "walk_com_height": pwe.parameters.walk_com_height,
         "walk_foot_height": pwe.parameters.walk_foot_height,
         "walk_trunk_pitch": np.rad2deg(pwe.parameters.walk_trunk_pitch),

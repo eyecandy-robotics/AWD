@@ -24,7 +24,7 @@ parser.add_argument("--dtheta", type=float, default=0)
 parser.add_argument("--double_support_ratio", type=float, default=None)
 parser.add_argument("--startend_double_support_ratio", type=float, default=None)
 parser.add_argument("--planned_timesteps", type=float, default=None)
-parser.add_argument("--replan_timesteps", type=float, default=None)
+# parser.add_argument("--replan_timesteps", type=float, default=None)  # Removed in Placo 0.9+
 parser.add_argument("--walk_com_height", type=float, default=None)
 parser.add_argument("--walk_foot_height", type=float, default=None)
 parser.add_argument("--walk_trunk_pitch", type=float, default=None)
@@ -80,7 +80,7 @@ class GaitParameters:
         if args.mini:
             self.robot = 'mini_bdx'
             self.robot_urdf = "urdf/bdx.urdf"
-            self.robot.urdf = os.path.join(script_path, "../awd/data/assets/mini_bdx")
+            self.asset_path = os.path.join(script_path, "../awd/data/assets/mini_bdx")
         elif args.mini2:
             self.robot = 'mini2_bdx'
             self.robot_urdf = "mini2_bdx.urdf"
@@ -98,12 +98,35 @@ class GaitParameters:
         self.dtheta = 0.0
         self.duration = 5
         self.hardware = True
+        # Head control parameters
+        self.head_bob = False
+        self.head_bob_amplitude = 0.15
+        self.invert_neck_pitch = False
+        # Joint configuration
+        self.joints = []
+        self.joint_angles = {}
+
+    def update_robot_paths(self, robot_type):
+        """Update asset_path and robot_urdf based on robot type"""
+        self.robot = robot_type
+        if robot_type == 'mini_bdx':
+            self.robot_urdf = "urdf/bdx.urdf"
+            self.asset_path = os.path.join(script_path, "../awd/data/assets/mini_bdx")
+        elif robot_type == 'mini2_bdx':
+            self.robot_urdf = "mini2_bdx.urdf"
+            self.asset_path = os.path.join(script_path, "../awd/data/assets/mini2_bdx")
+        elif robot_type == 'dino':
+            self.robot_urdf = "dino.urdf"
+            self.asset_path = os.path.join(script_path, "../awd/data/assets/dino")
+        else:  # go_bdx
+            self.robot_urdf = "go_bdx.urdf"
+            self.asset_path = os.path.join(script_path, "../awd/data/assets/go_bdx")
 
     def reset(self, pwe):
         pwe.parameters.double_support_ratio = self.double_support_ratio
         pwe.parameters.startend_double_support_ratio = self.startend_double_support_ratio
         pwe.parameters.planned_timesteps = self.planned_timesteps
-        pwe.parameters.replan_timesteps = self.replan_timesteps
+        # pwe.parameters.replan_timesteps = self.replan_timesteps  # Removed in Placo 0.9+
         pwe.parameters.walk_com_height = self.walk_com_height
         pwe.parameters.walk_foot_height = self.walk_foot_height
         pwe.parameters.walk_trunk_pitch = np.deg2rad(self.walk_trunk_pitch)
@@ -130,7 +153,7 @@ class GaitParameters:
             'double_support_ratio': self.double_support_ratio,
             'startend_double_support_ratio': self.startend_double_support_ratio,
             'planned_timesteps': self.planned_timesteps,
-            'replan_timesteps': self.replan_timesteps,
+            # 'replan_timesteps': self.replan_timesteps,  # Removed in Placo 0.9+
             'walk_com_height': self.walk_com_height,
             'walk_foot_height': self.walk_foot_height,
             'walk_trunk_pitch': self.walk_trunk_pitch,
@@ -146,6 +169,11 @@ class GaitParameters:
             'walk_max_dy': self.walk_max_dy,
             'walk_max_dx_forward': self.walk_max_dx_forward,
             'walk_max_dx_backward': self.walk_max_dx_backward,
+            'head_bob': self.head_bob,
+            'head_bob_amplitude': self.head_bob_amplitude,
+            'invert_neck_pitch': self.invert_neck_pitch,
+            'joints': self.joints,
+            'joint_angles': self.joint_angles,
         }
         with open(filename, 'w') as f:
             json.dump(data, f, indent=4)
@@ -163,8 +191,8 @@ class GaitParameters:
         filename = self.custom_preset_name()
         self.save_to_json(filename)
 
-    def load_defaults(self, pwe):
-        self.load_from_json(os.path.join(pwe.asset_path, "placo_defaults.json"))
+    def load_defaults(self):
+        self.load_from_json(os.path.join(self.asset_path, "placo_defaults.json"))
 
     def load_from_json(self, filename):
         with open(filename, 'r') as f:
@@ -180,7 +208,7 @@ class GaitParameters:
         self.double_support_ratio = data.get('double_support_ratio')
         self.startend_double_support_ratio = data.get('startend_double_support_ratio')
         self.planned_timesteps = data.get('planned_timesteps')
-        self.replan_timesteps = data.get('replan_timesteps')
+        # self.replan_timesteps = data.get('replan_timesteps')  # Removed in Placo 0.9+
         self.walk_com_height = data.get('walk_com_height')
         self.walk_foot_height = data.get('walk_foot_height')
         self.walk_trunk_pitch = data.get('walk_trunk_pitch')
@@ -196,6 +224,11 @@ class GaitParameters:
         self.walk_max_dy = data.get('walk_max_dy')
         self.walk_max_dx_forward = data.get('walk_max_dx_forward')
         self.walk_max_dx_backward = data.get('walk_max_dx_backward')
+        self.head_bob = data.get('head_bob', False)
+        self.head_bob_amplitude = data.get('head_bob_amplitude', 0.15)
+        self.invert_neck_pitch = data.get('invert_neck_pitch', False)
+        self.joints = data.get('joints', [])
+        self.joint_angles = data.get('joint_angles', {})
 
 if __name__ == '__main__':
     print('exit')
@@ -216,8 +249,8 @@ with open(filename, 'r') as f:
         gait_parameters['startend_double_support_ratio'] = args.startend_double_support_ratio
     if args.planned_timesteps is not None:
         gait_parameters['planned_timesteps'] = args.planned_timesteps
-    if args.replan_timesteps is not None:
-        gait_parameters['replan_timesteps'] = args.replan_timesteps
+    # if args.replan_timesteps is not None:  # Removed in Placo 0.9+
+    #     gait_parameters['replan_timesteps'] = args.replan_timesteps
     if args.walk_com_height is not None:
         gait_parameters['walk_com_height'] = args.walk_com_height
     if args.walk_foot_height is not None:
@@ -281,9 +314,9 @@ def save_state():
 @app.route('/defaults', methods=['GET'])
 def defaults():
     if os.path.exists("bdx_state.json"):
-        gait.load_from_json()
+        gait.load_from_json("bdx_state.json")
     else:
-        gait.load_defaults(pwe)
+        gait.load_defaults()
     parameters = gait.__dict__
     return jsonify(parameters)
 
@@ -314,12 +347,17 @@ def change_robot():
     global run_loop
     global doreset
     global dorun
+    global pwe
     data = request.get_json()
     selected_robot = data.get('robot')
     print(f"selected_robot: {selected_robot}")
-    if selected_robot in ['go_bdx', 'mini_bdx']:
+    if selected_robot in ['go_bdx', 'mini_bdx', 'mini2_bdx', 'dino']:
         if selected_robot != gait.robot:
-            gait.robot = selected_robot
+            gait.update_robot_paths(selected_robot)
+            # Load defaults for the new robot
+            defaults_file = os.path.join(gait.asset_path, "placo_defaults.json")
+            if os.path.exists(defaults_file):
+                gait.load_from_json(defaults_file)
             # Reset the gait generator to use the new robot
             with gait_condition:
                 run_loop = False
@@ -342,7 +380,7 @@ def run():
     gait.double_support_ratio = float(request.form['double_support_ratio'])
     gait.startend_double_support_ratio = float(request.form['startend_double_support_ratio'])
     gait.planned_timesteps = int(request.form['planned_timesteps'])
-    gait.replan_timesteps = int(request.form['replan_timesteps'])
+    # gait.replan_timesteps = int(request.form['replan_timesteps'])  # Removed in Placo 0.9+
     gait.walk_com_height = float(request.form['walk_com_height'])
     gait.walk_foot_height = float(request.form['walk_foot_height'])
     gait.walk_trunk_pitch = int(request.form['walk_trunk_pitch'])  # Degrees
@@ -376,7 +414,7 @@ def update():
     gait.double_support_ratio = float(request.form['double_support_ratio'])
     gait.startend_double_support_ratio = float(request.form['startend_double_support_ratio'])
     gait.planned_timesteps = int(request.form['planned_timesteps'])
-    gait.replan_timesteps = int(request.form['replan_timesteps'])
+    # gait.replan_timesteps = int(request.form['replan_timesteps'])  # Removed in Placo 0.9+
     gait.walk_com_height = float(request.form['walk_com_height'])
     gait.walk_foot_height = float(request.form['walk_foot_height'])
     gait.walk_trunk_pitch = int(request.form['walk_trunk_pitch'])  # Degrees
@@ -429,7 +467,9 @@ def gait_generator_thread():
         print("gait generator waiting")
         with gait_condition:
             if doreset:
-                pwe = gait.create_pwe()
+                # Create dict of current gait parameters
+                gait_params = {k: v for k, v in gait.__dict__.items() if not k.startswith('_')}
+                pwe = gait.create_pwe(gait_params)
                 viz = robot_viz(pwe.robot)
                 viz.display(pwe.robot.state.q)
                 footsteps_viz(pwe.trajectory.get_supports())
@@ -443,7 +483,9 @@ def gait_generator_thread():
                 dorun = False
             if doreset:
                 print("RESETTING")
-                pwe = gait.create_pwe()
+                # Create dict of current gait parameters
+                gait_params = {k: v for k, v in gait.__dict__.items() if not k.startswith('_')}
+                pwe = gait.create_pwe(gait_params)
                 viz = robot_viz(pwe.robot)
                 viz.display(pwe.robot.state.q)
                 footsteps_viz(pwe.trajectory.get_supports())

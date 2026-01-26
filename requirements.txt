@@ -1,16 +1,15 @@
-torch==1.8.1
-numpy==1.21.1
-termcolor==1.1.0
-rl-games==1.1.4
-torchvision==0.9.1
+torch>=2.0.0
+numpy>=1.24.0
+termcolor
+rl-games @ git+https://github.com/Denys88/rl_games.git
+wandb>=0.13.0
+torchvision>=0.15.0
 cuda-python
 pyyaml>=5.3.1
 scipy>=1.5.0
 tensorboard>=2.2.1
-pybullet==3.2.1
-six==1.16.0
+pybullet>=3.2.5
+six
 meshcat
-scipy
 flask
-webbrowser
-placo==0.6.2
+placo>=0.9.0

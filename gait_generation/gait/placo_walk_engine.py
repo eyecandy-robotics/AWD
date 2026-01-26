@@ -70,6 +70,10 @@ class PlacoWalkEngine:
         # Loading the robot
         self.robot = placo.HumanoidRobot(model_filename)
 
+        # Initialize custom attributes before loading parameters
+        self.joints = []
+        self.joint_angles = {}
+
         self.parameters = placo.HumanoidParameters()
         if init_params is not None:
             self.load_parameters(init_params)
@@ -146,7 +150,24 @@ class PlacoWalkEngine:
                 "right_ankle": 0.2093,
                 "tail": 0.0,
             }
-            
+        else:
+            # Default for mini_bdx and go_bdx
+            self.default_angles = {
+                "left_hip_yaw": 0.0,
+                "left_hip_roll": 0.0,
+                "left_hip_pitch": 0.0,
+                "left_knee": 0.0,
+                "left_ankle": 0.0,
+                "neck_pitch": 0.0,
+                "head_pitch": 0.0,
+                "head_yaw": 0.0,
+                "right_hip_yaw": 0.0,
+                "right_hip_roll": 0.0,
+                "right_hip_pitch": 0.0,
+                "right_knee": 0.0,
+                "right_ankle": 0.0,
+            }
+
         # Apply joint angles
         for joint_name in self.default_angles:
             self.robot.set_joint(joint_name, self.default_angles[joint_name])
@@ -167,9 +188,8 @@ class PlacoWalkEngine:
         self.tasks.right_foot_task.orientation().configure("right_foot_orientation", "soft", 1e-7)
 
         # # Creating a joint task to assign DoF values for upper body
-        self.joints = self.parameters.joints
-        joint_degrees = self.parameters.joint_angles
-        joint_radians = {joint: np.deg2rad(degrees) for joint, degrees in joint_degrees.items()}
+        # self.joints and self.joint_angles are set in load_parameters
+        joint_radians = {joint: np.deg2rad(degrees) for joint, degrees in self.joint_angles.items()}
         self.joints_task = self.solver.add_joints_task()
         self.joints_task.set_joints(joint_radians)
         self.joints_task.configure("joints", "soft", 1.0)
@@ -207,7 +227,7 @@ class PlacoWalkEngine:
         )
 
         self.supports = placo.FootstepsPlanner.make_supports(
-            self.footsteps, True, self.parameters.has_double_support(), True
+            self.footsteps, 0.0, True, self.parameters.has_double_support(), True
         )
 
         # Creating the pattern generator and making an initial plan
@@ -244,7 +264,7 @@ class PlacoWalkEngine:
         params.double_support_ratio = data.get('double_support_ratio', params.double_support_ratio)
         params.startend_double_support_ratio = data.get('startend_double_support_ratio', params.startend_double_support_ratio)
         params.planned_timesteps = data.get('planned_timesteps', params.planned_timesteps)
-        params.replan_timesteps = data.get('replan_timesteps', params.replan_timesteps)
+        # params.replan_timesteps = data.get('replan_timesteps', params.replan_timesteps)  # Removed in Placo 0.9+
         params.walk_com_height = data.get('walk_com_height', params.walk_com_height)
         params.walk_foot_height = data.get('walk_foot_height', params.walk_foot_height)
         params.walk_trunk_pitch = np.deg2rad(data.get('walk_trunk_pitch', np.rad2deg(params.walk_trunk_pitch)))
@@ -260,8 +280,9 @@ class PlacoWalkEngine:
         params.walk_max_dy = data.get('walk_max_dy', params.walk_max_dy)
         params.walk_max_dx_forward = data.get('walk_max_dx_forward', params.walk_max_dx_forward)
         params.walk_max_dx_backward = data.get('walk_max_dx_backward', params.walk_max_dx_backward)
-        params.joints = data.get('joints', [])
-        params.joint_angles = data.get('joint_angles', [])
+        # Store joints info on the walk engine instance, not on HumanoidParameters
+        self.joints = data.get('joints', [])
+        self.joint_angles = data.get('joint_angles', {})
         if 'trunk_mode' in data:
             params.trunk_mode = data.get('trunk_mode')
 
@@ -291,7 +312,7 @@ class PlacoWalkEngine:
         )
 
         self.supports = placo.FootstepsPlanner.make_supports(
-            self.footsteps, True, self.parameters.has_double_support(), True
+            self.footsteps, 0.0, True, self.parameters.has_double_support(), True
         )
         self.trajectory = self.walk.plan(self.supports, self.robot.com_world(), 0.0)
 
@@ -384,14 +405,16 @@ class PlacoWalkEngine:
         # If enough time elapsed and we can replan, do the replanning
         if (
             self.t - self.last_replan
-            > self.parameters.replan_timesteps * self.parameters.dt()
+            > self.parameters.planned_timesteps * self.parameters.dt()  # Using planned_timesteps (replan_timesteps removed in Placo 0.9+)
             and self.walk.can_replan_supports(self.trajectory, self.t)
         ):
             self.last_replan = self.t
 
             # Replanning footsteps from current trajectory
+            # API changed in Placo 0.9+ to require additional time parameter
+            horizon = self.parameters.planned_timesteps * self.parameters.dt()
             self.supports = self.walk.replan_supports(
-                self.repetitive_footsteps_planner, self.trajectory, self.t
+                self.repetitive_footsteps_planner, self.trajectory, self.t, horizon
             )
 
             # Replanning CoM trajectory, yielding a new trajectory we can switch to

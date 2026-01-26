@@ -35,7 +35,7 @@ parser.add_argument("--dtheta", type=float, default=0)
 parser.add_argument("--double_support_ratio", type=float, default=None)
 parser.add_argument("--startend_double_support_ratio", type=float, default=None)
 parser.add_argument("--planned_timesteps", type=float, default=None)
-parser.add_argument("--replan_timesteps", type=float, default=None)
+# parser.add_argument("--replan_timesteps", type=float, default=None)  # Removed in Placo 0.9+
 parser.add_argument("--walk_com_height", type=float, default=None)
 parser.add_argument("--walk_foot_height", type=float, default=None)
 parser.add_argument("--walk_trunk_pitch", type=float, default=None)
@@ -418,7 +418,7 @@ episode["Placo"] =  {
     "double_support_ratio": pwe.parameters.double_support_ratio,
     "startend_double_support_ratio": pwe.parameters.startend_double_support_ratio,
     "planned_timesteps": pwe.parameters.planned_timesteps,
-    "replan_timesteps": pwe.parameters.replan_timesteps,
+    # "replan_timesteps": pwe.parameters.replan_timesteps,  # Removed in Placo 0.9+
     "walk_com_height": pwe.parameters.walk_com_height,
     "walk_foot_height": pwe.parameters.walk_foot_height,
     "walk_trunk_pitch": np.rad2deg(pwe.parameters.walk_trunk_pitch),
