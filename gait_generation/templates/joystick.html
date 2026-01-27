@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Robot Control</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .joystick-group {
+            text-align: center;
+        }
+
+        .joystick-label {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        canvas {
+            background: #2a2a2a;
+            border: 2px solid #444;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .controls {
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #444;
+            min-width: 300px;
+        }
+
+        .status {
+            margin-bottom: 20px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #444;
+        }
+
+        .value {
+            font-family: monospace;
+            color: #0f0;
+            font-weight: bold;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #start-btn {
+            background: #0a0;
+            color: white;
+        }
+
+        #start-btn:hover {
+            background: #0c0;
+        }
+
+        #start-btn.running {
+            background: #f00;
+        }
+
+        #stop-btn {
+            background: #666;
+            color: white;
+        }
+
+        #stop-btn:hover {
+            background: #888;
+        }
+
+        .link {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #444;
+        }
+
+        a {
+            color: #0af;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #0cf;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Movement Joystick -->
+        <div class="joystick-group">
+            <div class="joystick-label">Movement<br>(Forward/Strafe)</div>
+            <canvas id="move-joystick" width="250" height="250"></canvas>
+        </div>
+
+        <!-- Rotation Joystick -->
+        <div class="joystick-group">
+            <div class="joystick-label">Rotation<br>(Turn)</div>
+            <canvas id="rotate-joystick" width="250" height="250"></canvas>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="status">
+                <h3>Velocities</h3>
+                <div class="status-item">
+                    <span>Forward:</span>
+                    <span class="value" id="vel-x">0.00</span>
+                </div>
+                <div class="status-item">
+                    <span>Strafe:</span>
+                    <span class="value" id="vel-y">0.00</span>
+                </div>
+                <div class="status-item">
+                    <span>Turn:</span>
+                    <span class="value" id="vel-theta">0.00</span>
+                </div>
+            </div>
+
+            <button id="start-btn">START</button>
+            <button id="stop-btn">STOP</button>
+
+            <div class="link">
+                <a href="http://127.0.0.1:7000/static/" target="_blank">Open 3D Viewer →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let isRunning = false;
+        let moveActive = false;
+        let rotateActive = false;
+        let moveX = 0, moveY = 0;
+        let rotateX = 0, rotateY = 0;
+
+        // Canvas setup
+        const moveCanvas = document.getElementById('move-joystick');
+        const moveCtx = moveCanvas.getContext('2d');
+        const rotateCanvas = document.getElementById('rotate-joystick');
+        const rotateCtx = rotateCanvas.getContext('2d');
+
+        const size = 250;
+        const center = size / 2;
+        const maxDist = center - 30;
+
+        // Draw joystick
+        function drawJoystick(ctx, x, y, color) {
+            ctx.clearRect(0, 0, size, size);
+            
+            // Outer circle
+            ctx.beginPath();
+            ctx.arc(center, center, center - 10, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#444';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Center cross
+            ctx.beginPath();
+            ctx.moveTo(center, 20);
+            ctx.lineTo(center, size - 20);
+            ctx.moveTo(20, center);
+            ctx.lineTo(size - 20, center);
+            ctx.strokeStyle = '#333';
+            ctx.stroke();
+
+            // Handle position
+            const handleX = center + x * maxDist;
+            const handleY = center - y * maxDist;
+
+            // Line to handle
+            if (x !== 0 || y !== 0) {
+                ctx.beginPath();
+                ctx.moveTo(center, center);
+                ctx.lineTo(handleX, handleY);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+
+            // Handle
+            ctx.beginPath();
+            ctx.arc(handleX, handleY, 25, 0, 2 * Math.PI);
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        // Get joystick position
+        function getJoystickPos(canvas, e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            let dx = x - center;
+            let dy = center - y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            
+            if (dist > maxDist) {
+                dx = (dx / dist) * maxDist;
+                dy = (dy / dist) * maxDist;
+            }
+            
+            return {
+                x: dx / maxDist,
+                y: dy / maxDist
+            };
+        }
+
+        // Movement joystick handlers
+        moveCanvas.addEventListener('mousedown', (e) => {
+            moveActive = true;
+            const pos = getJoystickPos(moveCanvas, e);
+            moveX = pos.x;
+            moveY = pos.y;
+            drawJoystick(moveCtx, moveX, moveY, '#0a0');
+            sendUpdate();
+        });
+
+        moveCanvas.addEventListener('mousemove', (e) => {
+            if (moveActive) {
+                const pos = getJoystickPos(moveCanvas, e);
+                moveX = pos.x;
+                moveY = pos.y;
+                drawJoystick(moveCtx, moveX, moveY, '#0a0');
+                sendUpdate();
+            }
+        });
+
+        moveCanvas.addEventListener('mouseup', () => {
+            moveActive = false;
+            moveX = 0;
+            moveY = 0;
+            drawJoystick(moveCtx, 0, 0, '#0a0');
+            sendUpdate();
+        });
+
+        moveCanvas.addEventListener('mouseleave', () => {
+            if (moveActive) {
+                moveActive = false;
+                moveX = 0;
+                moveY = 0;
+                drawJoystick(moveCtx, 0, 0, '#0a0');
+                sendUpdate();
+            }
+        });
+
+        // Rotation joystick handlers
+        rotateCanvas.addEventListener('mousedown', (e) => {
+            rotateActive = true;
+            const pos = getJoystickPos(rotateCanvas, e);
+            rotateX = pos.x;
+            rotateY = pos.y;
+            drawJoystick(rotateCtx, rotateX, rotateY, '#00f');
+            sendUpdate();
+        });
+
+        rotateCanvas.addEventListener('mousemove', (e) => {
+            if (rotateActive) {
+                const pos = getJoystickPos(rotateCanvas, e);
+                rotateX = pos.x;
+                rotateY = pos.y;
+                drawJoystick(rotateCtx, rotateX, rotateY, '#00f');
+                sendUpdate();
+            }
+        });
+
+        rotateCanvas.addEventListener('mouseup', () => {
+            rotateActive = false;
+            rotateX = 0;
+            rotateY = 0;
+            drawJoystick(rotateCtx, 0, 0, '#00f');
+            sendUpdate();
+        });
+
+        rotateCanvas.addEventListener('mouseleave', () => {
+            if (rotateActive) {
+                rotateActive = false;
+                rotateX = 0;
+                rotateY = 0;
+                drawJoystick(rotateCtx, 0, 0, '#00f');
+                sendUpdate();
+            }
+        });
+
+        // Touch support
+        function addTouchSupport(canvas, handlers) {
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousedown', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            });
+
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousemove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            });
+
+            canvas.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                canvas.dispatchEvent(new MouseEvent('mouseup'));
+            });
+        }
+
+        addTouchSupport(moveCanvas);
+        addTouchSupport(rotateCanvas);
+
+        // Send update to server (throttled for performance)
+        let lastSendTime = 0;
+        function sendUpdate() {
+            const now = Date.now();
+            if (now - lastSendTime < 16) return; // ~60Hz max
+            lastSendTime = now;
+
+            // Movement joystick controls X/Y
+            // Rotation joystick: use X axis for theta, ignore Y
+            fetch('/api/joystick', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    x: moveY,      // Forward/back
+                    y: moveX,      // Strafe
+                    theta: rotateX // Rotation
+                })
+            });
+        }
+
+        // Update display
+        function updateStatus() {
+            fetch('/api/status')
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('vel-x').textContent = data.dx.toFixed(2);
+                    document.getElementById('vel-y').textContent = data.dy.toFixed(2);
+                    document.getElementById('vel-theta').textContent = data.dtheta.toFixed(2);
+                });
+        }
+
+        // Control buttons
+        document.getElementById('start-btn').addEventListener('click', function() {
+            fetch('/api/start', { method: 'POST' });
+            isRunning = true;
+            this.classList.add('running');
+            this.textContent = 'RUNNING';
+        });
+
+        document.getElementById('stop-btn').addEventListener('click', function() {
+            fetch('/api/stop', { method: 'POST' });
+            isRunning = false;
+            document.getElementById('start-btn').classList.remove('running');
+            document.getElementById('start-btn').textContent = 'START';
+        });
+
+        // Initialize
+        drawJoystick(moveCtx, 0, 0, '#0a0');
+        drawJoystick(rotateCtx, 0, 0, '#00f');
+        setInterval(updateStatus, 50); // 20Hz status updates
+    </script>
+</body>
+</html>

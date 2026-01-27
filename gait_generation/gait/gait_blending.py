@@ -324,28 +324,28 @@ gait_sample_data = [
                                                         'double_support_ratio':0.5}}, # in-place
             {'x':  0.05, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -4.0, 'single_support_duration': 0.21,
                                                         'head_bob_amplitude':0.11, 'neck_pitch':0.0, 'head_pitch':-0.0,
-                                                        'double_support_ratio':0.5}}, # forward slow
+                                                        'double_support_ratio':0.45}}, # forward slow
             {'x':  0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': -3.0, 'single_support_duration': 0.20,
                                                         'head_bob_amplitude':0.1, 'neck_pitch':0.0, 'head_pitch':-0.0,
-                                                        'double_support_ratio':0.5}}, # forward med
-            {'x':  0.15, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 5.0, 'single_support_duration': 0.18,
+                                                        'double_support_ratio':0.4}}, # forward med
+            {'x':  0.15, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 4.0, 'single_support_duration': 0.18,
                                                         'head_bob_amplitude':0.08, 'neck_pitch':0.0, 'head_pitch':-0.0,
-                                                        'double_support_ratio':0.5}}, # forward fast
-            {'x':  0.0, 'y':  0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': -3.0, 'single_support_duration': 0.20,
+                                                        'double_support_ratio':0.35}}, # forward fast
+            {'x':  0.0, 'y':  0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': -2.0, 'single_support_duration': 0.20,
                                                         'head_bob_amplitude':0.10, 'neck_pitch':0.0, 'head_pitch':-0.0,
-                                                        'double_support_ratio':0.5}}, # strafe right
-            {'x':  0.0, 'y': -0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': -3.0, 'single_support_duration': 0.20,
+                                                        'double_support_ratio':0.4}}, # strafe right
+            {'x':  0.0, 'y': -0.15, 'theta':  0.0, 'G': {'walk_trunk_pitch': -2.0, 'single_support_duration': 0.20,
                                                         'head_bob_amplitude':0.10, 'neck_pitch':0.0, 'head_pitch':-0.0,
-                                                        'double_support_ratio':0.5}}, # strafe left
-            {'x':  0.0, 'y':  0.0, 'theta':  0.5, 'G': {'walk_trunk_pitch': -3.0, 'single_support_duration': 0.20,
+                                                        'double_support_ratio':0.4}}, # strafe left
+            {'x':  0.0, 'y':  0.0, 'theta':  0.5, 'G': {'walk_trunk_pitch': -2.0, 'single_support_duration': 0.20,
                                                         'head_bob_amplitude':0.10, 'neck_pitch':0.0, 'head_pitch':-0.0,
-                                                        'double_support_ratio':0.5}}, # turn right
-            {'x':  0.0, 'y':  0.0, 'theta': -0.5, 'G': {'walk_trunk_pitch': -3.0, 'single_support_duration': 0.20,
+                                                        'double_support_ratio':0.4}}, # turn right
+            {'x':  0.0, 'y':  0.0, 'theta': -0.5, 'G': {'walk_trunk_pitch': -2.0, 'single_support_duration': 0.20,
                                                         'head_bob_amplitude':0.10, 'neck_pitch':0.0, 'head_pitch':-0.0,
-                                                        'double_support_ratio':0.5}}, # turn left
+                                                        'double_support_ratio':0.4}}, # turn left
             {'x': -0.1, 'y':  0.0, 'theta':  0.0, 'G': {'walk_trunk_pitch': 0.0, 'single_support_duration': 0.22,
                                                         'head_bob_amplitude':0.12, 'neck_pitch':0.0, 'head_pitch':-0.0,
-                                                        'double_support_ratio':0.5}}, # backward med
+                                                        'double_support_ratio':0.45}}, # backward med
                     ]
 
 def plot_gait_cycle_vs_velocity(samples, x_min, x_max, y_min, y_max, theta_min, theta_max, num_points=100):
