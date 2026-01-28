@@ -5,7 +5,7 @@
   "duration": 4,
   "hardware": true,
   "double_support_ratio": 0.5,
-  "startend_double_support_ratio": 1.0,
+  "startend_double_support_ratio": 0.5,
   "planned_timesteps": 48,
   "replan_timesteps": 10,
   "walk_com_height": 0.175,
