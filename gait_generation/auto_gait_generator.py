@@ -42,13 +42,13 @@ def record(pwe, args_dict):
     if args_dict["debug"]:
         episode["Debug_info"] = []
 
+    # Set trajectory BEFORE reset so that reset() plans footsteps with correct dx, dy, dtheta
+    pwe.set_traj(args_dict["dx"], args_dict["dy"], args_dict["dtheta"])
     pwe.reset()
     first_joints_positions = list(pwe.get_angles().values())
     first_T_world_fbase = pwe.robot.get_T_world_fbase()
     first_T_world_leftFoot = pwe.robot.get_T_world_left()
     first_T_world_rightFoot = pwe.robot.get_T_world_right()
-
-    pwe.set_traj(args_dict["dx"], args_dict["dy"], args_dict["dtheta"])  # + 0.00955)
     DT = 0.001
     start = time.time()
 
@@ -375,5 +375,4 @@ if __name__ == "__main__":
             "dx", args_dict["dx"], "dy", args_dict["dy"], "dtheta", args_dict["dtheta"]
         )
         print("==")
-        pwe.reset()
         record(pwe, args_dict)

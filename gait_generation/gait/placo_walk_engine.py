@@ -138,17 +138,17 @@ class PlacoWalkEngine:
                 "neck_pitch": 0,
                 "head_pitch": 0,
                 "head_yaw": 0,
-                "left_hip_yaw": 0,
-                "left_hip_roll": 0,
-                "left_hip_pitch": -0.1961,
-                "left_knee": -0.4055,
-                "left_ankle": -0.2093,
+                "tail": 0.0,
                 "right_hip_yaw": 0,
                 "right_hip_roll": 0,
                 "right_hip_pitch": 0.19610,
                 "right_knee": 0.4056,
                 "right_ankle": 0.2093,
-                "tail": 0.0,
+                "left_hip_yaw": 0,
+                "left_hip_roll": 0,
+                "left_hip_pitch": -0.1961,
+                "left_knee": -0.4055,
+                "left_ankle": -0.2093,
             }
         else:
             # Default for mini_bdx and go_bdx
@@ -211,9 +211,10 @@ class PlacoWalkEngine:
         self.repetitive_footsteps_planner = placo.FootstepsPlannerRepetitive(
             self.parameters
         )
-        self.d_x = 0.0
-        self.d_y = 0.0
-        self.d_theta = 0.0
+        # Initialize trajectory from init_params if provided, otherwise default to 0
+        self.d_x = init_params.get('dx', 0.0) if init_params else 0.0
+        self.d_y = init_params.get('dy', 0.0) if init_params else 0.0
+        self.d_theta = init_params.get('dtheta', 0.0) if init_params else 0.0
         self.nb_steps = 10
         self.repetitive_footsteps_planner.configure(
             self.d_x, self.d_y, self.d_theta, self.nb_steps

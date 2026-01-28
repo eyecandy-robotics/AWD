@@ -145,7 +145,6 @@ first_T_world_fbase = pwe.robot.get_T_world_fbase()
 first_T_world_leftFoot = pwe.robot.get_T_world_left()
 first_T_world_rightFoot = pwe.robot.get_T_world_right()
 
-pwe.set_traj(args.dx, args.dy, args.dtheta + 0.00955)
 if DISPLAY_MESHCAT:
     viz = robot_viz(pwe.robot)
     threading.Timer(1, open_browser).start()
