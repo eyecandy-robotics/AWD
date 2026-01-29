@@ -248,12 +248,19 @@ class PlacoWalkEngine:
             2 * self.parameters.single_support_duration
             + 2 * self.parameters.double_support_duration()
         )
-
+        
+        # Calculate warmup time (time before stable walk cycle begins)
+        # This includes the startend double support phase + 1 full period for the robot to stabilize
+        self.warmup_time = (
+            self.parameters.startend_double_support_duration() 
+            + self.period
+        )
+        
         self.robot.update_kinematics()
         self.solver.solve(True)
         
         print("## period:", self.period)
-
+        
     def load_defaults(self, filename):
         with open(filename, 'r') as f:
             data = json.load(f)

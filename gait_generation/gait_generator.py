@@ -199,9 +199,12 @@ def compute_angular_velocity(current_quat, prev_quat, dt):
 
     return list(angular_velocity)
 
+# Calculate warmup skip time based on gait parameters
+warmup_skip_time = pwe.warmup_time if args.skip_warmup else 0
+
 while True:
     pwe.tick(DT)
-    if pwe.t <= 0 + args.skip_warmup * 1:
+    if pwe.t <= warmup_skip_time:
         start = pwe.t
         last_record = pwe.t + 1 / FPS
         last_meshcat_display = pwe.t + 1 / MESHCAT_FPS

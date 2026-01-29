@@ -18,9 +18,9 @@ ROBOT_CONFIGS = {
     },
     "mini_bdx": {
         "vel_max": (0.15, 0.15, 0.5),
-        "sweep_min": (-0.1, -0.15, -0.5),
-        "sweep_max": (0.15, 0.15, 0.5),
-        "sweep_granularity": (0.05, 0.05, 0.2),
+        "sweep_min": (-0.1, -0.15, -1.0),
+        "sweep_max": (0.15, 0.15, 1.0),
+        "sweep_granularity": (0.05, 0.05, 0.1),
     },
 }
 ROBOT_CONFIGS["mini2_bdx"] = ROBOT_CONFIGS["mini_bdx"]
@@ -98,7 +98,7 @@ def create_blended_preset(base_data, velocities, sample_data, vel_max):
     return data
 
 
-def build_command(bdx_type, preset_path, index):
+def build_command(bdx_type, preset_path, index, skip_warmup=True):
     """Build the gait_generator command for the given robot type."""
     cmd = ['python', 'gait_generator.py', '--preset', preset_path, '--name', str(index)]
     
@@ -106,6 +106,9 @@ def build_command(bdx_type, preset_path, index):
         cmd.append(f"--{bdx_type.split('_')[0]}")
     elif bdx_type == "dino":
         cmd.append("--dino")
+    
+    if skip_warmup:
+        cmd.append("--skip_warmup")
     
     return cmd
 
@@ -160,7 +163,7 @@ def main(args):
         with open(preset_path, 'w') as f:
             json.dump(preset_data, f, indent=4)
         
-        cmd = build_command(args.bdx_type, preset_path, i)
+        cmd = build_command(args.bdx_type, preset_path, i, skip_warmup=args.skip_warmup)
         log_file = None if args.verbose else os.path.join(LOG_DIR, f"{i}.log")
         commands.append((cmd, log_file))
     
@@ -186,6 +189,8 @@ if __name__ == "__main__":
     parser.add_argument("--x_vel", type=float, help="Single x velocity (m/s)")
     parser.add_argument("--y_vel", type=float, help="Single y velocity (m/s)")
     parser.add_argument("--theta_vel", type=float, help="Single theta velocity (rad/s)")
+    parser.add_argument("-s", "--skip_warmup", action="store_true",
+                        help="Skip warmup frames at start of recording")
     parser.add_argument("-j", "--jobs", nargs="?", type=int, const=os.cpu_count(), default=1,
                         help="Parallel jobs (default: 1, -j alone uses all cores)")
     parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
