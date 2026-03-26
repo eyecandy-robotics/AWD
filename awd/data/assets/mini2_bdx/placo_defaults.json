@@ -23,27 +23,81 @@
   "walk_max_dy": 0.1,
   "walk_max_dx_forward": 0.08,
   "walk_max_dx_backward": 0.03,
+  "gait_blending": {
+    "vel_max": [0.15, 0.15, 0.5],
+    "sweep_min": [-0.1, -0.15, -1.0],
+    "sweep_max": [0.15, 0.15, 1.0],
+    "sweep_granularity": [0.05, 0.05, 0.1],
+    "samples_dynamic": [
+      {"x": 0.0, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -4.0, "single_support_duration": 0.22, "head_bob_amplitude": 0.12, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.05, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -4.0, "single_support_duration": 0.21, "head_bob_amplitude": 0.11, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.1, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.15, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": 5.0, "single_support_duration": 0.18, "head_bob_amplitude": 0.08, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.0, "y": 0.15, "theta": 0.0, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.0, "y": -0.15, "theta": 0.0, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.0, "y": 0.0, "theta": 0.5, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.0, "y": 0.0, "theta": -0.5, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": -0.1, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": 0.0, "single_support_duration": 0.22, "head_bob_amplitude": 0.12, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}}
+    ],
+    "samples_static": [
+      {"x": 0.0, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.05, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.1, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.15, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.0, "y": 0.15, "theta": 0.0, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.0, "y": -0.15, "theta": 0.0, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.0, "y": 0.0, "theta": 0.5, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": 0.0, "y": 0.0, "theta": -0.5, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}},
+      {"x": -0.1, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -3.0, "single_support_duration": 0.2, "head_bob_amplitude": 0.1, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.5}}
+    ]
+  },
+  "perpetual_control": {
+    "target_frame_name": "trunk_assembly",
+    "default_height": 0.16,
+    "solver_dt": 0.01,
+    "runtime_dt": 0.1,
+    "effector_task": {
+      "position_weight": 2.0,
+      "orientation_weight": 1.0
+    },
+    "foot_task": {
+      "position_weight": 1.0,
+      "orientation_weight": 0.001
+    },
+    "lookup_ranges": {
+      "delta_roll": {"min": -10.0, "max": 10.0, "step": 1.0},
+      "delta_pitch": {"min": -10.0, "max": 10.0, "step": 0.5},
+      "delta_yaw": {"min": -10.0, "max": 10.0, "step": 0.5},
+      "delta_height": {"min": -0.01, "max": 0.015, "step": 0.002}
+    },
+    "runtime_random_ranges": {
+      "delta_roll": [-10.0, 10.0],
+      "delta_pitch": [-10.0, 10.0],
+      "delta_yaw": [-10.0, 10.0],
+      "delta_height": [-0.015, 0.015]
+    },
+    "initial_joints": {
+      "left_hip_yaw": 0.002,
+      "left_hip_roll": 0.053,
+      "left_hip_pitch": -0.63,
+      "left_knee": 1.368,
+      "left_ankle": -0.784,
+      "neck_pitch": 0.5,
+      "head_pitch": -0.5,
+      "head_yaw": 0.0,
+      "head_roll": 0.0,
+      "right_hip_yaw": -0.003,
+      "right_hip_roll": -0.065,
+      "right_hip_pitch": 0.635,
+      "right_knee": 1.379,
+      "right_ankle": -0.796
+    }
+  },
   
   "head_bob": true,
   "head_bob_amplitude": 0.125,
   "invert_neck_pitch": true,
   
-  "joints": [
-    "left_hip_yaw",
-    "left_hip_roll",
-    "left_hip_pitch",
-    "left_knee",
-    "left_ankle",
-    "neck_pitch",
-    "head_pitch",
-    "head_yaw",
-    "head_roll",
-    "right_hip_yaw",
-    "right_hip_roll",
-    "right_hip_pitch",
-    "right_knee",
-    "right_ankle"
-  ],
   "joint_angles": {
     "neck_pitch": 0.5,
     "head_pitch": -0.4,
@@ -51,5 +105,21 @@
     "head_roll": 0,
     "left_antenna": 0,
     "right_antenna": 0
+  },
+  "default_angles": {
+    "left_hip_yaw": 0.002,
+    "left_hip_roll": 0.053,
+    "left_hip_pitch": -0.63,
+    "left_knee": 1.368,
+    "left_ankle": -0.784,
+    "neck_pitch": 0.5,
+    "head_pitch": -0.5,
+    "head_yaw": 0.0,
+    "head_roll": 0.0,
+    "right_hip_yaw": -0.003,
+    "right_hip_roll": -0.065,
+    "right_hip_pitch": 0.635,
+    "right_knee": 1.379,
+    "right_ankle": -0.796
   }
 }

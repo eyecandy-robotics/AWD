@@ -8,7 +8,7 @@ FPS = bpy.context.scene.render.fps
 units = bpy.context.scene.unit_settings
 unit_system = units.system
 unit_scale = units.scale_length
-foot_contact_height_thresh = 0.6
+foot_contact_height_thresh = 0.025
 
 print(unit_scale)
 episode = {
@@ -40,7 +40,7 @@ key_body_names = {
 
 body_names = ['base', 'body_front', 'headdown', 'front_tail', 'right_upper_cover', 'left_upper_cover', 'left_foot_tpu', 'right_foot_tpu'] 
 
-default_angles = [0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0, 0.0]
+default_angles = [0.0, 0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0, 0.0, 1.5708, 0.0, 0.0, 0.0]
 
 # Init storage
 prev_joint_angles = None

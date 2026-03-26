@@ -64,8 +64,6 @@ class PlacoWalkEngine:
         self.asset_path = asset_path
         self.model_filename = model_filename
         self.ignore_feet_contact = ignore_feet_contact
-    
-        robot_type = asset_path.split("/")[-1]
 
         # Loading the robot
         self.robot = placo.HumanoidRobot(model_filename)
@@ -73,6 +71,7 @@ class PlacoWalkEngine:
         # Initialize custom attributes before loading parameters
         self.joints = []
         self.joint_angles = {}
+        self.default_angles = {}
 
         self.parameters = placo.HumanoidParameters()
         if init_params is not None:
@@ -83,6 +82,7 @@ class PlacoWalkEngine:
 
         self.head_bob = init_params.get('head_bob', False)
         self.head_bob_amplitude = init_params.get('head_bob_amplitude', 0.15)
+        self.neck_offset = init_params.get('neck_offset', 0.0)
 
         self.invert_neck_pitch = init_params.get('invert_neck_pitch', False)
         self.neck_pitch_sign = -1 if self.invert_neck_pitch else 1 
@@ -114,59 +114,10 @@ class PlacoWalkEngine:
         self.robot.set_joint_limits("left_knee", *knee_limits)
         self.robot.set_joint_limits("right_knee", *knee_limits)
     
-        # Set default joint angles based on robot type if not provided in init_params
-        # Initialize default joint positions based on robot type
-        if "mini2" in robot_type:
-            self.default_angles = {
-                "left_hip_yaw": 0.002,
-                "left_hip_roll": 0.053,
-                "left_hip_pitch": -0.63,
-                "left_knee": 1.368,
-                "left_ankle": -0.784,
-                "neck_pitch": 0.5,
-                "head_pitch": -0.5,
-                "head_yaw": 0,
-                "head_roll": 0,
-                "right_hip_yaw": -0.003,
-                "right_hip_roll": -0.065,
-                "right_hip_pitch": 0.635,
-                "right_knee": 1.379,
-                "right_ankle": -0.796,
-            }
-        elif "dino" in robot_type:
-            self.default_angles = {
-                "neck_pitch": 0,
-                "head_pitch": 0,
-                "head_yaw": 0,
-                "tail": 0.0,
-                "right_hip_yaw": 0,
-                "right_hip_roll": 0,
-                "right_hip_pitch": 0.19610,
-                "right_knee": 0.4056,
-                "right_ankle": 0.2093,
-                "left_hip_yaw": 0,
-                "left_hip_roll": 0,
-                "left_hip_pitch": -0.1961,
-                "left_knee": -0.4055,
-                "left_ankle": -0.2093,
-            }
-        else:
-            # Default for mini_bdx and go_bdx
-            self.default_angles = {
-                "left_hip_yaw": 0.0,
-                "left_hip_roll": 0.0,
-                "left_hip_pitch": 0.0,
-                "left_knee": 0.0,
-                "left_ankle": 0.0,
-                "neck_pitch": 0.0,
-                "head_pitch": 0.0,
-                "head_yaw": 0.0,
-                "right_hip_yaw": 0.0,
-                "right_hip_roll": 0.0,
-                "right_hip_pitch": 0.0,
-                "right_knee": 0.0,
-                "right_ankle": 0.0,
-            }
+        if not self.default_angles:
+            self.default_angles = {joint_name: 0.0 for joint_name in self.joints}
+            for joint_name, joint_value in self.joint_angles.items():
+                self.default_angles[joint_name] = joint_value
 
         # Apply joint angles
         for joint_name in self.default_angles:
@@ -288,9 +239,20 @@ class PlacoWalkEngine:
         params.walk_max_dy = data.get('walk_max_dy', params.walk_max_dy)
         params.walk_max_dx_forward = data.get('walk_max_dx_forward', params.walk_max_dx_forward)
         params.walk_max_dx_backward = data.get('walk_max_dx_backward', params.walk_max_dx_backward)
-        # Store joints info on the walk engine instance, not on HumanoidParameters
-        self.joints = data.get('joints', [])
         self.joint_angles = data.get('joint_angles', {})
+        self.default_angles = data.get('default_angles', self.default_angles)
+
+        if self.default_angles:
+            self.joints = list(self.default_angles.keys())
+        else:
+            self.joints = data.get('joints', [])
+            self.default_angles = {joint_name: 0.0 for joint_name in self.joints}
+
+        for joint_name, joint_value in self.joint_angles.items():
+            if joint_name not in self.default_angles:
+                self.default_angles[joint_name] = joint_value
+                self.joints.append(joint_name)
+
         if 'trunk_mode' in data:
             params.trunk_mode = data.get('trunk_mode')
 
@@ -399,13 +361,11 @@ class PlacoWalkEngine:
             _ = self.solver.solve(True)
         
         if self.head_bob:
-            # Triangle wave with 2 cycles per period instead of 4
-            t_normalized = 2 * self.t / self.period
-            triangle_wave = 2 * np.abs(2 * (t_normalized % 1) - 1) - 1
-            triangle_wave *= self.head_bob_amplitude
-            
-            self.robot.set_joint("head_pitch", self.default_angles["head_pitch"] + triangle_wave)
-            self.robot.set_joint("neck_pitch", self.default_angles["neck_pitch"] + self.neck_pitch_sign * triangle_wave)
+            # Smooth bobbing profile (2 cycles per walking period)
+            bob_wave = self.head_bob_amplitude * np.sin(4 * np.pi * self.t / self.period)
+
+            self.robot.set_joint("head_pitch", self.default_angles["head_pitch"] + bob_wave + self.neck_offset)
+            self.robot.set_joint("neck_pitch", self.default_angles["neck_pitch"] + self.neck_pitch_sign * bob_wave + self.neck_offset)
         
         if self.tail_wiggle:
             self.robot.set_joint("tail", self.default_angles["tail"] + self.tail_wiggle_amplitude*np.sin(2*np.pi*self.t / self.period))

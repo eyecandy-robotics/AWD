@@ -44,6 +44,7 @@ parser.add_argument("-l", "--length", type=int, default=10)
 parser.add_argument("--mini", action="store_true", default=False)
 parser.add_argument("--mini2", action="store_true", default=False)
 parser.add_argument("--dino", action="store_true", default=False)
+parser.add_argument("--dinoJr", action="store_true", default=False)
 parser.add_argument("--preset", type=str, help="Path to the preset file")
 args = parser.parse_args()
 
@@ -89,6 +90,10 @@ class GaitParameters:
             self.robot = 'dino'
             self.robot_urdf = "dino.urdf"
             self.asset_path = os.path.join(script_path, "../awd/data/assets/dino")
+        elif args.dinoJr:
+            self.robot = 'dinoJr'
+            self.robot_urdf = "tensaurJr.urdf"
+            self.asset_path = os.path.join(script_path, "../awd/data/assets/dinoJr")
         else:
             self.robot = 'go_bdx'
             self.robot_urdf = "go_bdx.urdf"
@@ -118,6 +123,9 @@ class GaitParameters:
         elif robot_type == 'dino':
             self.robot_urdf = "dino.urdf"
             self.asset_path = os.path.join(script_path, "../awd/data/assets/dino")
+        elif robot_type == 'dinoJr':
+            self.robot_urdf = "tensaurJr.urdf"
+            self.asset_path = os.path.join(script_path, "../awd/data/assets/dinoJr")
         else:  # go_bdx
             self.robot_urdf = "go_bdx.urdf"
             self.asset_path = os.path.join(script_path, "../awd/data/assets/go_bdx")
@@ -351,7 +359,7 @@ def change_robot():
     data = request.get_json()
     selected_robot = data.get('robot')
     print(f"selected_robot: {selected_robot}")
-    if selected_robot in ['go_bdx', 'mini_bdx', 'mini2_bdx', 'dino']:
+    if selected_robot in ['go_bdx', 'mini_bdx', 'mini2_bdx', 'dino', 'dinoJr']:
         if selected_robot != gait.robot:
             gait.update_robot_paths(selected_robot)
             # Load defaults for the new robot

@@ -24,24 +24,34 @@
   "walk_max_dy": 0.1,
   "walk_max_dx_forward": 0.1,
   "walk_max_dx_backward": 0.1,
-  "joints": [
-    "left_hip_yaw",
-    "left_hip_roll",
-    "left_hip_pitch",
-    "left_knee",
-    "left_ankle",
-    "neck_pitch",
-    "head_pitch",
-    "head_yaw",
-    "head_roll",
-    "left_antenna",
-    "right_antenna",
-    "right_hip_yaw",
-    "right_hip_roll",
-    "right_hip_pitch",
-    "right_knee",
-    "right_ankle"
-  ],
+  "gait_blending": {
+    "vel_max": [0.12, 0.06, 0.3],
+    "sweep_min": [-0.08, -0.06, -0.3],
+    "sweep_max": [0.12, 0.06, 0.3],
+    "sweep_granularity": [0.04, 0.04, 0.1],
+    "samples_dynamic": [
+      {"x": 0.0, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -8.0, "single_support_duration": 0.45, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.04, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -8.0, "single_support_duration": 0.43, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.08, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.12, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -5.0, "single_support_duration": 0.36, "head_bob_amplitude": 0.04, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.0, "y": 0.06, "theta": 0.0, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.0, "y": -0.06, "theta": 0.0, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.0, "y": 0.0, "theta": 0.3, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.0, "y": 0.0, "theta": -0.3, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": -0.08, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -6.0, "single_support_duration": 0.44, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}}
+    ],
+    "samples_static": [
+      {"x": 0.0, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.04, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.08, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.12, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.0, "y": 0.06, "theta": 0.0, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.0, "y": -0.06, "theta": 0.0, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.0, "y": 0.0, "theta": 0.3, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": 0.0, "y": 0.0, "theta": -0.3, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}},
+      {"x": -0.08, "y": 0.0, "theta": 0.0, "G": {"walk_trunk_pitch": -7.0, "single_support_duration": 0.4, "head_bob_amplitude": 0.05, "neck_pitch": 0.0, "head_pitch": 0.0, "double_support_ratio": 0.2}}
+    ]
+  },
   "joint_angles": {
     "head_pitch": 0,
     "head_yaw": 0,
@@ -49,5 +59,20 @@
     "neck_pitch": 0,
     "left_antenna": 0,
     "right_antenna": 0
+  },
+  "default_angles": {
+    "left_hip_yaw": 0.0,
+    "left_hip_roll": 0.0,
+    "left_hip_pitch": 0.0,
+    "left_knee": 0.0,
+    "left_ankle": 0.0,
+    "neck_pitch": 0.0,
+    "head_pitch": 0.0,
+    "head_yaw": 0.0,
+    "right_hip_yaw": 0.0,
+    "right_hip_roll": 0.0,
+    "right_hip_pitch": 0.0,
+    "right_knee": 0.0,
+    "right_ankle": 0.0
   }
 }

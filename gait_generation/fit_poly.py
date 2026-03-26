@@ -12,9 +12,65 @@ args = parser.parse_args()
 all_files = glob(f"{args.ref_motion}/*.json")
 
 
+def _get_joint_index(joints, joint_name):
+    try:
+        return joints.index(joint_name)
+    except ValueError:
+        return None
+
+
+def _estimate_signal_params(signal, base_wave, default_sign=1.0):
+    signal = np.asarray(signal, dtype=float)
+    if signal.size == 0:
+        return 0.0, 0.0, default_sign
+
+    center = float(np.mean(signal))
+    centered = signal - center
+
+    # Robust amplitude estimate (less sensitive to outliers)
+    amp = float(0.5 * (np.percentile(signal, 95) - np.percentile(signal, 5)))
+    if amp < 1e-6:
+        amp = float(np.std(centered) * np.sqrt(2.0))
+    if amp < 1e-6:
+        amp = 0.0
+
+    corr = float(np.dot(centered, base_wave))
+    sign = default_sign if abs(corr) < 1e-9 else np.sign(corr)
+    return center, amp, sign
+
+
+def _regenerate_wave_joints(Y_all, joints, frame_offsets, phase):
+    joints_pos_offset = frame_offsets.get("joints_pos")
+    if joints_pos_offset is None:
+        return
+
+    bob_wave = np.sin(4 * np.pi * phase)   # 2 cycles per gait period
+    tail_wave = np.sin(2 * np.pi * phase)  # 1 cycle per gait period
+
+    neck_idx = _get_joint_index(joints, "neck_pitch")
+    head_idx = _get_joint_index(joints, "head_pitch")
+    tail_idx = _get_joint_index(joints, "tail")
+
+    if neck_idx is not None:
+        col = joints_pos_offset + neck_idx
+        center, amp, sign = _estimate_signal_params(Y_all[:, col], bob_wave, default_sign=1.0)
+        Y_all[:, col] = center + sign * amp * bob_wave
+
+    if head_idx is not None:
+        col = joints_pos_offset + head_idx
+        center, amp, sign = _estimate_signal_params(Y_all[:, col], bob_wave, default_sign=1.0)
+        Y_all[:, col] = center + sign * amp * bob_wave
+
+    if tail_idx is not None:
+        col = joints_pos_offset + tail_idx
+        center, amp, sign = _estimate_signal_params(Y_all[:, col], tail_wave, default_sign=1.0)
+        Y_all[:, col] = center + sign * amp * tail_wave
+
+
 def process_ref_motion(file):
     data = json.load(open(file))
-    Y_all = np.array(data["Frames"])
+    Y_all = np.array(data["Frames"], dtype=float)
+    joints = data.get("Joints", [])
     period = data["Placo"]["period"]
     fps = data["FPS"]
     frame_offsets = data["Frame_offset"][0]
@@ -89,11 +145,19 @@ def process_ref_motion(file):
     # Y_period = Y_all[start_offset : start_offset + int(nb_steps_in_period)]
     Y_all = Y_all[start_offset:]
     
+    # Compute phase array: cycles linearly from 0 to 1 for each period
+    num_frames = len(Y_all)
+    phase = (np.arange(num_frames) % nb_steps_in_period) / nb_steps_in_period
+
+    # Regenerate wave-driven joints (head bob / tail swing) from corrected phase
+    _regenerate_wave_joints(Y_all, joints, frame_offsets, phase)
+    
     # Store the original motion data
     ret_data = {
         # "motion_data": Y_period.tolist(),  # One period of motion (for backward compatibility)
         "motion_data": Y_all.tolist(),  # Full reference motion data
-        "period": period,  # Use actual measured period
+        "phase": phase.tolist(),  # Phase array cycling 0 to 1 for each period
+        "period": actual_period,  # Use actual measured period
         "period_time": period_time,
         "fps": fps,
         "frame_offsets": frame_offsets,

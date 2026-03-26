@@ -11,6 +11,31 @@ import os
 from glob import glob
 
 
+def _get_joint_index(joints, joint_name):
+    try:
+        return joints.index(joint_name)
+    except ValueError:
+        return None
+
+
+def _estimate_ref_from_phase(signal, base_wave):
+    signal = np.asarray(signal, dtype=float)
+    if signal.size == 0:
+        return np.array([])
+
+    center = float(np.mean(signal))
+    centered = signal - center
+    amp = float(0.5 * (np.percentile(signal, 95) - np.percentile(signal, 5)))
+    if amp < 1e-6:
+        amp = float(np.std(centered) * np.sqrt(2.0))
+    if amp < 1e-6:
+        amp = 0.0
+
+    corr = float(np.dot(centered, base_wave))
+    sign = 1.0 if abs(corr) < 1e-9 else np.sign(corr)
+    return center + sign * amp * base_wave
+
+
 def load_and_analyze_motion(file):
     """Load a motion file and extract phase/contact info."""
     data = json.load(open(file))
@@ -19,6 +44,8 @@ def load_and_analyze_motion(file):
     period = data["Placo"]["period"]
     fps = data["FPS"]
     frame_offsets = data["Frame_offset"][0]
+    frame_sizes = data.get("Frame_size", [{}])[0]
+    joints = data.get("Joints", [])
     
     dx = data["Placo"]["dx"]
     dy = data["Placo"]["dy"]
@@ -33,15 +60,28 @@ def load_and_analyze_motion(file):
     period_time = 2 * single_support_duration + 2 * double_support_duration
     
     foot_contacts_offset = frame_offsets.get("foot_contacts")
+    joints_pos_offset = frame_offsets.get("joints_pos")
+    joints_pos_size = frame_sizes.get("joints_pos", 0)
     
     if foot_contacts_offset is None:
         print(f"No foot_contacts data in {file}")
+        return None
+
+    if joints_pos_offset is None or joints_pos_size < 1:
+        print(f"No joints_pos data in {file}")
         return None
     
     # Extract foot contact data
     foot_contacts = Y_all[:, foot_contacts_offset:foot_contacts_offset + 2]
     left_contacts = foot_contacts[:, 0]
     right_contacts = foot_contacts[:, 1]
+
+    neck_pitch = None
+
+    neck_idx = _get_joint_index(joints, "neck_pitch")
+
+    if neck_idx is not None:
+        neck_pitch = Y_all[:, joints_pos_offset + neck_idx]
     
     # Find all left foot touchdown frames for warmup detection AND period measurement
     left_touchdown_frames = []
@@ -74,6 +114,8 @@ def load_and_analyze_motion(file):
     # Trim to start from warmup
     left_contacts = left_contacts[warmup_frames:]
     right_contacts = right_contacts[warmup_frames:]
+    if neck_pitch is not None:
+        neck_pitch = neck_pitch[warmup_frames:]
     
     num_frames = len(left_contacts)
     
@@ -90,6 +132,7 @@ def load_and_analyze_motion(file):
         "phase": phase,
         "left_contacts": left_contacts,
         "right_contacts": right_contacts,
+        "neck_pitch": neck_pitch,
         "period": actual_period,
         "theoretical_period": period,
         "period_time": period_time,
@@ -109,6 +152,7 @@ def plot_single_motion(motion_data, ax=None, num_periods=2):
     phase = motion_data["phase"]
     left = motion_data["left_contacts"]
     right = motion_data["right_contacts"]
+    neck_pitch = motion_data["neck_pitch"]
     period = motion_data["period"]
     nb_steps = motion_data["nb_steps_in_period"]
     
@@ -118,9 +162,16 @@ def plot_single_motion(motion_data, ax=None, num_periods=2):
     phase = phase[:max_frames]
     left = left[:max_frames]
     right = right[:max_frames]
+    if neck_pitch is not None:
+        neck_pitch = neck_pitch[:max_frames]
     
     # Create x-axis as phase (with period count)
     x = np.arange(len(time)) / nb_steps  # This gives us 0, 1, 2, ... periods
+    phase_in_period = x % 1.0
+
+    # Reference matching fit_poly.py neck bob regeneration logic
+    bob_wave = np.sin(4 * np.pi * phase_in_period)
+    neck_ref = _estimate_ref_from_phase(neck_pitch, bob_wave) if neck_pitch is not None else None
     
     # Plot contacts as filled regions
     ax.fill_between(x, 0, left * 0.4, alpha=0.7, color='blue', label='Left contact', step='mid')
@@ -143,8 +194,24 @@ def plot_single_motion(motion_data, ax=None, num_periods=2):
     ax.set_yticks([0.2, 0.7])
     ax.set_yticklabels(['Left', 'Right'])
     ax.set_title(f'dx={dx:.3f}, dy={dy:.3f}, dθ={dtheta:.3f} (period={period:.3f}s)')
-    ax.legend(loc='upper right')
     ax.grid(True, alpha=0.3)
+
+    # Neck pitch overlay on secondary axis
+    neck_ax = ax.twinx()
+
+    if neck_pitch is not None:
+        neck_line = neck_ax.plot(x, neck_pitch, color='green', linewidth=1.8, label='Neck pitch')[0]
+    if neck_ref is not None:
+        neck_ref_line = neck_ax.plot(x, neck_ref, color='green', linestyle='--', linewidth=1.2, alpha=0.8,
+                                     label='Neck ref (2x/period)')[0]
+
+    neck_ax.set_ylabel('Neck Pitch (rad)', color='green')
+    neck_ax.tick_params(axis='y', labelcolor='green')
+
+    # Combined legend from both axes
+    handles_main, labels_main = ax.get_legend_handles_labels()
+    handles_neck, labels_neck = neck_ax.get_legend_handles_labels()
+    ax.legend(handles_main + handles_neck, labels_main + labels_neck, loc='upper right')
     
     return ax
 

@@ -175,7 +175,7 @@ original_joint_limits = {
     "left_knee": (-70.0, 40.0),
     "left_hip_pitch": (-45.0, 90.0),
     "left_hip_roll": (-15.0, 25.0),  # Updated from (-10.0, 25.0)
-    "left_hip_yaw": (-20.0, 15.0)    # Updated from (-20.0, 13.0)
+    "left_hip_yaw": (-20.0,15.0)    # Updated from (-20.0, 13.0)
 }
 
 print("\nJoint Limit Verification:")
@@ -200,3 +200,4 @@ for i in range(joint_pos.shape[1]):
     else:
         print(f"  NOTE: No original limits defined for {joint_names[i]}")
 
+ 

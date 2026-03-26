@@ -56,6 +56,7 @@ parser.add_argument("-m", "--meshcat_viz", action="store_true", default=False)
 parser.add_argument("--mini", action="store_true", default=False)
 parser.add_argument("--mini2", action="store_true", default=False)
 parser.add_argument("--dino", action="store_true", default=False)
+parser.add_argument("--dinoJr", action="store_true", default=False)
 parser.add_argument("--debug", action="store_true", default=False)
 parser.add_argument("--preset", type=str, default="")
 parser.add_argument(
@@ -118,6 +119,10 @@ elif args.dino:
     robot = 'dino'
     robot_urdf = "dino.urdf"
     asset_path = os.path.join(script_path, "../awd/data/assets/dino")
+elif args.dinoJr:
+    robot = 'dinoJr'
+    robot_urdf = "tensaurJr.urdf"
+    asset_path = os.path.join(script_path, "../awd/data/assets/dinoJr")
 else:
     robot = 'go_bdx'
     robot_urdf = "go_bdx.urdf"
